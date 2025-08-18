@@ -1,0 +1,8 @@
+streamlit>=1.28.0
+pandas>=1.5.0
+# 可选依赖 - 用于完整文档处理功能
+# PyMuPDF>=1.23.0
+# python-docx>=0.8.11
+# python-pptx>=0.6.21
+# beautifulsoup4>=4.12.0
+# openpyxl>=3.1.0
