@@ -1,0 +1,85 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { useMusicPlayer } from '../hooks/useMusicPlayer';
+import MusicControls from './MusicControls';
+import PlaylistView from './PlaylistView';
+
+const MusicPlayer = ({ onAnimationChange }) => {
+  const {
+    currentTrack,
+    playlist,
+    isPlaying,
+    currentTime,
+    duration,
+    volume,
+    play,
+    pause,
+    next,
+    previous,
+    setVolume,
+    seek,
+    loadPlaylist
+  } = useMusicPlayer();
+
+  const [showPlaylist, setShowPlaylist] = useState(false);
+
+  // 当播放状态改变时，通知桌宠切换动画
+  useEffect(() => {
+    if (onAnimationChange) {
+      onAnimationChange(isPlaying ? 'listening' : 'idle');
+    }
+  }, [isPlaying, onAnimationChange]);
+
+  return (
+    <div className="music-player">
+      <div className="music-player-header">
+        <h3>🎵 音乐播放器</h3>
+        <button 
+          className="playlist-toggle"
+          onClick={() => setShowPlaylist(!showPlaylist)}
+        >
+          📋
+        </button>
+      </div>
+
+      {currentTrack && (
+        <div className="current-track-info">
+          <div className="track-title">{currentTrack.title}</div>
+          <div className="track-artist">{currentTrack.artist || '未知艺术家'}</div>
+        </div>
+      )}
+
+      <MusicControls
+        isPlaying={isPlaying}
+        currentTime={currentTime}
+        duration={duration}
+        volume={volume}
+        onPlay={play}
+        onPause={pause}
+        onNext={next}
+        onPrevious={previous}
+        onVolumeChange={setVolume}
+        onSeek={seek}
+      />
+
+      {showPlaylist && (
+        <PlaylistView
+          playlist={playlist}
+          currentTrack={currentTrack}
+          onTrackSelect={(track) => {
+            // 播放选中的音乐
+            play(track);
+          }}
+          onClose={() => setShowPlaylist(false)}
+        />
+      )}
+
+      <div className="music-actions">
+        <button onClick={loadPlaylist}>
+          🔄 扫描本地音乐
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default MusicPlayer;

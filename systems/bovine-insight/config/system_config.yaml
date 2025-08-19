@@ -1,0 +1,89 @@
+# BovineInsight: 多摄像头牛只身份识别与体况评分系统
+# 系统配置文件
+
+# 摄像头配置
+cameras:
+  ear_tag_camera:
+    id: 0
+    type: ear_tag
+    resolution: [1920, 1080]
+    fps: 30
+    auto_focus: true
+    brightness: 50
+    contrast: 50
+    saturation: 50
+    
+  body_condition_camera:
+    id: 1
+    type: body_condition
+    resolution: [1920, 1080]
+    fps: 30
+    auto_focus: true
+    brightness: 50
+    contrast: 50
+    saturation: 50
+
+# 检测配置
+detection:
+  model: yolov8n  # 可选: yolov8n, yolov8s, yolov8m, cattle_custom
+  models_dir: models
+  confidence_threshold: 0.5
+  iou_threshold: 0.5
+  device: auto  # auto, cpu, cuda
+
+# 身份识别配置
+identification:
+  fusion_strategy: ear_tag_priority  # ear_tag_priority, weighted_fusion, confidence_based
+  min_ear_tag_confidence: 0.6
+  min_coat_pattern_confidence: 0.7
+  enable_cross_validation: true
+  
+  # 耳标识别配置
+  ear_tag:
+    use_tesseract: true
+    use_easyocr: true
+    min_confidence: 0.5
+    
+  # 花色识别配置
+  coat_pattern:
+    extractor_type: resnet  # mock, resnet, siamese
+    model_path: null
+    similarity_threshold: 0.7
+
+# 体况评分配置
+body_condition:
+  enable: true
+  model_path: null
+  scale: "1-5"  # 1-5 或 1-9
+  confidence_threshold: 0.6
+
+# 数据库配置
+database:
+  type: sqlite
+  path: data/cattle_database.db
+  backup_interval: 3600  # 秒
+
+# 视频处理配置
+video_processing:
+  mode: balanced  # fast, balanced, high_quality
+  target_size: [640, 640]
+  normalize: true
+  enhance_contrast: true
+  denoise: false
+  brightness_adjustment: 0.0
+  contrast_adjustment: 1.0
+  gamma_correction: 1.0
+
+# 帧缓冲配置
+frame_buffer:
+  max_size: 30
+  sync_tolerance: 0.1  # 秒
+
+# 日志配置
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR
+  file: logs/bovine_insight.log
+  max_size: 10MB
+  backup_count: 5
+  console: true
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
