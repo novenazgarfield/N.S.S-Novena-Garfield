@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🐱 长离的学习胶囊 - 网页版</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐱</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .changlee-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin: 0 auto 20px;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 10px 30px rgba(255, 154, 158, 0.3);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .mode-selector {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .mode-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            border: 2px solid transparent;
+            min-width: 250px;
+        }
+
+        .mode-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .mode-card.active {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.2);
+        }
+
+        .mode-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .mode-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .mode-description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        .main-content {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+
+        .chat-container {
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .messages-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .message.bot .message-avatar {
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+        }
+
+        .message-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            line-height: 1.5;
+        }
+
+        .message.user .message-bubble {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.bot .message-bubble {
+            border-bottom-left-radius: 5px;
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .message-input {
+            flex: 1;
+            min-height: 50px;
+            padding: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-size: 1rem;
+            resize: none;
+            outline: none;
+        }
+
+        .message-input:focus {
+            border-color: #4ecdc4;
+            box-shadow: 0 0 20px rgba(78, 205, 196, 0.3);
+        }
+
+        .send-button {
+            width: 50px;
+            height: 50px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #4ecdc4, #44a08d);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .upload-area.dragover {
+            border-color: #4ecdc4;
+            background: rgba(78, 205, 196, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .quick-action {
+            padding: 8px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-action:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ff6b6b;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.connected {
+            background: #4ecdc4;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            margin-bottom: 10px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dots .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.7);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dots .dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dots .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .mode-selector {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .mode-card {
+                min-width: 200px;
+            }
+            
+            .chat-container {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="changlee-avatar">🐱</div>
+            <h1>长离的学习胶囊</h1>
+            <p>你的AI学习伙伴，现在支持RAG智能问答和文档分析！</p>
+        </div>
+
+        <div class="mode-selector">
+            <div class="mode-card active" data-mode="chat">
+                <div class="mode-icon">💬</div>
+                <div class="mode-title">智能问答</div>
+                <div class="mode-description">向长离提问任何学习相关的问题，获得智能回答</div>
+            </div>
+            <div class="mode-card" data-mode="document">
+                <div class="mode-icon">📚</div>
+                <div class="mode-title">文档分析</div>
+                <div class="mode-description">上传文档进行智能分析，提取单词和知识点</div>
+            </div>
+            <div class="mode-card" data-mode="search">
+                <div class="mode-icon">🔍</div>
+                <div class="mode-title">文献检索</div>
+                <div class="mode-description">在已上传的文档中搜索和问答</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- 智能问答模式 -->
+            <div id="chat-mode" class="mode-content">
+                <div class="chat-container">
+                    <div class="messages-area" id="messages-area">
+                        <div class="message bot">
+                            <div class="message-avatar">🐱</div>
+                            <div class="message-bubble">
+                                喵～你好！我是长离，你的AI学习伙伴！🌟<br><br>
+                                我现在具备了强大的RAG智能问答能力，可以：<br>
+                                • 回答各种英语学习问题<br>
+                                • 解释单词和语法<br>
+                                • 提供学习建议和方法<br>
+                                • 分析你上传的学习资料<br><br>
+                                有什么想问的吗？
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-action" data-question="请解释单词 'serendipity' 的含义和用法">解释单词含义</div>
+                        <div class="quick-action" data-question="如何快速提高英语词汇量？">学习方法建议</div>
+                        <div class="quick-action" data-question="什么是现在完成时？请举例说明">语法问题</div>
+                        <div class="quick-action" data-question="请为我生成一些英语练习题">练习题生成</div>
+                    </div>
+                    
+                    <div class="input-area">
+                        <textarea class="message-input" id="message-input" placeholder="向长离提问任何学习相关的问题..." rows="1"></textarea>
+                        <button class="send-button" id="send-button">📤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 文档分析模式 -->
+            <div id="document-mode" class="mode-content hidden">
+                <div class="upload-area" id="upload-area">
+                    <div class="upload-icon">📤</div>
+                    <div style="font-size: 1.2rem; margin-bottom: 10px;">点击或拖拽文件到这里上传</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">支持 PDF, DOC, DOCX, TXT 格式，最大 50MB</div>
+                    <input type="file" id="file-input" accept=".pdf,.doc,.docx,.txt" style="display: none;">
+                </div>
+                
+                <div id="analysis-results" class="hidden">
+                    <h3>📊 分析结果</h3>
+                    <div id="analysis-content"></div>
+                </div>
+            </div>
+
+            <!-- 文献检索模式 -->
+            <div id="search-mode" class="mode-content hidden">
+                <div class="chat-container">
+                    <div class="messages-area" id="search-messages-area">
+                        <div class="message bot">
+                            <div class="message-avatar">🔍</div>
+                            <div class="message-bubble">
+                                我可以在你已上传的文档中搜索信息并回答问题！<br><br>
+                                请输入你想要搜索的问题，我会从相关文档中找到答案。
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quick-actions">
+                        <div class="quick-action" data-search="在文档中搜索关于词汇学习的方法">词汇学习方法</div>
+                        <div class="quick-action" data-search="文档中提到的语法规则有哪些？">语法规则总结</div>
+                        <div class="quick-action" data-search="找出文档中的重点单词">重点单词提取</div>
+                        <div class="quick-action" data-search="总结文档的主要内容">内容总结</div>
+                    </div>
+                    
+                    <div class="input-area">
+                        <textarea class="message-input" id="search-input" placeholder="在已上传的文档中搜索..." rows="1"></textarea>
+                        <button class="send-button" id="search-button">🔍</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <div class="status-dot" id="status-dot"></div>
+            <span id="status-text">正在连接系统...</span>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+{
+  "api_keys": {
+    "a2c6362cd9148708": {
+      "key_id": "a2c6362cd9148708",
+      "user_id": "admin",
+      "provider": "google",
+      "key_name": "Gemini 2.5 Flash API",
+      "encrypted_key": "Z0FBQUFBQm9vcXNGcUpUeW1vT01TTE9DczBuZjBoYWZXU3gwemtWTzhJWmlFbXBtSTUySzBnclZ6bWtyU3hqTHdOSkdmdTFCZ3lYam5JUU5qRVVKcG5OOUxTVWVwVmZwVDFIWTNvSHZBcDZBVVFKa1JZUmxzUWRRVExaWFc0ODYzWVBRcklGWkg1UXo=",
+      "status": "active",
+      "usage_count": 11,
+      "daily_limit": 1000,
+      "monthly_limit": 30000,
+      "created_at": 1755491077.6349046,
+      "last_used": 1755492702.146043,
+      "expires_at": null,
+      "description": "Google AI Studio Gemini 2.5 Flash 个人API密钥"
+    }
+  },
+  "usage_stats": {
+    "a2c6362cd9148708": {
+      "2025-08-18": 11
+    }
+  }
+}

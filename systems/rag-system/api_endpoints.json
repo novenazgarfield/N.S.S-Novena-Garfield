@@ -1,0 +1,122 @@
+{
+  "health_check": {
+    "name": "health_check",
+    "url": "/api/health",
+    "api_type": "public",
+    "required_roles": [],
+    "rate_limit": 1000,
+    "description": "系统健康检查",
+    "is_active": true,
+    "created_at": 1755489443.6262116
+  },
+  "system_info": {
+    "name": "system_info",
+    "url": "/api/system/info",
+    "api_type": "public",
+    "required_roles": [],
+    "rate_limit": 100,
+    "description": "获取系统基本信息",
+    "is_active": true,
+    "created_at": 1755489443.626215
+  },
+  "user_chat": {
+    "name": "user_chat",
+    "url": "/api/chat",
+    "api_type": "private",
+    "required_roles": [
+      "user",
+      "vip",
+      "admin"
+    ],
+    "rate_limit": 50,
+    "description": "用户聊天接口",
+    "is_active": true,
+    "created_at": 1755489443.6262171
+  },
+  "document_upload": {
+    "name": "document_upload",
+    "url": "/api/documents/upload",
+    "api_type": "private",
+    "required_roles": [
+      "user",
+      "vip",
+      "admin"
+    ],
+    "rate_limit": 20,
+    "description": "文档上传接口",
+    "is_active": true,
+    "created_at": 1755489443.6262188
+  },
+  "advanced_chat": {
+    "name": "advanced_chat",
+    "url": "/api/chat/advanced",
+    "api_type": "protected",
+    "required_roles": [
+      "vip",
+      "admin"
+    ],
+    "rate_limit": 100,
+    "description": "高级聊天功能",
+    "is_active": true,
+    "created_at": 1755489443.6262202
+  },
+  "batch_processing": {
+    "name": "batch_processing",
+    "url": "/api/batch/process",
+    "api_type": "protected",
+    "required_roles": [
+      "vip",
+      "admin"
+    ],
+    "rate_limit": 10,
+    "description": "批量处理接口",
+    "is_active": true,
+    "created_at": 1755489443.6262217
+  },
+  "user_management": {
+    "name": "user_management",
+    "url": "/api/admin/users",
+    "api_type": "protected",
+    "required_roles": [
+      "admin"
+    ],
+    "rate_limit": 200,
+    "description": "用户管理接口",
+    "is_active": true,
+    "created_at": 1755489443.6262226
+  },
+  "system_config": {
+    "name": "system_config",
+    "url": "/api/admin/config",
+    "api_type": "protected",
+    "required_roles": [
+      "admin"
+    ],
+    "rate_limit": 50,
+    "description": "系统配置管理",
+    "is_active": true,
+    "created_at": 1755489443.6262236
+  },
+  "system_logs": {
+    "name": "system_logs",
+    "url": "/api/admin/logs",
+    "api_type": "protected",
+    "required_roles": [
+      "admin"
+    ],
+    "rate_limit": 100,
+    "description": "系统日志查看",
+    "is_active": true,
+    "created_at": 1755489443.6262243
+  },
+  "internal_metrics": {
+    "name": "internal_metrics",
+    "url": "/api/internal/metrics",
+    "api_type": "internal",
+    "required_roles": [],
+    "rate_limit": 1000,
+    "description": "内部指标收集",
+    "is_active": true,
+    "created_at": 1755489443.6262257
+  }
+}

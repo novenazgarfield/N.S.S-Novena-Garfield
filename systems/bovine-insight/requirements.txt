@@ -1,0 +1,73 @@
+# BovineInsight: 多摄像头牛只身份识别与体况评分系统
+# 依赖包列表
+
+# 核心依赖
+numpy>=1.21.0
+opencv-python>=4.5.0
+Pillow>=8.0.0
+
+# 深度学习框架
+torch>=1.9.0
+torchvision>=0.10.0
+ultralytics>=8.0.0
+
+# 机器学习
+scikit-learn>=1.0.0
+scipy>=1.7.0
+
+# OCR引擎
+pytesseract>=0.3.8
+easyocr>=1.6.0
+
+# 图像处理
+imageio>=2.9.0
+matplotlib>=3.3.0
+
+# 数据处理
+pandas>=1.3.0
+
+# 数据库
+sqlite3  # 内置模块
+sqlalchemy>=1.4.0
+
+# 网络请求
+requests>=2.25.0
+
+# 配置文件
+pyyaml>=5.4.0
+configparser
+
+# 日志和调试
+loguru>=0.5.0
+
+# 多线程/多进程
+threading  # 内置模块
+multiprocessing  # 内置模块
+
+# 时间处理
+python-dateutil>=2.8.0
+
+# 数学计算
+sympy>=1.8.0
+
+# 可视化
+seaborn>=0.11.0
+plotly>=5.0.0
+
+# 开发工具
+pytest>=6.0.0
+black>=21.0.0
+flake8>=3.9.0
+
+# 可选依赖（用于GPU加速）
+# cupy-cuda11x>=9.0.0  # CUDA 11.x
+# cupy-cuda10x>=9.0.0  # CUDA 10.x
+
+# 系统监控
+psutil>=5.8.0
+
+# 进度条
+tqdm>=4.60.0
+
+# 类型检查
+typing-extensions>=3.10.0
