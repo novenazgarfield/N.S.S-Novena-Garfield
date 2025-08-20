@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS远程指挥中心 - 测试页面</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header h1 {
+            font-size: 3em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin: 10px 0;
+        }
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .status-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .status-card:hover {
+            transform: translateY(-5px);
+        }
+        .status-card h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+        .status-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .websocket-test {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .websocket-test h2 {
+            margin-top: 0;
+            text-align: center;
+        }
+        .connection-status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .status-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff4444;
+            animation: pulse 2s infinite;
+        }
+        .status-indicator.connected {
+            background: #44ff44;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .command-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .command-btn {
+            background: linear-gradient(45deg, #FF6B6B 30%, #4ECDC4 90%);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 20px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .command-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .command-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .log-container {
+            background: #1e1e1e;
+            border-radius: 10px;
+            padding: 20px;
+            height: 300px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #00ff00;
+        }
+        .log-entry {
+            margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+        .log-timestamp {
+            color: #888;
+            font-size: 0.8em;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 NEXUS 远程指挥中心</h1>
+            <p>多设备协同 · 远程命令执行 · 实时监控</p>
+            <p>测试页面 - 验证WebSocket连接和远程命令功能</p>
+        </div>
+
+        <div class="status-grid">
+            <div class="status-card">
+                <h3>🌐 连接状态</h3>
+                <div class="value" id="connectionStatus">断开</div>
+            </div>
+            <div class="status-card">
+                <h3>📡 活动任务</h3>
+                <div class="value" id="activeTasks">0</div>
+            </div>
+            <div class="status-card">
+                <h3>🔧 可用命令</h3>
+                <div class="value" id="availableCommands">0</div>
+            </div>
+            <div class="status-card">
+                <h3>📊 连接设备</h3>
+                <div class="value" id="connectedDevices">0</div>
+            </div>
+        </div>
+
+        <div class="websocket-test">
+            <h2>WebSocket 连接测试</h2>
+            <div class="connection-status">
+                <div class="status-indicator" id="statusIndicator"></div>
+                <span id="statusText">正在连接...</span>
+            </div>
+            
+            <div class="command-buttons">
+                <button class="command-btn" onclick="showWakeDialog()" disabled id="wakeBtn" style="background: linear-gradient(45deg, #4CAF50 30%, #8BC34A 90%);">
+                    🌅 远程唤醒电脑
+                </button>
+                <button class="command-btn" onclick="showShutdownDialog()" disabled id="shutdownBtn" style="background: linear-gradient(45deg, #f44336 30%, #ff5722 90%);">
+                    🔴 远程关机/重启
+                </button>
+                <button class="command-btn" onclick="executeCommand('genome_jigsaw')" disabled id="genomeBtn">
+                    🧬 基因组拼图分析
+                </button>
+                <button class="command-btn" onclick="executeCommand('gromacs_simulation')" disabled id="gromacsBtn">
+                    ⚛️ GROMACS模拟
+                </button>
+                <button class="command-btn" onclick="executeCommand('protein_folding')" disabled id="proteinBtn">
+                    🧪 蛋白质折叠预测
+                </button>
+                <button class="command-btn" onclick="executeCommand('system_status')" disabled id="statusBtn">
+                    🖥️ 系统状态检查
+                </button>
+            </div>
+
+            <h3>实时日志</h3>
+            <div class="log-container" id="logContainer">
+                <div class="log-entry">
+                    <span class="log-timestamp">[等待连接]</span> 
+                    正在连接到NEXUS远程指挥中心...
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>🎉 NEXUS远程指挥中心已升级完成！</p>
+            <p>现在您可以在任何设备上远程控制和监控您的NEXUS系统</p>
+        </div>
+    </div>
+
+    <script>
+        let ws = null;
+        let activeTasks = new Set();
+        let availableCommands = {};
+
+        function addLog(message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = 'log-entry';
+            
+            let color = '#00ff00';
+            if (type === 'error') color = '#ff4444';
+            if (type === 'warning') color = '#ffaa00';
+            if (type === 'success') color = '#44ff44';
+            
+            logEntry.innerHTML = `
+                <span class="log-timestamp">[${timestamp}]</span> 
+                <span style="color: ${color}">${message}</span>
+            `;
+            
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function updateConnectionStatus(connected) {
+            const indicator = document.getElementById('statusIndicator');
+            const statusText = document.getElementById('statusText');
+            const connectionStatus = document.getElementById('connectionStatus');
+            const buttons = document.querySelectorAll('.command-btn');
+
+            if (connected) {
+                indicator.classList.add('connected');
+                statusText.textContent = '已连接到远程指挥中心';
+                connectionStatus.textContent = '已连接';
+                buttons.forEach(btn => btn.disabled = false);
+                addLog('✅ 成功连接到NEXUS远程指挥中心！', 'success');
+            } else {
+                indicator.classList.remove('connected');
+                statusText.textContent = '连接断开';
+                connectionStatus.textContent = '断开';
+                buttons.forEach(btn => btn.disabled = true);
+                addLog('❌ 与远程指挥中心的连接已断开', 'error');
+            }
+        }
+
+        function connectWebSocket() {
+            try {
+                ws = new WebSocket('ws://localhost:8765');
+                
+                ws.onopen = function(event) {
+                    updateConnectionStatus(true);
+                };
+
+                ws.onmessage = function(event) {
+                    try {
+                        const data = JSON.parse(event.data);
+                        handleWebSocketMessage(data);
+                    } catch (e) {
+                        addLog('收到无效消息: ' + event.data, 'warning');
+                    }
+                };
+
+                ws.onclose = function(event) {
+                    updateConnectionStatus(false);
+                    // 5秒后尝试重连
+                    setTimeout(connectWebSocket, 5000);
+                };
+
+                ws.onerror = function(error) {
+                    addLog('WebSocket错误: ' + error, 'error');
+                };
+
+            } catch (error) {
+                addLog('连接失败: ' + error.message, 'error');
+                setTimeout(connectWebSocket, 5000);
+            }
+        }
+
+        function handleWebSocketMessage(data) {
+            switch (data.type) {
+                case 'welcome':
+                    addLog('🎉 ' + data.message, 'success');
+                    availableCommands = data.available_commands || {};
+                    document.getElementById('availableCommands').textContent = Object.keys(availableCommands).length;
+                    break;
+
+                case 'task_started':
+                    activeTasks.add(data.task_id);
+                    document.getElementById('activeTasks').textContent = activeTasks.size;
+                    addLog(`🚀 任务已启动: ${data.description} (ID: ${data.task_id.substring(0, 8)}...)`, 'info');
+                    break;
+
+                case 'task_log':
+                    addLog(`[${data.task_id.substring(0, 8)}...] ${data.output}`, 'info');
+                    break;
+
+                case 'task_completed':
+                    activeTasks.delete(data.task_id);
+                    document.getElementById('activeTasks').textContent = activeTasks.size;
+                    const status = data.status === 'completed' ? '✅' : '❌';
+                    addLog(`${status} 任务${data.status}: ${data.task_id.substring(0, 8)}...`, 
+                           data.status === 'completed' ? 'success' : 'error');
+                    break;
+
+                case 'task_error':
+                    activeTasks.delete(data.task_id);
+                    document.getElementById('activeTasks').textContent = activeTasks.size;
+                    addLog(`❌ 任务错误: ${data.error}`, 'error');
+                    break;
+
+                case 'system_info':
+                    document.getElementById('connectedDevices').textContent = data.connected_clients;
+                    document.getElementById('activeTasks').textContent = data.active_tasks;
+                    addLog(`📊 系统信息更新: ${data.connected_clients}个设备连接, ${data.active_tasks}个活动任务`, 'info');
+                    break;
+
+                case 'task_created':
+                    addLog(`✅ 命令已提交: ${data.message}`, 'success');
+                    break;
+
+                case 'error':
+                    addLog(`❌ 错误: ${data.message}`, 'error');
+                    break;
+
+                default:
+                    addLog(`收到消息: ${data.type}`, 'info');
+            }
+        }
+
+        function executeCommand(command, parameters = {}) {
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                addLog('❌ WebSocket未连接，无法执行命令', 'error');
+                return;
+            }
+
+            const message = {
+                type: 'execute_command',
+                command: command,
+                parameters: parameters
+            };
+
+            ws.send(JSON.stringify(message));
+            addLog(`📤 发送命令: ${command}`, 'info');
+        }
+
+        function showWakeDialog() {
+            const macAddress = prompt('请输入目标电脑的MAC地址 (格式: XX:XX:XX:XX:XX:XX):');
+            if (!macAddress) return;
+
+            const macPattern = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+            if (!macPattern.test(macAddress)) {
+                alert('MAC地址格式无效，请使用格式：XX:XX:XX:XX:XX:XX');
+                return;
+            }
+
+            const ipAddress = prompt('请输入广播IP地址 (默认: 192.168.1.255):', '192.168.1.255');
+            if (!ipAddress) return;
+
+            addLog(`🌅 准备唤醒电脑 MAC: ${macAddress}`, 'info');
+            executeCommand('wake_computer', {
+                mac_address: macAddress,
+                ip_address: ipAddress
+            });
+        }
+
+        function showShutdownDialog() {
+            const shutdownType = prompt('请选择操作类型:\n1. normal - 正常关机\n2. force - 强制关机\n3. reboot - 重启电脑\n\n请输入 (normal/force/reboot):', 'normal');
+            if (!shutdownType || !['normal', 'force', 'reboot'].includes(shutdownType)) {
+                alert('无效的操作类型！');
+                return;
+            }
+
+            const delaySeconds = prompt('请输入延迟时间（秒，建议至少60秒）:', '60');
+            if (!delaySeconds || isNaN(delaySeconds) || parseInt(delaySeconds) < 10) {
+                alert('延迟时间无效！至少需要10秒。');
+                return;
+            }
+
+            const message = prompt('请输入关机消息:', 'NEXUS远程关机 - 请保存您的工作');
+            if (!message) return;
+
+            const actionText = shutdownType === 'reboot' ? '重启' : '关机';
+            const confirmText = `确认要${actionText}本地电脑吗？\n\n类型: ${shutdownType}\n延迟: ${delaySeconds}秒\n消息: ${message}`;
+            
+            if (!confirm(confirmText)) return;
+
+            addLog(`🔴 准备${actionText}电脑，延迟${delaySeconds}秒`, 'warning');
+            executeCommand('shutdown_computer', {
+                shutdown_type: shutdownType,
+                delay_seconds: parseInt(delaySeconds),
+                message: message
+            });
+        }
+
+        // 页面加载时自动连接
+        window.onload = function() {
+            addLog('🔄 正在初始化NEXUS远程指挥中心...', 'info');
+            connectWebSocket();
+        };
+    </script>
+</body>
+</html>
