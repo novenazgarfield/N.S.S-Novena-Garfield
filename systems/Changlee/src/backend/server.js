@@ -38,12 +38,47 @@ class ChangleeServer {
     });
     this.sessionManager = new LearningSessionManager(this.chronicleClient);
     
-    // 本地AI服务配置
+    // AI服务配置
+    try {
+      const { aiConfig, getAvailableServices, getPreferredService, validateConfig } = require('../../config/ai_config');
+      
+      // 验证AI配置
+      const configValidation = validateConfig();
+      if (configValidation.errors.length > 0) {
+        console.error('❌ AI配置错误:');
+        configValidation.errors.forEach(error => console.error(`   - ${error}`));
+      }
+      if (configValidation.warnings.length > 0) {
+        console.warn('⚠️ AI配置警告:');
+        configValidation.warnings.forEach(warning => console.warn(`   - ${warning}`));
+      }
+
+      // 显示可用的AI服务
+      const availableServices = getAvailableServices();
+      console.log('🤖 可用的AI服务:');
+      availableServices.forEach(service => {
+        console.log(`   ✅ ${service.name} (${service.type}) - ${service.description}`);
+      });
+
+      const preferredService = getPreferredService();
+      console.log(`🎯 首选AI服务: ${preferredService || '无'}`);
+
+      this.aiConfig = aiConfig;
+      this.availableServices = availableServices;
+      this.preferredService = preferredService;
+    } catch (error) {
+      console.warn('⚠️ 无法加载AI配置，使用默认配置:', error.message);
+      this.aiConfig = null;
+      this.availableServices = [];
+      this.preferredService = null;
+    }
+
+    // 兼容性配置（保持向后兼容）
     this.localAIConfig = {
-      enabled: process.env.LOCAL_AI_ENABLED !== 'false',
-      url: process.env.LOCAL_AI_URL || 'http://localhost:8001',
-      timeout: parseInt(process.env.LOCAL_AI_TIMEOUT) || 10000,
-      retryAttempts: parseInt(process.env.LOCAL_AI_RETRY) || 2
+      enabled: this.aiConfig?.local?.enabled || process.env.LOCAL_AI_ENABLED !== 'false',
+      url: this.aiConfig?.local?.serverUrl || process.env.LOCAL_AI_URL || 'http://localhost:8001',
+      timeout: this.aiConfig?.hybrid?.timeout || parseInt(process.env.LOCAL_AI_TIMEOUT) || 10000,
+      retryAttempts: this.aiConfig?.hybrid?.retryAttempts || parseInt(process.env.LOCAL_AI_RETRY) || 2
     };
   }
 
@@ -857,6 +892,126 @@ class ChangleeServer {
         res.json(response);
       } catch (error) {
         console.error('优化本地AI内存失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 混合AI服务路由
+    this.app.get('/api/ai/services', async (req, res) => {
+      try {
+        res.json({
+          success: true,
+          data: {
+            available_services: this.availableServices || [],
+            preferred_service: this.preferredService,
+            hybrid_enabled: !!this.aiConfig?.hybrid?.enabled,
+            local_ai_enabled: this.localAIConfig.enabled
+          }
+        });
+      } catch (error) {
+        console.error('获取AI服务列表失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    this.app.post('/api/ai/switch-service', async (req, res) => {
+      try {
+        const { service_type } = req.body;
+        
+        if (!this.localAIConfig.enabled) {
+          return res.status(400).json({
+            success: false,
+            error: '本地AI服务未启用，无法切换服务'
+          });
+        }
+
+        const response = await this.callLocalAI('/switch_service', {
+          service_type: service_type
+        });
+        
+        res.json({ success: true, data: response });
+      } catch (error) {
+        console.error('切换AI服务失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    this.app.post('/api/ai/generate', async (req, res) => {
+      try {
+        const { prompt, context = 'daily_greeting', service_type, max_length = 256, temperature = 0.7 } = req.body;
+        
+        if (!this.localAIConfig.enabled) {
+          // 如果本地AI未启用，尝试使用传统AI服务
+          const response = await this.aiService.generateResponse(prompt, context);
+          return res.json({
+            success: true,
+            response: response,
+            metadata: {
+              service: 'traditional',
+              context: context,
+              fallback: true
+            }
+          });
+        }
+
+        const response = await this.callLocalAI('/generate', {
+          prompt,
+          context,
+          service_type,
+          max_length,
+          temperature
+        });
+        
+        res.json({ success: true, ...response });
+      } catch (error) {
+        console.error('AI生成失败:', error);
+        
+        // 尝试回退到传统AI服务
+        try {
+          const fallbackResponse = await this.aiService.generateResponse(req.body.prompt, req.body.context || 'daily_greeting');
+          res.json({
+            success: true,
+            response: fallbackResponse,
+            metadata: {
+              service: 'traditional',
+              context: req.body.context || 'daily_greeting',
+              fallback: true,
+              original_error: error.message
+            }
+          });
+        } catch (fallbackError) {
+          res.status(500).json({ 
+            success: false, 
+            error: error.message,
+            fallback_error: fallbackError.message
+          });
+        }
+      }
+    });
+
+    this.app.get('/api/ai/config', async (req, res) => {
+      try {
+        const config = {
+          hybrid_enabled: !!this.aiConfig?.hybrid?.enabled,
+          available_services: this.availableServices || [],
+          preferred_service: this.preferredService,
+          local_ai: {
+            enabled: this.localAIConfig.enabled,
+            url: this.localAIConfig.url,
+            timeout: this.localAIConfig.timeout
+          },
+          personality: this.aiConfig?.personality || {
+            name: '长离',
+            description: '温暖、智慧的AI学习伙伴'
+          },
+          supported_contexts: this.aiConfig?.personality?.contexts ? 
+            Object.keys(this.aiConfig.personality.contexts) : 
+            ['daily_greeting', 'word_learning', 'encouragement']
+        };
+        
+        res.json({ success: true, data: config });
+      } catch (error) {
+        console.error('获取AI配置失败:', error);
         res.status(500).json({ success: false, error: error.message });
       }
     });

@@ -15,17 +15,27 @@ class ChangleeIntegratedLauncher {
     this.processes = new Map();
     this.services = {
       localAI: {
-        name: 'Changlee本地AI服务',
+        name: 'Changlee混合AI服务',
         path: path.join(__dirname, 'src/backend'),
         command: 'python',
-        args: ['local_ai_server.py', '--host', '0.0.0.0', '--port', '8001'],
+        args: ['hybrid_ai_server.py', '--host', '0.0.0.0', '--port', '8001'],
         port: 8001,
         healthUrl: 'http://localhost:8001/health',
         ready: false,
         env: {
           ...process.env,
           PYTHONPATH: path.join(__dirname, 'src/backend'),
-          LOCAL_AI_ENABLED: 'true'
+          HYBRID_AI_ENABLED: 'true',
+          LOCAL_AI_ENABLED: 'true',
+          PREFERRED_AI_SERVICE: process.env.PREFERRED_AI_SERVICE || 'auto',
+          // API密钥配置
+          GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+          DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
+          OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+          // 性能配置
+          MAX_MEMORY_GB: process.env.MAX_MEMORY_GB || '4.0',
+          USE_QUANTIZATION: process.env.USE_QUANTIZATION || 'false',
+          AI_DEVICE: process.env.AI_DEVICE || 'auto'
         }
       },
       changlee: {
