@@ -3,6 +3,7 @@
 Coat Pattern Re-Identification Model
 
 使用深度学习模型提取牛只花色特征并进行相似度匹配
+集成DINOv2无监督特征提取器
 """
 
 import cv2
@@ -18,6 +19,14 @@ from .identification_utils import (
     CoatPatternFeature, CattleProfile, IdentificationResult, 
     IdentificationMethod, FeatureExtractor, SimilarityMatcher
 )
+
+# 导入DINOv2特征提取器
+try:
+    from ..feature_extraction.feature_extractor import DINOv2FeatureExtractor, CattleFeatureDatabase
+    DINOV2_AVAILABLE = True
+except ImportError:
+    DINOV2_AVAILABLE = False
+    logging.warning("DINOv2特征提取器不可用，使用传统方法")
 
 # 检查PyTorch可用性
 TORCH_AVAILABLE = True
@@ -573,3 +582,345 @@ def train_siamese_model(train_loader, model, optimizer, criterion, device):
         total_loss += loss.item()
     
     return total_loss / len(train_loader)
+
+
+class DINOv2CoatPatternReID:
+    """
+    基于DINOv2的牛只花色重识别系统
+    集成无监督特征提取和相似度匹配
+    """
+    
+    def __init__(self, 
+                 model_name: str = 'dinov2_vitb14',
+                 similarity_threshold: float = 0.75,
+                 database_path: str = "cattle_dinov2_features.npz"):
+        """
+        初始化DINOv2花色重识别系统
+        
+        Args:
+            model_name: DINOv2模型名称
+            similarity_threshold: 相似度阈值
+            database_path: 特征数据库路径
+        """
+        self.similarity_threshold = similarity_threshold
+        self.database_path = database_path
+        
+        # 初始化DINOv2特征提取器
+        if DINOV2_AVAILABLE:
+            self.feature_extractor = DINOv2FeatureExtractor(model_name=model_name)
+            self.feature_database = CattleFeatureDatabase(database_path)
+            self.use_dinov2 = True
+            logging.info(f"使用DINOv2特征提取器: {model_name}")
+        else:
+            # 回退到传统方法
+            self.feature_extractor = MockFeatureExtractor()
+            self.feature_database = None
+            self.use_dinov2 = False
+            logging.warning("DINOv2不可用，使用传统特征提取方法")
+        
+        # 统计信息
+        self.stats = {
+            'total_identifications': 0,
+            'successful_identifications': 0,
+            'average_similarity': 0.0,
+            'feature_extraction_time': 0.0
+        }
+    
+    def register_cattle(self, 
+                       cattle_id: str, 
+                       image: np.ndarray,
+                       metadata: Optional[Dict] = None) -> bool:
+        """
+        注册牛只到特征数据库
+        
+        Args:
+            cattle_id: 牛只ID
+            image: 牛只图像
+            metadata: 元数据
+            
+        Returns:
+            注册是否成功
+        """
+        try:
+            if self.use_dinov2:
+                # 使用DINOv2提取特征
+                features = self.feature_extractor.extract_features(image)
+                
+                # 添加到数据库
+                self.feature_database.add_cattle_features(
+                    cattle_id, 
+                    features, 
+                    metadata or {}
+                )
+                
+                # 保存数据库
+                self.feature_database.save_database()
+                
+                logging.info(f"成功注册牛只: {cattle_id}")
+                return True
+            else:
+                # 传统方法的注册逻辑
+                logging.warning("使用传统方法注册牛只")
+                return False
+                
+        except Exception as e:
+            logging.error(f"注册牛只失败 {cattle_id}: {str(e)}")
+            return False
+    
+    def identify_cattle(self, 
+                       image: np.ndarray,
+                       top_k: int = 5) -> List[Tuple[str, float]]:
+        """
+        识别牛只身份
+        
+        Args:
+            image: 查询图像
+            top_k: 返回前K个结果
+            
+        Returns:
+            识别结果列表 [(cattle_id, similarity_score), ...]
+        """
+        self.stats['total_identifications'] += 1
+        
+        try:
+            if self.use_dinov2:
+                # 提取查询特征
+                query_features = self.feature_extractor.extract_features(image)
+                
+                # 在数据库中查找相似牛只
+                similar_cattle = self.feature_database.find_similar_cattle(
+                    query_features,
+                    top_k=top_k,
+                    threshold=self.similarity_threshold
+                )
+                
+                if similar_cattle:
+                    self.stats['successful_identifications'] += 1
+                    
+                    # 更新平均相似度统计
+                    similarities = [score for _, score in similar_cattle]
+                    avg_sim = np.mean(similarities)
+                    self._update_similarity_stats(avg_sim)
+                
+                return similar_cattle
+            else:
+                # 传统方法的识别逻辑
+                logging.warning("使用传统方法进行识别")
+                return []
+                
+        except Exception as e:
+            logging.error(f"牛只识别失败: {str(e)}")
+            return []
+    
+    def batch_register_cattle(self, 
+                             cattle_data: List[Tuple[str, np.ndarray, Optional[Dict]]],
+                             batch_size: int = 8) -> Dict[str, bool]:
+        """
+        批量注册牛只
+        
+        Args:
+            cattle_data: 牛只数据列表 [(cattle_id, image, metadata), ...]
+            batch_size: 批处理大小
+            
+        Returns:
+            注册结果字典 {cattle_id: success_status}
+        """
+        results = {}
+        
+        if not self.use_dinov2:
+            logging.warning("DINOv2不可用，无法进行批量注册")
+            return {cattle_id: False for cattle_id, _, _ in cattle_data}
+        
+        try:
+            # 分批处理
+            for i in range(0, len(cattle_data), batch_size):
+                batch = cattle_data[i:i + batch_size]
+                
+                # 提取图像和ID
+                images = [data[1] for data in batch]
+                cattle_ids = [data[0] for data in batch]
+                metadatas = [data[2] or {} for data in batch]
+                
+                # 批量提取特征
+                features_list = self.feature_extractor.batch_extract_features(
+                    images, batch_size=len(images)
+                )
+                
+                # 添加到数据库
+                for cattle_id, features, metadata in zip(cattle_ids, features_list, metadatas):
+                    try:
+                        self.feature_database.add_cattle_features(
+                            cattle_id, features, metadata
+                        )
+                        results[cattle_id] = True
+                        logging.info(f"批量注册成功: {cattle_id}")
+                    except Exception as e:
+                        results[cattle_id] = False
+                        logging.error(f"批量注册失败 {cattle_id}: {str(e)}")
+                
+                logging.info(f"批量处理进度: {min(i + batch_size, len(cattle_data))}/{len(cattle_data)}")
+            
+            # 保存数据库
+            self.feature_database.save_database()
+            
+            return results
+            
+        except Exception as e:
+            logging.error(f"批量注册失败: {str(e)}")
+            return {cattle_id: False for cattle_id, _, _ in cattle_data}
+    
+    def update_cattle_features(self, 
+                              cattle_id: str, 
+                              new_image: np.ndarray,
+                              metadata: Optional[Dict] = None) -> bool:
+        """
+        更新牛只特征
+        
+        Args:
+            cattle_id: 牛只ID
+            new_image: 新图像
+            metadata: 新元数据
+            
+        Returns:
+            更新是否成功
+        """
+        try:
+            if self.use_dinov2:
+                # 提取新特征
+                new_features = self.feature_extractor.extract_features(new_image)
+                
+                # 更新数据库
+                self.feature_database.add_cattle_features(
+                    cattle_id, new_features, metadata or {}
+                )
+                
+                # 保存数据库
+                self.feature_database.save_database()
+                
+                logging.info(f"成功更新牛只特征: {cattle_id}")
+                return True
+            else:
+                logging.warning("DINOv2不可用，无法更新特征")
+                return False
+                
+        except Exception as e:
+            logging.error(f"更新牛只特征失败 {cattle_id}: {str(e)}")
+            return False
+    
+    def remove_cattle(self, cattle_id: str) -> bool:
+        """
+        从数据库中移除牛只
+        
+        Args:
+            cattle_id: 牛只ID
+            
+        Returns:
+            移除是否成功
+        """
+        try:
+            if self.use_dinov2 and cattle_id in self.feature_database.features_db:
+                del self.feature_database.features_db[cattle_id]
+                del self.feature_database.metadata_db[cattle_id]
+                
+                # 保存数据库
+                self.feature_database.save_database()
+                
+                logging.info(f"成功移除牛只: {cattle_id}")
+                return True
+            else:
+                logging.warning(f"牛只不存在或DINOv2不可用: {cattle_id}")
+                return False
+                
+        except Exception as e:
+            logging.error(f"移除牛只失败 {cattle_id}: {str(e)}")
+            return False
+    
+    def get_database_stats(self) -> Dict[str, Any]:
+        """获取数据库统计信息"""
+        if self.use_dinov2:
+            db_stats = self.feature_database.get_database_stats()
+        else:
+            db_stats = {'total_cattle': 0, 'feature_dim': 0}
+        
+        return {
+            'database_stats': db_stats,
+            'identification_stats': self.stats,
+            'model_info': self.feature_extractor.get_model_info() if self.use_dinov2 else {},
+            'similarity_threshold': self.similarity_threshold,
+            'using_dinov2': self.use_dinov2
+        }
+    
+    def _update_similarity_stats(self, similarity: float):
+        """更新相似度统计"""
+        current_avg = self.stats['average_similarity']
+        total_ids = self.stats['successful_identifications']
+        
+        if total_ids == 1:
+            self.stats['average_similarity'] = similarity
+        else:
+            self.stats['average_similarity'] = (
+                (current_avg * (total_ids - 1) + similarity) / total_ids
+            )
+    
+    def export_features(self, export_path: str) -> bool:
+        """导出特征数据库"""
+        try:
+            if self.use_dinov2:
+                import shutil
+                shutil.copy2(self.database_path, export_path)
+                logging.info(f"特征数据库已导出到: {export_path}")
+                return True
+            else:
+                logging.warning("DINOv2不可用，无法导出特征")
+                return False
+        except Exception as e:
+            logging.error(f"导出特征失败: {str(e)}")
+            return False
+    
+    def import_features(self, import_path: str) -> bool:
+        """导入特征数据库"""
+        try:
+            if self.use_dinov2:
+                import shutil
+                shutil.copy2(import_path, self.database_path)
+                
+                # 重新加载数据库
+                self.feature_database.load_database()
+                
+                logging.info(f"特征数据库已从 {import_path} 导入")
+                return True
+            else:
+                logging.warning("DINOv2不可用，无法导入特征")
+                return False
+        except Exception as e:
+            logging.error(f"导入特征失败: {str(e)}")
+            return False
+
+
+# 工厂函数
+def create_coat_pattern_reid(method: str = "dinov2", **kwargs) -> Union[CoatPatternReID, DINOv2CoatPatternReID]:
+    """
+    创建花色重识别系统
+    
+    Args:
+        method: 方法类型 ("traditional", "dinov2")
+        **kwargs: 其他参数
+        
+    Returns:
+        花色重识别系统实例
+    """
+    if method.lower() == "dinov2" and DINOV2_AVAILABLE:
+        return DINOv2CoatPatternReID(**kwargs)
+    else:
+        # 回退到传统方法
+        feature_extractor = kwargs.get('feature_extractor')
+        if feature_extractor is None:
+            if TORCH_AVAILABLE:
+                feature_extractor = SiameseFeatureExtractor()
+            else:
+                feature_extractor = MockFeatureExtractor()
+        
+        return CoatPatternReID(
+            feature_extractor=feature_extractor,
+            similarity_threshold=kwargs.get('similarity_threshold', 0.7)
+        )

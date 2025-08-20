@@ -10,6 +10,8 @@ const LearningService = require('./services/LearningService');
 const PushService = require('./services/PushService');
 const RAGService = require('./services/RAGService');
 const MusicService = require('./services/MusicService');
+const ChronicleService = require('./services/ChronicleService');
+const { createChronicleClient, LearningSessionManager } = require('./services/ChronicleClient');
 
 class ChangleeServer {
   constructor() {
@@ -22,6 +24,27 @@ class ChangleeServer {
     this.learningService = new LearningService(this.db);
     this.pushService = new PushService(this.db, this.aiService);
     this.musicService = new MusicService();
+    
+    // Chronicle集成服务
+    this.chronicleService = new ChronicleService({
+      chronicleUrl: process.env.CHRONICLE_URL || 'http://localhost:3000',
+      apiKey: process.env.CHRONICLE_API_KEY
+    });
+    
+    // Chronicle客户端和会话管理器
+    this.chronicleClient = createChronicleClient({
+      baseUrl: process.env.CHRONICLE_URL || 'http://localhost:3000',
+      apiKey: process.env.CHRONICLE_API_KEY
+    });
+    this.sessionManager = new LearningSessionManager(this.chronicleClient);
+    
+    // 本地AI服务配置
+    this.localAIConfig = {
+      enabled: process.env.LOCAL_AI_ENABLED !== 'false',
+      url: process.env.LOCAL_AI_URL || 'http://localhost:8001',
+      timeout: parseInt(process.env.LOCAL_AI_TIMEOUT) || 10000,
+      retryAttempts: parseInt(process.env.LOCAL_AI_RETRY) || 2
+    };
   }
 
   async initialize() {
@@ -30,6 +53,15 @@ class ChangleeServer {
     
     // 初始化RAG服务
     await this.ragService.initialize();
+    
+    // 初始化Chronicle服务
+    try {
+      await this.chronicleService.initialize();
+      await this.chronicleClient.connect();
+      console.log('✅ Chronicle集成服务初始化成功');
+    } catch (error) {
+      console.warn('⚠️ Chronicle服务初始化失败，将在后台重试:', error.message);
+    }
     
     // 配置中间件
     this.setupMiddleware();
@@ -465,6 +497,370 @@ class ChangleeServer {
       }
     });
 
+    // Chronicle学习记录集成路由
+    // 开始学习会话记录
+    this.app.post('/api/chronicle/sessions/start', async (req, res) => {
+      try {
+        const sessionData = {
+          id: req.body.sessionId || `changlee_${Date.now()}`,
+          userId: req.body.userId,
+          type: req.body.learningType || 'general',
+          subject: req.body.subject,
+          difficulty: req.body.difficulty,
+          projectPath: req.body.projectPath,
+          monitorFiles: req.body.monitorFiles,
+          monitorWindows: req.body.monitorWindows,
+          monitorCommands: req.body.monitorCommands,
+          metadata: req.body.metadata || {}
+        };
+
+        const result = await this.sessionManager.startLearningSession(sessionData);
+        res.json({ success: true, data: result });
+      } catch (error) {
+        console.error('启动Chronicle学习会话失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 结束学习会话记录
+    this.app.post('/api/chronicle/sessions/:sessionId/stop', async (req, res) => {
+      try {
+        const { sessionId } = req.params;
+        const summary = req.body.summary || {};
+        
+        const result = await this.sessionManager.endLearningSession(sessionId, summary);
+        res.json({ success: true, data: result });
+      } catch (error) {
+        console.error('停止Chronicle学习会话失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 获取学习会话报告
+    this.app.get('/api/chronicle/sessions/:sessionId/report', async (req, res) => {
+      try {
+        const { sessionId } = req.params;
+        const includeRawData = req.query.includeRaw === 'true';
+        
+        const report = await this.sessionManager.getLearningReport(sessionId, includeRawData);
+        res.json({ success: true, data: report });
+      } catch (error) {
+        console.error('获取Chronicle学习报告失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 获取活动学习会话列表
+    this.app.get('/api/chronicle/sessions/active', async (req, res) => {
+      try {
+        const activeSessions = this.sessionManager.getActiveSessions();
+        res.json({ success: true, data: activeSessions });
+      } catch (error) {
+        console.error('获取活动会话列表失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 获取Chronicle服务状态
+    this.app.get('/api/chronicle/status', async (req, res) => {
+      try {
+        const chronicleStatus = this.chronicleService.getServiceStatus();
+        const clientStatus = this.chronicleClient.getConnectionStatus();
+        
+        res.json({ 
+          success: true, 
+          data: {
+            service: chronicleStatus,
+            client: clientStatus,
+            integration_status: 'active'
+          }
+        });
+      } catch (error) {
+        console.error('获取Chronicle状态失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 获取学习历史分析
+    this.app.get('/api/chronicle/analysis/history', async (req, res) => {
+      try {
+        const options = {
+          limit: parseInt(req.query.limit) || 50,
+          userId: req.query.userId,
+          learningType: req.query.type
+        };
+        
+        const analysis = await this.chronicleService.analyzeLearningHistory(options);
+        res.json({ success: true, data: analysis });
+      } catch (error) {
+        console.error('获取学习历史分析失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 获取所有Chronicle会话统计
+    this.app.get('/api/chronicle/stats', async (req, res) => {
+      try {
+        const stats = await this.chronicleService.getAllSessionsStats();
+        res.json({ success: true, data: stats });
+      } catch (error) {
+        console.error('获取Chronicle统计信息失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // Chronicle健康检查
+    this.app.get('/api/chronicle/health', async (req, res) => {
+      try {
+        const health = await this.chronicleClient.checkHealth();
+        res.json({ success: true, data: health });
+      } catch (error) {
+        console.error('Chronicle健康检查失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 手动重连Chronicle服务
+    this.app.post('/api/chronicle/reconnect', async (req, res) => {
+      try {
+        await this.chronicleClient.connect();
+        res.json({ success: true, message: 'Chronicle服务重连成功' });
+      } catch (error) {
+        console.error('Chronicle重连失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 本地AI服务集成路由
+    // 通用AI生成接口
+    this.app.post('/api/local-ai/generate', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.status(503).json({ 
+            success: false, 
+            error: '本地AI服务未启用' 
+          });
+        }
+
+        const { prompt, context = 'daily_greeting', max_length = 50, use_cache = true } = req.body;
+        
+        if (!prompt) {
+          return res.status(400).json({ 
+            success: false, 
+            error: '缺少prompt参数' 
+          });
+        }
+
+        const response = await this.callLocalAI('/generate', {
+          prompt,
+          context,
+          max_length,
+          use_cache
+        });
+
+        res.json(response);
+      } catch (error) {
+        console.error('本地AI生成失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 单词学习提示
+    this.app.post('/api/local-ai/word-hint', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.status(503).json({ 
+            success: false, 
+            error: '本地AI服务未启用' 
+          });
+        }
+
+        const { word, difficulty = 'intermediate' } = req.body;
+        
+        if (!word) {
+          return res.status(400).json({ 
+            success: false, 
+            error: '缺少word参数' 
+          });
+        }
+
+        const response = await this.callLocalAI('/word_hint', {
+          word,
+          difficulty
+        });
+
+        res.json(response);
+      } catch (error) {
+        console.error('单词提示生成失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 学习鼓励语
+    this.app.post('/api/local-ai/encouragement', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.status(503).json({ 
+            success: false, 
+            error: '本地AI服务未启用' 
+          });
+        }
+
+        const { 
+          words_learned = 0, 
+          accuracy = 0.0, 
+          study_time = 0 
+        } = req.body;
+
+        const response = await this.callLocalAI('/encouragement', {
+          words_learned,
+          accuracy,
+          study_time
+        });
+
+        res.json(response);
+      } catch (error) {
+        console.error('鼓励语生成失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 每日问候语
+    this.app.post('/api/local-ai/greeting', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.status(503).json({ 
+            success: false, 
+            error: '本地AI服务未启用' 
+          });
+        }
+
+        const { time_of_day = 'morning' } = req.body;
+
+        const response = await this.callLocalAI('/greeting', {
+          time_of_day
+        });
+
+        res.json(response);
+      } catch (error) {
+        console.error('问候语生成失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 概念解释
+    this.app.post('/api/local-ai/explanation', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.status(503).json({ 
+            success: false, 
+            error: '本地AI服务未启用' 
+          });
+        }
+
+        const { concept, user_level = 'beginner' } = req.body;
+        
+        if (!concept) {
+          return res.status(400).json({ 
+            success: false, 
+            error: '缺少concept参数' 
+          });
+        }
+
+        const response = await this.callLocalAI('/explanation', {
+          concept,
+          user_level
+        });
+
+        res.json(response);
+      } catch (error) {
+        console.error('概念解释生成失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 本地AI服务状态
+    this.app.get('/api/local-ai/status', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.json({ 
+            success: true, 
+            data: { 
+              enabled: false, 
+              message: '本地AI服务未启用' 
+            } 
+          });
+        }
+
+        const response = await this.callLocalAI('/status', null, 'GET');
+        res.json({ success: true, data: response });
+      } catch (error) {
+        console.error('获取本地AI状态失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 本地AI健康检查
+    this.app.get('/api/local-ai/health', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.json({ 
+            success: true, 
+            data: { 
+              status: 'disabled', 
+              message: '本地AI服务未启用' 
+            } 
+          });
+        }
+
+        const response = await this.callLocalAI('/health', null, 'GET');
+        res.json({ success: true, data: response });
+      } catch (error) {
+        console.error('本地AI健康检查失败:', error);
+        res.status(500).json({ 
+          success: false, 
+          error: error.message,
+          data: { status: 'unhealthy' }
+        });
+      }
+    });
+
+    // 清理本地AI缓存
+    this.app.post('/api/local-ai/cache/clear', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.status(503).json({ 
+            success: false, 
+            error: '本地AI服务未启用' 
+          });
+        }
+
+        const response = await this.callLocalAI('/cache/clear');
+        res.json(response);
+      } catch (error) {
+        console.error('清理本地AI缓存失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
+    // 优化本地AI内存
+    this.app.post('/api/local-ai/memory/optimize', async (req, res) => {
+      try {
+        if (!this.localAIConfig.enabled) {
+          return res.status(503).json({ 
+            success: false, 
+            error: '本地AI服务未启用' 
+          });
+        }
+
+        const response = await this.callLocalAI('/memory/optimize');
+        res.json(response);
+      } catch (error) {
+        console.error('优化本地AI内存失败:', error);
+        res.status(500).json({ success: false, error: error.message });
+      }
+    });
+
     // 错误处理中间件
     this.app.use((error, req, res, next) => {
       console.error('服务器错误:', error);
@@ -519,12 +915,117 @@ class ChangleeServer {
     console.log('⏰ 定时任务已设置');
   }
 
+  /**
+   * 调用本地AI服务
+   */
+  async callLocalAI(endpoint, data = null, method = 'POST') {
+    const axios = require('axios');
+    
+    try {
+      const config = {
+        method,
+        url: `${this.localAIConfig.url}${endpoint}`,
+        timeout: this.localAIConfig.timeout,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+
+      if (data && method === 'POST') {
+        config.data = data;
+      }
+
+      let lastError;
+      
+      // 重试机制
+      for (let attempt = 1; attempt <= this.localAIConfig.retryAttempts; attempt++) {
+        try {
+          const response = await axios(config);
+          return response.data;
+        } catch (error) {
+          lastError = error;
+          
+          if (attempt < this.localAIConfig.retryAttempts) {
+            console.warn(`本地AI请求失败，第${attempt}次重试...`);
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          }
+        }
+      }
+
+      throw lastError;
+      
+    } catch (error) {
+      console.error(`本地AI服务调用失败 ${endpoint}:`, error.message);
+      
+      // 返回友好的错误响应
+      if (error.code === 'ECONNREFUSED') {
+        throw new Error('本地AI服务未启动或无法连接');
+      } else if (error.code === 'ETIMEDOUT') {
+        throw new Error('本地AI服务响应超时');
+      } else {
+        throw new Error(`本地AI服务错误: ${error.message}`);
+      }
+    }
+  }
+
   startServer() {
-    this.app.listen(this.port, () => {
+    this.server = this.app.listen(this.port, () => {
       console.log(`🚀 长离的学习胶囊后端服务已启动`);
       console.log(`📡 服务地址: http://localhost:${this.port}`);
       console.log(`🕐 启动时间: ${new Date().toLocaleString('zh-CN')}`);
+      
+      // Chronicle集成状态
+      if (this.chronicleClient.getConnectionStatus().isConnected) {
+        console.log(`📊 Chronicle集成服务已连接`);
+      } else {
+        console.log(`⚠️ Chronicle集成服务未连接，将在后台重试`);
+      }
+      
+      // 本地AI服务状态
+      if (this.localAIConfig.enabled) {
+        console.log(`🤖 本地AI服务已启用: ${this.localAIConfig.url}`);
+      } else {
+        console.log(`⚠️ 本地AI服务未启用`);
+      }
     });
+  }
+
+  /**
+   * 优雅关闭服务器
+   */
+  async gracefulShutdown(signal) {
+    console.log(`\n🛑 收到${signal}信号，正在优雅关闭服务器...`);
+    
+    try {
+      // 停止接受新连接
+      if (this.server) {
+        this.server.close(() => {
+          console.log('✅ HTTP服务器已关闭');
+        });
+      }
+
+      // 清理Chronicle资源
+      if (this.chronicleService) {
+        await this.chronicleService.cleanup();
+      }
+      
+      if (this.chronicleClient) {
+        this.chronicleClient.disconnect();
+      }
+
+      // 关闭数据库连接
+      if (this.db) {
+        await this.db.close();
+        console.log('✅ 数据库连接已关闭');
+      }
+
+      console.log('✅ 服务器优雅关闭完成');
+      process.exit(0);
+      
+    } catch (error) {
+      console.error('❌ 关闭服务器时发生错误:', error);
+      process.exit(1);
+    }
   }
 }
 
@@ -537,13 +1038,22 @@ server.initialize().catch(error => {
 
 // 优雅关闭
 process.on('SIGINT', () => {
-  console.log('\n🛑 正在关闭服务器...');
-  process.exit(0);
+  server.gracefulShutdown('SIGINT');
 });
 
 process.on('SIGTERM', () => {
-  console.log('\n🛑 正在关闭服务器...');
-  process.exit(0);
+  server.gracefulShutdown('SIGTERM');
+});
+
+// 处理未捕获的异常
+process.on('uncaughtException', (error) => {
+  console.error('未捕获的异常:', error);
+  server.gracefulShutdown('uncaughtException');
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('未处理的Promise拒绝:', reason);
+  server.gracefulShutdown('unhandledRejection');
 });
 
 module.exports = ChangleeServer;
