@@ -1,0 +1,30 @@
+# 研究工作站完整依赖列表
+# Research Workstation Complete Dependencies
+
+# 基础Web框架
+streamlit>=1.28.0
+pandas>=1.5.0
+
+# AI/ML核心依赖
+google-generativeai>=0.8.5
+tiktoken>=0.9.0
+faiss-cpu>=1.12.0
+sentence-transformers>=5.1.0
+torch>=2.8.0
+transformers>=4.55.0
+scikit-learn>=1.7.0
+scipy>=1.16.0
+numpy>=2.2.0
+
+# 本地LLM支持
+llama-cpp-python>=0.3.16
+
+# 可选依赖 - 文档处理功能
+# PyMuPDF>=1.23.0
+# python-docx>=0.8.11
+# python-pptx>=0.6.21
+# beautifulsoup4>=4.12.0
+# openpyxl>=3.1.0
+
+# 系统工具
+diskcache>=5.6.1

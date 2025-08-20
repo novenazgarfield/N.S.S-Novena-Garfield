@@ -3,6 +3,7 @@
 Body Condition Scoring Utilities
 
 定义体况评分相关的数据结构和工具函数
+集成GLM-4V文本分析功能
 """
 
 import numpy as np
@@ -10,6 +11,15 @@ from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Tuple, Any
 from enum import Enum
 import cv2
+import logging
+
+# 导入GLM-4V文本分析服务
+try:
+    from ..text_analysis.bovine_description_service import BovineDescriptionService
+    GLM4V_AVAILABLE = True
+except ImportError:
+    GLM4V_AVAILABLE = False
+    logging.warning("GLM-4V文本分析服务不可用")
 
 class BCSScale(Enum):
     """体况评分标准"""
@@ -411,3 +421,422 @@ def get_bcs_recommendations(bcs_result: BCSResult) -> List[str]:
         ])
     
     return recommendations
+
+
+class EnhancedBCSAnalyzer:
+    """
+    增强的BCS分析器
+    集成DINOv2特征提取和GLM-4V文本分析
+    """
+    
+    def __init__(self, 
+                 use_dinov2: bool = True,
+                 use_glm4v: bool = True,
+                 model_cache_dir: Optional[str] = None):
+        """
+        初始化增强BCS分析器
+        
+        Args:
+            use_dinov2: 是否使用DINOv2特征提取
+            use_glm4v: 是否使用GLM-4V文本分析
+            model_cache_dir: 模型缓存目录
+        """
+        self.use_dinov2 = use_dinov2
+        self.use_glm4v = use_glm4v
+        
+        # 初始化DINOv2特征提取器
+        self.dinov2_extractor = None
+        if use_dinov2:
+            try:
+                from ..feature_extraction.feature_extractor import DINOv2FeatureExtractor
+                self.dinov2_extractor = DINOv2FeatureExtractor(
+                    model_name='dinov2_vitb14',
+                    cache_dir=model_cache_dir
+                )
+                logging.info("DINOv2特征提取器初始化成功")
+            except Exception as e:
+                logging.warning(f"DINOv2初始化失败: {str(e)}")
+                self.use_dinov2 = False
+        
+        # 初始化GLM-4V文本分析服务
+        self.text_analyzer = None
+        if use_glm4v and GLM4V_AVAILABLE:
+            try:
+                self.text_analyzer = BovineDescriptionService(cache_dir=model_cache_dir)
+                logging.info("GLM-4V文本分析服务初始化成功")
+            except Exception as e:
+                logging.warning(f"GLM-4V初始化失败: {str(e)}")
+                self.use_glm4v = False
+        
+        # 传统BCS评分器
+        self.traditional_scorer = BCSScorer()
+        
+        # 统计信息
+        self.stats = {
+            'total_analyses': 0,
+            'successful_analyses': 0,
+            'feature_extraction_time': 0.0,
+            'text_generation_time': 0.0
+        }
+    
+    def analyze_body_condition(self, 
+                              image: np.ndarray,
+                              region: str = "tail_head",
+                              generate_report: bool = True) -> Dict[str, Any]:
+        """
+        综合分析牛只体况
+        
+        Args:
+            image: 牛只图像
+            region: 评估区域
+            generate_report: 是否生成文本报告
+            
+        Returns:
+            综合分析结果
+        """
+        self.stats['total_analyses'] += 1
+        
+        try:
+            # 1. 传统BCS评分
+            traditional_result = self._traditional_bcs_analysis(image, region)
+            
+            # 2. DINOv2特征提取
+            dinov2_features = None
+            if self.use_dinov2 and self.dinov2_extractor:
+                try:
+                    dinov2_features = self.dinov2_extractor.extract_features(image)
+                    logging.info(f"DINOv2特征提取成功，维度: {dinov2_features.shape}")
+                except Exception as e:
+                    logging.warning(f"DINOv2特征提取失败: {str(e)}")
+            
+            # 3. 基于特征的BCS预测
+            feature_based_score = None
+            if dinov2_features is not None:
+                feature_based_score = self._predict_bcs_from_features(dinov2_features, region)
+            
+            # 4. 融合评分
+            final_score = self._fuse_bcs_scores(
+                traditional_result.bcs_score,
+                feature_based_score
+            )
+            
+            # 5. 生成文本报告
+            text_report = None
+            if generate_report and self.use_glm4v and self.text_analyzer:
+                try:
+                    text_report = self.text_analyzer.generate_bcs_description(
+                        image, final_score, region
+                    )
+                    logging.info("GLM-4V文本报告生成成功")
+                except Exception as e:
+                    logging.warning(f"文本报告生成失败: {str(e)}")
+            
+            # 6. 构建综合结果
+            comprehensive_result = {
+                'final_bcs_score': final_score,
+                'bcs_category': self._score_to_category(final_score),
+                'region': region,
+                'analysis_timestamp': np.datetime64('now'),
+                
+                # 各种分析结果
+                'traditional_analysis': {
+                    'score': traditional_result.bcs_score,
+                    'category': traditional_result.bcs_category.value,
+                    'confidence': traditional_result.confidence,
+                    'keypoints': traditional_result.anatomical_keypoints
+                },
+                
+                'feature_analysis': {
+                    'dinov2_available': self.use_dinov2,
+                    'feature_based_score': feature_based_score,
+                    'feature_dimension': dinov2_features.shape[0] if dinov2_features is not None else 0
+                },
+                
+                'text_analysis': text_report,
+                
+                # 质量评估
+                'analysis_quality': self._assess_analysis_quality(
+                    traditional_result, dinov2_features, text_report
+                ),
+                
+                # 建议
+                'recommendations': self._generate_enhanced_recommendations(
+                    final_score, traditional_result, text_report
+                ),
+                
+                # 元数据
+                'metadata': {
+                    'image_shape': image.shape,
+                    'analysis_methods': self._get_active_methods(),
+                    'model_versions': self._get_model_versions()
+                }
+            }
+            
+            self.stats['successful_analyses'] += 1
+            return comprehensive_result
+            
+        except Exception as e:
+            logging.error(f"综合BCS分析失败: {str(e)}")
+            return {
+                'error': str(e),
+                'final_bcs_score': None,
+                'analysis_timestamp': np.datetime64('now')
+            }
+    
+    def batch_analyze_body_condition(self, 
+                                    images_data: List[Tuple[np.ndarray, str]],
+                                    generate_reports: bool = True) -> List[Dict[str, Any]]:
+        """
+        批量分析体况
+        
+        Args:
+            images_data: 图像数据列表 [(image, region), ...]
+            generate_reports: 是否生成文本报告
+            
+        Returns:
+            批量分析结果列表
+        """
+        results = []
+        
+        for i, (image, region) in enumerate(images_data):
+            try:
+                result = self.analyze_body_condition(
+                    image, region, generate_reports
+                )
+                result['batch_index'] = i
+                results.append(result)
+                
+                logging.info(f"批量分析进度: {i+1}/{len(images_data)}")
+                
+            except Exception as e:
+                logging.error(f"批量分析第{i+1}项失败: {str(e)}")
+                results.append({
+                    'batch_index': i,
+                    'error': str(e),
+                    'final_bcs_score': None
+                })
+        
+        return results
+    
+    def _traditional_bcs_analysis(self, image: np.ndarray, region: str) -> BCSResult:
+        """传统BCS分析"""
+        # 使用传统方法进行BCS评分
+        keypoints = self._extract_anatomical_keypoints(image, region)
+        score = self.traditional_scorer.calculate_bcs_score(image, keypoints)
+        
+        return BCSResult(
+            bcs_score=score,
+            bcs_category=self._score_to_category(score),
+            confidence=0.8,  # 传统方法的置信度
+            anatomical_keypoints=keypoints,
+            region_scores={region: score},
+            metadata={'method': 'traditional'}
+        )
+    
+    def _extract_anatomical_keypoints(self, image: np.ndarray, region: str) -> AnatomicalKeypoints:
+        """提取解剖学关键点"""
+        # 简化的关键点提取逻辑
+        keypoints = AnatomicalKeypoints()
+        
+        # 基于图像处理的关键点检测
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) if len(image.shape) == 3 else image
+        
+        # 使用边缘检测找到可能的骨骼轮廓
+        edges = cv2.Canny(gray, 50, 150)
+        contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        # 根据区域类型提取相应的关键点
+        if region == "tail_head":
+            # 尾根和髋骨区域的关键点
+            if contours:
+                largest_contour = max(contours, key=cv2.contourArea)
+                moments = cv2.moments(largest_contour)
+                if moments['m00'] != 0:
+                    cx = int(moments['m10'] / moments['m00'])
+                    cy = int(moments['m01'] / moments['m00'])
+                    keypoints.tail_base = (cx, cy)
+        
+        elif region == "ribs":
+            # 肋骨区域的关键点
+            for contour in contours[:5]:  # 取前5个轮廓
+                moments = cv2.moments(contour)
+                if moments['m00'] != 0:
+                    cx = int(moments['m10'] / moments['m00'])
+                    cy = int(moments['m01'] / moments['m00'])
+                    keypoints.rib_points.append((cx, cy))
+        
+        return keypoints
+    
+    def _predict_bcs_from_features(self, features: np.ndarray, region: str) -> Optional[float]:
+        """基于DINOv2特征预测BCS评分"""
+        try:
+            # 这里应该使用训练好的回归模型
+            # 为了演示，使用简化的特征映射
+            
+            # 计算特征统计量
+            feature_mean = np.mean(features)
+            feature_std = np.std(features)
+            feature_norm = np.linalg.norm(features)
+            
+            # 简化的评分映射（实际应用中需要训练专门的模型）
+            # 基于特征的统计特性估算BCS评分
+            if feature_norm < 10:
+                base_score = 2.0  # 偏瘦
+            elif feature_norm < 15:
+                base_score = 3.0  # 中等
+            elif feature_norm < 20:
+                base_score = 4.0  # 良好
+            else:
+                base_score = 4.5  # 偏胖
+            
+            # 根据特征均值和标准差进行微调
+            adjustment = (feature_mean - 0.5) * 0.5 + (feature_std - 0.2) * 0.3
+            predicted_score = np.clip(base_score + adjustment, 1.0, 5.0)
+            
+            return float(predicted_score)
+            
+        except Exception as e:
+            logging.warning(f"基于特征的BCS预测失败: {str(e)}")
+            return None
+    
+    def _fuse_bcs_scores(self, 
+                        traditional_score: float,
+                        feature_score: Optional[float]) -> float:
+        """融合不同方法的BCS评分"""
+        if feature_score is None:
+            return traditional_score
+        
+        # 加权融合
+        traditional_weight = 0.6
+        feature_weight = 0.4
+        
+        fused_score = (traditional_weight * traditional_score + 
+                      feature_weight * feature_score)
+        
+        return np.clip(fused_score, 1.0, 5.0)
+    
+    def _score_to_category(self, score: float) -> BCSCategory:
+        """将评分转换为类别"""
+        if score < 1.75:
+            return BCSCategory.VERY_THIN
+        elif score < 2.75:
+            return BCSCategory.THIN
+        elif score < 3.75:
+            return BCSCategory.MODERATE
+        elif score < 4.25:
+            return BCSCategory.GOOD
+        else:
+            return BCSCategory.OBESE
+    
+    def _assess_analysis_quality(self, 
+                               traditional_result: BCSResult,
+                               dinov2_features: Optional[np.ndarray],
+                               text_report: Optional[Dict]) -> Dict[str, float]:
+        """评估分析质量"""
+        quality_scores = {}
+        
+        # 传统方法质量
+        quality_scores['traditional_quality'] = traditional_result.confidence
+        
+        # 特征提取质量
+        if dinov2_features is not None:
+            feature_quality = min(np.linalg.norm(dinov2_features) / 20.0, 1.0)
+            quality_scores['feature_quality'] = feature_quality
+        else:
+            quality_scores['feature_quality'] = 0.0
+        
+        # 文本分析质量
+        if text_report:
+            text_quality = 1.0 if 'expert_description' in text_report else 0.5
+            quality_scores['text_quality'] = text_quality
+        else:
+            quality_scores['text_quality'] = 0.0
+        
+        # 综合质量
+        quality_scores['overall_quality'] = np.mean(list(quality_scores.values()))
+        
+        return quality_scores
+    
+    def _generate_enhanced_recommendations(self, 
+                                         final_score: float,
+                                         traditional_result: BCSResult,
+                                         text_report: Optional[Dict]) -> List[str]:
+        """生成增强的建议"""
+        recommendations = []
+        
+        # 基础建议
+        basic_recommendations = generate_bcs_recommendations(traditional_result)
+        recommendations.extend(basic_recommendations)
+        
+        # 基于文本分析的建议
+        if text_report and 'professional_advice' in text_report:
+            recommendations.append(f"专家建议: {text_report['professional_advice']}")
+        
+        # 基于综合评分的额外建议
+        if final_score < 2.5:
+            recommendations.append("建议进行兽医检查，排除疾病因素")
+        elif final_score > 4.5:
+            recommendations.append("建议制定减重计划，预防代谢疾病")
+        
+        return recommendations
+    
+    def _get_active_methods(self) -> List[str]:
+        """获取活跃的分析方法"""
+        methods = ['traditional']
+        
+        if self.use_dinov2:
+            methods.append('dinov2')
+        
+        if self.use_glm4v:
+            methods.append('glm4v')
+        
+        return methods
+    
+    def _get_model_versions(self) -> Dict[str, str]:
+        """获取模型版本信息"""
+        versions = {'traditional': '1.0'}
+        
+        if self.dinov2_extractor:
+            versions['dinov2'] = self.dinov2_extractor.model_name
+        
+        if self.text_analyzer:
+            versions['glm4v'] = self.text_analyzer.model_name
+        
+        return versions
+    
+    def get_analysis_stats(self) -> Dict[str, Any]:
+        """获取分析统计信息"""
+        stats = self.stats.copy()
+        
+        if stats['total_analyses'] > 0:
+            stats['success_rate'] = stats['successful_analyses'] / stats['total_analyses']
+        else:
+            stats['success_rate'] = 0.0
+        
+        stats['active_methods'] = self._get_active_methods()
+        stats['model_versions'] = self._get_model_versions()
+        
+        return stats
+    
+    def reset_stats(self):
+        """重置统计信息"""
+        self.stats = {
+            'total_analyses': 0,
+            'successful_analyses': 0,
+            'feature_extraction_time': 0.0,
+            'text_generation_time': 0.0
+        }
+
+
+# 工厂函数
+def create_enhanced_bcs_analyzer(**kwargs) -> EnhancedBCSAnalyzer:
+    """
+    创建增强BCS分析器
+    
+    Args:
+        **kwargs: 配置参数
+        
+    Returns:
+        增强BCS分析器实例
+    """
+    return EnhancedBCSAnalyzer(**kwargs)

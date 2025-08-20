@@ -1,0 +1,69 @@
+# Changlee本地AI服务依赖
+# 基于Google Gemma 2 (2B)的本地化AI核心
+
+# 核心深度学习框架
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Transformers和相关库
+transformers>=4.35.0
+accelerate>=0.24.0
+tokenizers>=0.14.0
+sentencepiece>=0.1.99
+safetensors>=0.4.0
+
+# FastAPI微服务框架
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+pydantic>=2.4.0
+
+# HTTP客户端
+httpx>=0.25.0
+aiohttp>=3.9.0
+
+# 模型管理和优化
+huggingface-hub>=0.17.0
+optimum>=1.14.0
+bitsandbytes>=0.41.0  # 量化支持
+
+# 内存和性能优化
+psutil>=5.9.0
+memory-profiler>=0.61.0
+py-cpuinfo>=9.0.0
+
+# 数据处理
+numpy>=1.24.0
+pandas>=2.0.0
+
+# 并发和异步
+asyncio
+concurrent-futures>=3.1.1
+threading-timer>=0.1.0
+
+# 日志和监控
+loguru>=0.7.0
+rich>=13.6.0
+
+# 配置管理
+python-dotenv>=1.0.0
+pyyaml>=6.0.1
+
+# 开发和调试工具
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.9.0
+isort>=5.12.0
+
+# 可选：CUDA支持（如果有GPU）
+# torch-audio>=2.0.0+cu118
+# torch-vision>=0.15.0+cu118
+
+# 可选：模型量化和优化
+# onnx>=1.15.0
+# onnxruntime>=1.16.0
+# tensorrt>=8.6.0  # NVIDIA TensorRT
+
+# 可选：分布式训练
+# deepspeed>=0.11.0
+# fairscale>=0.4.13
