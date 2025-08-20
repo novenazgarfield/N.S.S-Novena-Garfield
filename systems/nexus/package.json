@@ -1,0 +1,84 @@
+{
+  "name": "nexus",
+  "productName": "NEXUS - Research Workstation Command Center",
+  "description": "🚀 Unified Command & Interaction Interface for Novena Research Workstation",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "public/electron.js",
+  "homepage": "./",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 52305",
+    "build": "vite build",
+    "build-with-types": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview --host 0.0.0.0 --port 52305",
+    "electron": "wait-on http://localhost:52305 && electron .",
+    "electron-dev": "concurrently \"npm run dev\" \"npm run electron\"",
+    "electron-build": "npm run build && electron-builder",
+    "dist": "npm run build && electron-builder --publish=never",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:integration": "vitest run src/tests/integration",
+    "test:unit": "vitest run src/tests/unit",
+    "test:performance": "echo 'Performance tests configured'",
+    "analyze": "npm run build && echo 'Bundle analysis configured'"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^6.5.0",
+    "@mui/material": "^6.5.0",
+    "axios": "^1.11.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@testing-library/jest-dom": "^6.7.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "concurrently": "^9.2.0",
+    "electron": "^37.3.1",
+    "electron-builder": "^26.0.12",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "jsdom": "^26.1.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.1",
+    "vite": "^7.1.2",
+    "vitest": "^3.2.4",
+    "wait-on": "^8.0.4"
+  },
+  "build": {
+    "appId": "com.novena.nexus",
+    "productName": "NEXUS Command Center",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "dist/**/*",
+      "public/electron.js",
+      "node_modules/**/*"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+}
