@@ -1,0 +1,123 @@
+# Genome Jigsaw 默认配置文件
+
+# 系统基本配置
+system:
+  name: "Genome Jigsaw"
+  version: "1.0.0"
+  description: "基因组测序分析系统"
+  
+# 数据路径配置
+paths:
+  data_root: "./data"
+  raw_data: "./data/raw"
+  processed_data: "./data/processed"
+  reference_data: "./data/reference"
+  results: "./data/results"
+  temp: "./data/temp"
+  logs: "./logs"
+
+# 数据库配置
+database:
+  postgresql:
+    host: "localhost"
+    port: 5432
+    database: "genome_jigsaw"
+    username: "postgres"
+    password: "password"
+  
+  mongodb:
+    host: "localhost"
+    port: 27017
+    database: "genome_jigsaw"
+  
+  redis:
+    host: "localhost"
+    port: 6379
+    database: 0
+
+# Web服务配置
+web:
+  host: "0.0.0.0"
+  port: 8080
+  debug: false
+  secret_key: "your-secret-key-here"
+
+# 分析流程配置
+analysis:
+  # 质量控制参数
+  quality_control:
+    min_quality_score: 20
+    min_read_length: 50
+    adapter_trimming: true
+  
+  # 序列比对参数
+  alignment:
+    aligner: "bwa"  # bwa, bowtie2, minimap2
+    reference_genome: "hg38"
+    threads: 8
+  
+  # 变异检测参数
+  variant_calling:
+    caller: "gatk"  # gatk, freebayes, bcftools
+    min_depth: 10
+    min_quality: 30
+  
+  # 注释参数
+  annotation:
+    databases: ["ensembl", "refseq", "clinvar"]
+    include_predictions: true
+
+# 计算资源配置
+resources:
+  max_threads: 16
+  max_memory: "32G"
+  temp_space: "100G"
+  
+# 任务队列配置
+celery:
+  broker_url: "redis://localhost:6379/0"
+  result_backend: "redis://localhost:6379/0"
+  task_serializer: "json"
+  accept_content: ["json"]
+  result_serializer: "json"
+
+# 日志配置
+logging:
+  level: "INFO"
+  file: "logs/genome_jigsaw.log"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_size: "10MB"
+  backup_count: 5
+
+# 安全配置
+security:
+  enable_authentication: false
+  jwt_secret: "your-jwt-secret-here"
+  session_timeout: 3600
+
+# 插件配置
+plugins:
+  enabled: []
+  paths: ["plugins/"]
+
+# 外部工具配置
+tools:
+  fastqc:
+    path: "fastqc"
+    threads: 4
+  
+  bwa:
+    path: "bwa"
+    threads: 8
+  
+  samtools:
+    path: "samtools"
+    threads: 4
+  
+  gatk:
+    path: "gatk"
+    java_options: "-Xmx8g"
+  
+  bcftools:
+    path: "bcftools"
+    threads: 4
