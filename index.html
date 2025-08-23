@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS - N.S.S Novena Garfield</title>
-    <meta name="description" content="NEXUS Research Workstation - N.S.S Novena Garfield Edition. 革命性远程指挥与控制系统">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <title>NEXUS Research Workstation - 革命性远程指挥与控制系统</title>
+    <meta name="description" content="NEXUS是一个革命性的远程电源管理和控制系统，支持全球远程访问、完整电源管理、企业级安全，让您能够从世界任何地方控制您的电脑！">
+    
     <style>
         * {
             margin: 0;
@@ -15,102 +15,162 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .hero {
             text-align: center;
+            color: white;
+            padding: 4rem 0;
         }
         
-        .card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 3rem;
-            border-radius: 25px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            max-width: 500px;
-            width: 90%;
-            animation: fadeInUp 1s ease-out;
-        }
-        
-        h1 {
+        .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
         
-        .subtitle {
+        .hero .subtitle {
             font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-            font-weight: 300;
-        }
-        
-        .description {
-            font-size: 1.1rem;
             margin-bottom: 2rem;
-            opacity: 0.8;
-            line-height: 1.6;
+            opacity: 0.9;
         }
         
-        .buttons {
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+        
+        .download-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .download-buttons {
             display: flex;
-            gap: 1rem;
             justify-content: center;
+            gap: 1rem;
             flex-wrap: wrap;
+            margin: 2rem 0;
         }
         
-        .btn {
-            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-            color: #fff;
+        .download-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
             padding: 1rem 2rem;
             border: none;
             border-radius: 50px;
             font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .recommended {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            position: relative;
+        }
+        
+        .recommended::before {
+            content: "推荐";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ff4757;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 10px;
+            font-size: 0.8rem;
+        }
+        
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 25px;
             transition: all 0.3s ease;
-            font-weight: 500;
         }
         
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        }
-        
-        .btn.secondary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+        .link:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.6);
         }
         
         .footer {
-            margin-top: 2rem;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            text-align: center;
+            color: rgba(255,255,255,0.8);
+            margin-top: 3rem;
         }
         
         @media (max-width: 768px) {
-            h1 {
+            .hero h1 {
                 font-size: 2.5rem;
             }
-            .card {
-                padding: 2rem;
+            
+            .hero .subtitle {
+                font-size: 1.2rem;
             }
-            .buttons {
+            
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .links {
                 flex-direction: column;
                 align-items: center;
             }
@@ -118,38 +178,141 @@
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>🚀 NEXUS</h1>
-        <div class="subtitle">N.S.S Novena Garfield</div>
-        <div class="description">
-            革命性远程指挥与控制系统<br>
-            Research Workstation
+    <div class="container">
+        <div class="hero">
+            <h1>🚀 NEXUS</h1>
+            <div class="subtitle">Research Workstation - 旗舰级远程指挥与控制系统</div>
+            <p>突破局域网限制，实现真正的全球远程电源管理</p>
         </div>
         
-        <div class="buttons">
-            <a href="https://github.com/novenazgarfield/research-workstation/releases" class="btn">
-                <span>⬇️</span>
-                <span>下载 NEXUS</span>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <div class="feature-title">全球远程访问</div>
+                <p>突破局域网限制，通过云服务器中转实现真正的广域网远程控制，支持多网络环境统一管理。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">完整电源管理</div>
+                <p>支持远程开机(WOL)、远程关机、系统重启的完整电源管理功能，跨平台兼容Windows/Linux/macOS。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <div class="feature-title">零命令行体验</div>
+                <p>完全图形化的安装和管理界面，专业安装包支持自定义路径，向导式依赖安装。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <div class="feature-title">统一系统管理</div>
+                <p>作为整个工作站的安装器、启动器和管理器，实时监控所有子系统的运行状态。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">移动端优化</div>
+                <p>完美的手机、平板体验，PWA可安装为原生应用，响应式设计适配所有设备。</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">企业级安全</div>
+                <p>256位令牌认证、MAC白名单、操作审计、SSL加密传输，提供银行级安全保障。</p>
+            </div>
+        </div>
+        
+        <div class="download-section">
+            <h2>🎯 立即体验 NEXUS</h2>
+            <p>选择适合您操作系统的版本，开始享受真正的远程控制体验</p>
+            
+            <div class="download-buttons">
+                <a href="https://github.com/novenazgarfield/research-workstation/releases" class="download-btn recommended" id="primaryDownload">
+                    <span>⬇️</span>
+                    <span id="platformText">智能下载</span>
+                </a>
+                <a href="https://github.com/novenazgarfield/research-workstation/releases" class="download-btn">
+                    <span>🪟</span>
+                    <span>Windows (.exe)</span>
+                </a>
+                <a href="https://github.com/novenazgarfield/research-workstation/releases" class="download-btn">
+                    <span>🍎</span>
+                    <span>macOS (.dmg)</span>
+                </a>
+                <a href="https://github.com/novenazgarfield/research-workstation/releases" class="download-btn">
+                    <span>🐧</span>
+                    <span>Linux (.AppImage)</span>
+                </a>
+            </div>
+            
+            <p style="color: #666; font-size: 0.9rem;">
+                💡 首次访问？推荐使用 <strong>一键部署脚本</strong> 快速体验完整功能
+            </p>
+        </div>
+        
+        <div class="links">
+            <a href="https://github.com/novenazgarfield/research-workstation" class="link">
+                📚 项目文档
             </a>
-            <a href="https://github.com/novenazgarfield/research-workstation" class="btn secondary">
-                <span>📚</span>
-                <span>GitHub</span>
+            <a href="https://github.com/novenazgarfield/research-workstation/blob/main/systems/nexus/DEPLOYMENT_GUIDE.md" class="link">
+                🚀 部署指南
+            </a>
+            <a href="https://github.com/novenazgarfield/research-workstation/issues" class="link">
+                🐛 问题反馈
+            </a>
+            <a href="systems/nexus/landing_page/index.html" class="link">
+                🌐 完整门户网站
             </a>
         </div>
         
         <div class="footer">
-            © 2025 NEXUS Research Workstation<br>
-            <small>N.S.S Novena Garfield Edition</small>
+            <p>🎉 <strong>NEXUS Research Workstation</strong> - 让远程控制变得简单而强大</p>
+            <p>© 2025 Research Workstation Team. 采用 MIT 开源协议</p>
         </div>
     </div>
     
     <script>
-        console.log('🚀 欢迎访问 NEXUS - N.S.S Novena Garfield！');
+        // 智能平台检测
+        function detectPlatform() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const platform = navigator.platform.toLowerCase();
+            
+            if (userAgent.includes('win') || platform.includes('win')) {
+                return { name: 'Windows', icon: '🪟', file: '.exe' };
+            } else if (userAgent.includes('mac') || platform.includes('mac')) {
+                return { name: 'macOS', icon: '🍎', file: '.dmg' };
+            } else if (userAgent.includes('linux') || platform.includes('linux')) {
+                return { name: 'Linux', icon: '🐧', file: '.AppImage' };
+            } else {
+                return { name: 'Windows', icon: '🪟', file: '.exe' };
+            }
+        }
         
-        // 添加点击统计
-        document.querySelectorAll('.btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                console.log('🎯 点击:', this.textContent.trim());
+        // 更新主下载按钮
+        function updatePrimaryDownload() {
+            const platform = detectPlatform();
+            const primaryBtn = document.getElementById('primaryDownload');
+            const platformText = document.getElementById('platformText');
+            
+            if (primaryBtn && platformText) {
+                platformText.textContent = `下载 ${platform.name} 版本`;
+                primaryBtn.innerHTML = `
+                    <span>${platform.icon}</span>
+                    <span>下载 ${platform.name} 版本</span>
+                `;
+            }
+        }
+        
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePrimaryDownload();
+            
+            // 添加下载统计
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log('下载点击:', this.textContent);
+                });
             });
         });
     </script>

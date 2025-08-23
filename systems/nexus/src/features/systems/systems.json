@@ -1,0 +1,354 @@
+{
+  "systems": [
+    {
+      "name": "RAG智能问答系统",
+      "id": "rag-system",
+      "description": "基于DeepSeek + multilingual-e5 + FAISS的模块化RAG系统",
+      "category": "AI",
+      "github_url": "https://github.com/novenazgarfield/research-workstation.git",
+      "path": "systems/rag-system",
+      "dependencies": [
+        {
+          "name": "python",
+          "version": ">=3.8",
+          "required": true,
+          "installer": "python.org"
+        },
+        {
+          "name": "git",
+          "version": ">=2.0",
+          "required": true,
+          "installer": "git-scm.com"
+        },
+        {
+          "name": "pip",
+          "version": ">=20.0",
+          "required": true,
+          "installer": "bundled"
+        }
+      ],
+      "install_commands": [
+        "pip install -r requirements.txt",
+        "python setup.py install"
+      ],
+      "start_command": "python run.py",
+      "stop_command": "pkill -f run.py",
+      "health_check": "curl -f http://localhost:8501/health",
+      "ports": [8501],
+      "environment_variables": {
+        "STREAMLIT_SERVER_PORT": "8501",
+        "STREAMLIT_SERVER_ADDRESS": "0.0.0.0"
+      }
+    },
+    {
+      "name": "BovineInsight牛只识别",
+      "id": "bovine-insight",
+      "description": "多摄像头牛只身份识别与体况评分系统",
+      "category": "Computer Vision",
+      "github_url": "https://github.com/novenazgarfield/research-workstation.git",
+      "path": "systems/bovine-insight",
+      "dependencies": [
+        {
+          "name": "python",
+          "version": ">=3.8",
+          "required": true,
+          "installer": "python.org"
+        },
+        {
+          "name": "conda",
+          "version": ">=4.0",
+          "required": true,
+          "installer": "anaconda.com"
+        },
+        {
+          "name": "cuda",
+          "version": ">=11.0",
+          "required": false,
+          "installer": "nvidia.com"
+        }
+      ],
+      "install_commands": [
+        "conda env create -f environment.yml",
+        "conda activate bovine-insight",
+        "pip install -r requirements.txt"
+      ],
+      "start_command": "conda activate bovine-insight && python src/main.py",
+      "stop_command": "pkill -f main.py",
+      "health_check": "curl -f http://localhost:8502/health",
+      "ports": [8502],
+      "environment_variables": {
+        "CUDA_VISIBLE_DEVICES": "0"
+      }
+    },
+    {
+      "name": "Changlee桌面宠物",
+      "id": "changlee",
+      "description": "情感陪伴型英语学习桌面宠物",
+      "category": "Desktop App",
+      "github_url": "https://github.com/novenazgarfield/research-workstation.git",
+      "path": "systems/Changlee",
+      "dependencies": [
+        {
+          "name": "nodejs",
+          "version": ">=16.0",
+          "required": true,
+          "installer": "nodejs.org"
+        },
+        {
+          "name": "npm",
+          "version": ">=8.0",
+          "required": true,
+          "installer": "bundled"
+        },
+        {
+          "name": "python",
+          "version": ">=3.8",
+          "required": true,
+          "installer": "python.org"
+        }
+      ],
+      "install_commands": [
+        "npm install",
+        "pip install -r requirements_local_ai.txt"
+      ],
+      "start_command": "node start_with_local_ai.js",
+      "stop_command": "pkill -f start_with_local_ai.js",
+      "health_check": "curl -f http://localhost:3001/health",
+      "ports": [3001, 8001],
+      "environment_variables": {
+        "NODE_ENV": "production"
+      }
+    },
+    {
+      "name": "Chronicle实验记录器",
+      "id": "chronicle",
+      "description": "AI驱动的自动化实验记录微服务",
+      "category": "Microservice",
+      "github_url": "https://github.com/novenazgarfield/research-workstation.git",
+      "path": "systems/chronicle",
+      "dependencies": [
+        {
+          "name": "nodejs",
+          "version": ">=16.0",
+          "required": true,
+          "installer": "nodejs.org"
+        },
+        {
+          "name": "npm",
+          "version": ">=8.0",
+          "required": true,
+          "installer": "bundled"
+        }
+      ],
+      "install_commands": [
+        "npm install"
+      ],
+      "start_command": "npm start",
+      "stop_command": "npm stop",
+      "health_check": "curl -f http://localhost:3000/health",
+      "ports": [3000],
+      "environment_variables": {
+        "NODE_ENV": "production",
+        "PORT": "3000"
+      }
+    },
+    {
+      "name": "Genome Jigsaw测序分析",
+      "id": "genome-jigsaw",
+      "description": "自动化细菌全基因组测序数据分析流水线",
+      "category": "Bioinformatics",
+      "github_url": "https://github.com/novenazgarfield/research-workstation.git",
+      "path": "systems/genome-jigsaw",
+      "dependencies": [
+        {
+          "name": "conda",
+          "version": ">=4.0",
+          "required": true,
+          "installer": "anaconda.com"
+        },
+        {
+          "name": "mamba",
+          "version": ">=0.15",
+          "required": false,
+          "installer": "conda-forge"
+        }
+      ],
+      "install_commands": [
+        "conda env create -f environment.yml",
+        "conda activate genome-jigsaw",
+        "bash scripts/setup.sh"
+      ],
+      "start_command": "conda activate genome-jigsaw && ./run_genome_jigsaw.sh",
+      "stop_command": "pkill -f run_genome_jigsaw.sh",
+      "health_check": "conda activate genome-jigsaw && which spades.py",
+      "ports": [],
+      "environment_variables": {
+        "CONDA_ENV": "genome-jigsaw"
+      }
+    },
+    {
+      "name": "Molecular Simulation",
+      "id": "molecular-simulation",
+      "description": "标准化分子动力学模拟工具箱",
+      "category": "Simulation",
+      "github_url": "https://github.com/novenazgarfield/research-workstation.git",
+      "path": "systems/molecular-simulation-toolkit",
+      "dependencies": [
+        {
+          "name": "gromacs",
+          "version": ">=2021",
+          "required": true,
+          "installer": "gromacs.org"
+        },
+        {
+          "name": "python",
+          "version": ">=3.8",
+          "required": true,
+          "installer": "python.org"
+        },
+        {
+          "name": "conda",
+          "version": ">=4.0",
+          "required": false,
+          "installer": "anaconda.com"
+        }
+      ],
+      "install_commands": [
+        "pip install -r requirements.txt",
+        "chmod +x sop_scripts/*.sh",
+        "chmod +x utilities/*.sh"
+      ],
+      "start_command": "./sop_scripts/sop_prepare_system.sh",
+      "stop_command": "pkill -f gromacs",
+      "health_check": "gmx --version",
+      "ports": [],
+      "environment_variables": {
+        "GMX_MAXBACKUP": "-1"
+      }
+    }
+  ],
+  "global_dependencies": [
+    {
+      "name": "git",
+      "version": ">=2.0",
+      "required": true,
+      "installer": "git-scm.com",
+      "install_methods": {
+        "windows": {
+          "method": "winget",
+          "command": "winget install --id Git.Git --location {install_path}",
+          "verify": "git --version"
+        },
+        "macos": {
+          "method": "homebrew",
+          "command": "brew install git",
+          "verify": "git --version"
+        },
+        "linux": {
+          "method": "apt",
+          "command": "sudo apt-get install -y git",
+          "verify": "git --version"
+        }
+      }
+    },
+    {
+      "name": "python",
+      "version": ">=3.8",
+      "required": true,
+      "installer": "python.org",
+      "install_methods": {
+        "windows": {
+          "method": "winget",
+          "command": "winget install --id Python.Python.3.11 --location {install_path}",
+          "verify": "python --version"
+        },
+        "macos": {
+          "method": "homebrew",
+          "command": "brew install python@3.11",
+          "verify": "python3 --version"
+        },
+        "linux": {
+          "method": "apt",
+          "command": "sudo apt-get install -y python3 python3-pip",
+          "verify": "python3 --version"
+        }
+      }
+    },
+    {
+      "name": "nodejs",
+      "version": ">=16.0",
+      "required": true,
+      "installer": "nodejs.org",
+      "install_methods": {
+        "windows": {
+          "method": "winget",
+          "command": "winget install --id OpenJS.NodeJS --location {install_path}",
+          "verify": "node --version"
+        },
+        "macos": {
+          "method": "homebrew",
+          "command": "brew install node",
+          "verify": "node --version"
+        },
+        "linux": {
+          "method": "apt",
+          "command": "curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash - && sudo apt-get install -y nodejs",
+          "verify": "node --version"
+        }
+      }
+    },
+    {
+      "name": "conda",
+      "version": ">=4.0",
+      "required": false,
+      "installer": "anaconda.com",
+      "install_methods": {
+        "windows": {
+          "method": "winget",
+          "command": "winget install --id Anaconda.Miniconda3 --location {install_path}",
+          "verify": "conda --version"
+        },
+        "macos": {
+          "method": "homebrew",
+          "command": "brew install --cask miniconda",
+          "verify": "conda --version"
+        },
+        "linux": {
+          "method": "wget",
+          "command": "wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && bash miniconda.sh -b -p {install_path} && rm miniconda.sh",
+          "verify": "conda --version"
+        }
+      }
+    }
+  ],
+  "installation_presets": [
+    {
+      "name": "完整安装",
+      "description": "安装所有系统和依赖项",
+      "systems": ["rag-system", "bovine-insight", "changlee", "chronicle", "genome-jigsaw", "molecular-simulation"],
+      "estimated_time": "30-60分钟",
+      "disk_space": "~5GB"
+    },
+    {
+      "name": "AI核心",
+      "description": "仅安装AI相关系统",
+      "systems": ["rag-system", "bovine-insight", "changlee"],
+      "estimated_time": "15-30分钟",
+      "disk_space": "~3GB"
+    },
+    {
+      "name": "生物信息学",
+      "description": "仅安装生物信息学工具",
+      "systems": ["genome-jigsaw", "molecular-simulation"],
+      "estimated_time": "20-40分钟",
+      "disk_space": "~2GB"
+    },
+    {
+      "name": "轻量级",
+      "description": "仅安装基础系统",
+      "systems": ["changlee", "chronicle"],
+      "estimated_time": "5-10分钟",
+      "disk_space": "~500MB"
+    }
+  ]
+}

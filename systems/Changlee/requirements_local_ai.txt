@@ -37,9 +37,9 @@ numpy>=1.24.0
 pandas>=2.0.0
 
 # 并发和异步
-asyncio
-concurrent-futures>=3.1.1
-threading-timer>=0.1.0
+# asyncio  # Python内置模块，无需安装
+# concurrent-futures>=3.1.1  # Python 3内置模块，无需安装
+# threading-timer>=0.1.0  # 包不存在，使用Python内置threading模块
 
 # 日志和监控
 loguru>=0.7.0

@@ -30,6 +30,7 @@
 
 ```
 Research Workstation
+├── 🚀 NEXUS远程指挥中心        # 全球远程电源管理 + WebSocket + PWA
 ├── 🤖 RAG智能问答系统          # DeepSeek + multilingual-e5 + FAISS
 ├── 🐄 BovineInsight牛只识别    # DINOv2 + GLM-4V + 传统CV算法
 ├── 🐱 Changlee桌面宠物         # 混合AI架构 + Electron + React
@@ -43,6 +44,113 @@ Research Workstation
 ---
 
 ## 🎯 核心系统详解
+
+### 🚀 NEXUS远程指挥与控制系统 ⭐ **旗舰级升级**
+**全球远程电源管理 + 统一系统部署管理器**
+
+#### 🎯 革命性突破
+- **🌐 全球远程访问**: 突破局域网限制，真正的广域网远程控制
+- **⚡ 完整电源管理**: 远程开机(WOL) + 远程关机 + 系统重启
+- **🛡️ 企业级安全**: 令牌认证 + MAC白名单 + 操作审计
+- **📱 移动端优化**: 手机、平板完美支持，PWA可安装
+- **🎯 零命令行体验**: 完全图形化的安装和管理界面 ⭐
+- **🔧 统一系统管理**: 作为整个工作站的安装器、启动器和管理器 ⭐
+
+#### 🌟 核心功能
+
+##### 远程电源管理
+- **远程唤醒 (WOL)**: Wake-on-LAN技术远程开机
+- **远程关机**: 安全关闭远程电脑，支持延迟执行
+- **系统重启**: 远程重启功能，维护更便捷
+- **云服务器中转**: 通过云端中转实现稳定的远程访问
+- **多网络管理**: 统一管理家庭、办公室等多个网络环境
+- **实时通信**: WebSocket双向通信，毫秒级响应
+
+##### 旗舰级交付与部署 ⭐
+- **专业安装包**: 跨平台安装包(.exe/.dmg/.AppImage)，支持自定义路径
+- **官方门户网站**: 智能平台检测，自动推荐对应安装包
+- **向导式依赖安装**: 图形化路径选择，自动请求管理员权限
+- **点点点式系统部署**: 自动化git clone和依赖安装
+- **一键部署脚本**: PowerShell和Bash脚本，完全自动化部署
+- **系统状态管理**: 实时监控所有子系统的运行状态
+
+#### 🛠️ 技术栈
+- **前端**: React 18 + TypeScript + Material-UI + PWA
+- **后端**: Python + WebSocket + Wake-on-LAN
+- **部署**: Electron + electron-builder + 跨平台脚本
+- **系统管理**: 环境检查 + 依赖安装 + 进程管理
+- **云端中转**: 多网络管理 + 安全认证
+- **跨平台**: Windows/Linux/macOS全平台兼容
+
+#### 📁 核心模块
+```
+nexus/
+├── 🎯 专业安装包系统
+│   ├── package.json                    # electron-builder配置 ⭐
+│   ├── deployment/installer.nsh        # NSIS安装脚本 ⭐
+│   └── public/icons/                   # 多平台图标资源
+├── 🌐 官方门户网站
+│   ├── landing_page/index.html         # 智能下载页面 ⭐
+│   ├── landing_page/script.js          # 平台检测脚本 ⭐
+│   └── landing_page/styles.css         # 现代化样式
+├── 🔧 系统部署与管理
+│   ├── src/features/systems/           # 系统管理模块 ⭐
+│   │   ├── SystemManager.tsx           # 状态化UI组件 ⭐
+│   │   └── systems.json                # 舰队配置文件 ⭐
+│   ├── src/services/env_checker.ts     # 环境诊断服务 ⭐
+│   └── src/services/deployment_service.ts # 部署执行服务 ⭐
+├── ⚡ 一键部署脚本
+│   ├── deployment/deploy_nexus.ps1     # Windows PowerShell ⭐
+│   ├── deployment/deploy_nexus.sh      # Linux/macOS Bash ⭐
+│   └── deployment/deploy.js            # 自动化构建脚本 ⭐
+├── 🚀 远程电源管理
+│   ├── backend/websocket_server.py     # WebSocket服务器
+│   ├── cloud_wol_relay.py              # 云端WOL中转服务
+│   ├── scripts/wake_computer.sh        # 远程唤醒脚本
+│   ├── scripts/shutdown_computer.sh    # 远程关机脚本
+│   └── src/components/remote/          # 远程控制界面
+└── 📚 完整文档集
+    ├── DEPLOYMENT_GUIDE.md             # 旗舰级部署指南 ⭐
+    ├── WAKE_ON_LAN_GUIDE.md           # WOL使用指南
+    ├── WAN_REMOTE_ACCESS_GUIDE.md     # 广域网访问指南
+    └── POWER_MANAGEMENT_COMPLETE.md   # 功能完成报告
+```
+
+#### 🎯 使用场景
+
+##### 远程电源管理
+- **📱 出差远程办公**: 酒店用手机远程唤醒家里工作站
+- **💡 智能节能管理**: 下班远程关机，上班远程唤醒
+- **🚨 紧急故障处理**: 半夜远程唤醒备用服务器
+- **🏠 智能家居集成**: 语音控制电脑开关机
+
+##### 系统部署管理 ⭐
+- **🎯 最终用户**: 通过专业安装包，零命令行安装整个工作站
+- **🔧 系统管理员**: 图形化界面管理所有子系统的部署和运行
+- **⚡ 开发者**: 一键脚本快速部署开发环境
+- **🏢 企业部署**: 批量部署和集中管理多个工作站
+
+#### 🌐 部署方案
+
+##### 专业安装包 (推荐)
+1. **访问官方门户**: 智能检测操作系统并推荐安装包
+2. **下载安装包**: Windows(.exe) / macOS(.dmg) / Linux(.AppImage)
+3. **图形化安装**: 支持自定义路径，自动创建快捷方式
+4. **一键启动**: 从桌面或开始菜单启动NEXUS
+
+##### 一键部署脚本 (开发者)
+1. **Windows**: `.\deploy_nexus.ps1 -InstallPath "D:\NEXUS"`
+2. **Linux/macOS**: `./deploy_nexus.sh --path "/opt/nexus"`
+3. **自动化**: 智能检查依赖，自动安装和配置
+4. **交互式**: 用户友好的命令行界面
+
+##### 传统部署方案
+1. **云服务器中转** - 真正的全球访问
+2. **FRP内网穿透** - 简单高效的穿透方案
+3. **VPN远程访问** - 企业级安全方案
+4. **路由器端口转发** - 最简单的直连方案
+
+---
 
 ### 🤖 RAG智能问答系统
 **基于DeepSeek + multilingual-e5 + FAISS的模块化RAG系统**
@@ -186,16 +294,16 @@ chronicle/
 - **集成**: 支持所有子系统
 
 ---
-
-### 🧬 Genome Jigsaw测序分析系统 ⭐ **新增**
+测序分析系统 ⭐ **新增**
 **自动化细菌全基因组测序数据分析流水线**
-
-#### 🌟 核心特性
-- **完整分析流程**: 质量控制 → 数据清洗 → 基因组组装 → 注释 → 泛基因组分析 → 系统发育分析 → 基因筛选
+# **完整分析流程**: 质量控制 → 数据清洗 → 基因组组装 → 注释 → 泛基因组分析 → 系统发育分析 → 基因筛选
 - **一键自动化**: 单个脚本完成从原始数据到最终结果的全流程分析
 - **标准化工具链**: FastQC + fastp + SPAdes + Prokka + Roary + MAFFT + IQ-TREE + ABricate
 - **智能报告生成**: 自动生成详细的分析报告和统计信息
-- **多样本支持**: 批量处理多个菌株的测序数据
+- **多样本支持**: 批量处理多个菌株的测序数据## 🧬 Genome Jigsaw
+
+#### 🌟 核心特性
+-
 
 #### 🛠️ 技术栈
 - **环境管理**: Conda + Bioconda
@@ -260,7 +368,57 @@ molecular-simulation-toolkit/
 
 ### ⚡ 一键启动
 
-#### 1. 启动完整集成系统
+#### 1. 启动NEXUS旗舰级管理中心 ⭐ **旗舰级升级**
+
+##### 🎯 专业安装包 (推荐)
+```bash
+# 访问官方门户网站
+open systems/nexus/landing_page/index.html
+
+# 或直接下载对应平台的安装包
+# Windows: NEXUS-Setup.exe
+# macOS: NEXUS-Research-Workstation.dmg  
+# Linux: NEXUS-Research-Workstation.AppImage
+
+# 安装后从桌面快捷方式启动
+```
+
+##### ⚡ 一键部署脚本 (开发者)
+```bash
+# Windows PowerShell
+.\systems\nexus\deployment\deploy_nexus.ps1
+
+# Linux/macOS Bash  
+./systems/nexus/deployment/deploy_nexus.sh
+
+# 自动安装所有依赖并启动NEXUS
+```
+
+##### 🔧 手动开发模式
+```bash
+cd systems/nexus
+
+# 安装所有依赖 (Node.js + Python)
+npm run install-deps
+
+# 启动完整系统 (前端 + 后端)
+npm run start-full
+
+# 或分别启动
+npm run dev                    # 前端界面
+npm run start-backend          # WebSocket服务器
+
+# 访问服务
+# 🎯 系统管理界面: http://localhost:52305
+# 🌐 官方门户网站: http://localhost:52305/landing_page/
+# 🧪 功能测试页面: http://localhost:52333/test_remote_center.html
+# 🔌 WebSocket服务: ws://localhost:8765
+
+# 📱 移动端访问 (PWA可安装)
+# 手机浏览器访问主界面，点击"添加到主屏幕"
+```
+
+#### 2. 启动完整集成系统
 ```bash
 # 启动Changlee + 本地AI + Chronicle集成
 cd systems/Changlee
@@ -362,26 +520,38 @@ npm install
 ## 🎯 使用场景
 
 ### 🔬 科研场景
-- **文献调研**: RAG系统快速检索和总结文献
-- **实验记录**: Chronicle自动记录实验过程
-- **数据分析**: BovineInsight提供专业级分析报告
-- **基因组学研究**: Genome Jigsaw自动化测序数据分析
-- **分子模拟**: Molecular Simulation Toolkit标准化MD模拟
-- **学术写作**: AI辅助生成论文级文本描述
+- **🎯 零门槛部署**: NEXUS专业安装包，让非技术人员也能轻松部署整个工作站 ⭐
+- **🔧 统一系统管理**: 图形化界面管理所有子系统的安装、更新和运行状态 ⭐
+- **📱 远程实验管理**: 手机远程控制实验室设备开关机，支持全球访问 ⭐
+- **⚡ 快速环境搭建**: 一键部署脚本快速搭建科研计算环境 ⭐
+- **📚 文献调研**: RAG系统快速检索和总结文献
+- **📊 实验记录**: Chronicle自动记录实验过程
+- **🐄 数据分析**: BovineInsight提供专业级分析报告
+- **🧬 基因组学研究**: Genome Jigsaw自动化测序数据分析
+- **⚗️ 分子模拟**: Molecular Simulation Toolkit标准化MD模拟
+- **✍️ 学术写作**: AI辅助生成论文级文本描述
+- **🛠️ 设备维护**: 远程重启故障设备，提高实验效率
 
 ### 📚 教育场景
-- **英语学习**: Changlee提供个性化学习陪伴
-- **知识问答**: RAG系统回答专业问题
-- **学习记录**: Chronicle跟踪学习进度
-- **智能辅导**: 本地AI提供隐私保护的学习指导
+- **🎯 教学部署**: 教师使用NEXUS快速为学生部署统一的学习环境 ⭐
+- **📱 移动学习**: 学生通过手机访问PWA应用，随时随地学习 ⭐
+- **🤖 英语学习**: Changlee提供个性化学习陪伴
+- **❓ 知识问答**: RAG系统回答专业问题
+- **📊 学习记录**: Chronicle跟踪学习进度
+- **🧠 智能辅导**: 本地AI提供隐私保护的学习指导
 
 ### 🏭 产业场景
-- **畜牧业**: BovineInsight自动化牛只管理
-- **生物技术**: Genome Jigsaw细菌基因组分析
-- **制药工业**: Molecular Simulation药物-靶点模拟
-- **智能客服**: RAG系统提供专业问答
-- **数据分析**: 多模态AI融合分析
-- **流程优化**: Chronicle记录和分析工作流程
+- **🎯 企业级部署**: NEXUS专业安装包支持企业批量部署和管理 ⭐
+- **🌐 远程运维**: 全球设备远程管理，支持多网络环境 ⭐
+- **📱 移动运维**: 运维人员通过手机随时管理服务器开关机 ⭐
+- **🔧 系统集成**: 统一管理多个业务系统的部署和运行 ⭐
+- **🐄 畜牧业**: BovineInsight自动化牛只管理
+- **🧬 生物技术**: Genome Jigsaw细菌基因组分析
+- **💊 制药工业**: Molecular Simulation药物-靶点模拟
+- **🤖 智能客服**: RAG系统提供专业问答
+- **📊 数据分析**: 多模态AI融合分析
+- **⚡ 流程优化**: Chronicle记录和分析工作流程
+- **💡 节能管理**: 智能化电源管理，降低运营成本
 
 ---
 
@@ -391,6 +561,7 @@ npm install
 ```
 research-workstation/
 ├── 📂 systems/                    # 核心系统
+│   ├── 🚀 nexus/                 # NEXUS远程指挥中心 ⭐
 │   ├── 🤖 rag-system/            # RAG智能问答
 │   ├── 🐄 bovine-insight/        # 牛只识别分析
 │   ├── 🐱 Changlee/              # 桌面宠物
@@ -420,7 +591,9 @@ source venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 
 # 4. 设置Node.js环境
-cd systems/Changlee
+cd systems/nexus
+npm install
+cd ../Changlee
 npm install
 cd ../chronicle
 npm install
@@ -435,6 +608,12 @@ gmx --version
 
 ### 🧪 测试系统
 ```bash
+# 测试NEXUS远程指挥中心 ⭐
+cd systems/nexus
+# 启动WebSocket服务器
+python3 backend/websocket_server.py &
+# 访问测试页面: http://localhost:52333/test_remote_center.html
+
 # 测试AI升级功能
 python systems/test_upgrades.py
 
@@ -481,23 +660,30 @@ cd systems/molecular-simulation-toolkit
 ## 🎯 未来发展方向
 
 ### 🚀 短期目标 (3-6个月)
+- **🎯 NEXUS生态完善**: 插件系统、主题定制、多语言支持 ⭐
+- **☁️ 云端部署**: Docker容器化、Kubernetes集群部署 ⭐
+- **🤖 AI辅助部署**: 智能推荐系统配置，自动故障诊断 ⭐
+- **📊 监控告警**: 系统健康监控、性能分析、故障预警 ⭐
 - **🔧 性能优化**: 模型量化，推理加速，内存优化
-- **📱 移动端扩展**: PWA增强，移动端适配
-- **🌐 多语言支持**: 国际化界面，多语言模型
-- **🔒 安全增强**: 端到端加密，权限细化
-- **🧬 工具扩展**: 更多生物信息学和计算生物学工具
+- **📱 移动端扩展**: PWA增强，原生移动应用
+- **🔒 安全增强**: 端到端加密，权限细化，审计日志
 
 ### 🌟 中期目标 (6-12个月)
+- **🏢 企业版NEXUS**: 多租户管理、集中控制台、批量部署 ⭐
+- **🌐 NEXUS云服务**: SaaS模式，按需付费，全球CDN ⭐
+- **🔗 生态系统集成**: 与主流DevOps工具深度集成 ⭐
+- **📈 智能分析**: 使用模式分析、性能优化建议 ⭐
 - **🧠 模型升级**: 集成最新的开源大模型
 - **🔗 系统集成**: 更深度的跨系统协作
 - **📊 数据分析**: 高级分析和可视化功能
-- **🤖 自动化**: 更多自动化工作流程
 - **🧬 专业化**: 针对特定科研领域的深度定制
 
 ### 🎓 长期愿景 (1-2年)
-- **🌍 开源生态**: 构建开发者社区和插件生态
-- **🏭 产业应用**: 面向特定行业的定制化解决方案
-- **🔬 科研平台**: 成为标准化的科研工作站平台
+- **🌍 NEXUS开源生态**: 构建全球开发者社区和插件市场 ⭐
+- **🏭 行业解决方案**: 教育版、医疗版、金融版等垂直解决方案 ⭐
+- **🤖 全AI驱动**: 智能化的系统推荐、自动化运维、预测性维护 ⭐
+- **🔬 科研标准平台**: 成为科研机构的标准化工作站平台 ⭐
+- **🌐 全球化服务**: 多区域部署、本地化服务、合规认证
 - **🎯 智能化**: 全面AI驱动的智能科研助手
 
 ---
@@ -558,11 +744,30 @@ cd systems/molecular-simulation-toolkit
 
 <div align="center">
 
-**🎉 从传统规则驱动系统成功升级为AI驱动的智能科研平台！**
+**🎉 从传统命令行工具成功升级为旗舰级图形化管理平台！**
+
+**🚀 NEXUS现已成为整个Research Workstation生态系统的统一入口和管理中心！**
 
 [![Star this repo](https://img.shields.io/github/stars/novenazgarfield/research-workstation?style=social)](https://github.com/novenazgarfield/research-workstation)
 [![Fork this repo](https://img.shields.io/github/forks/novenazgarfield/research-workstation?style=social)](https://github.com/novenazgarfield/research-workstation/fork)
 
-*让AI为科研工作赋能，让智能化成为生产力！* 🚀✨
+### 🎯 核心成就
+
+✅ **零命令行体验** - 完全图形化的安装和管理界面  
+✅ **企业级部署能力** - 支持系统级依赖安装和权限管理  
+✅ **跨平台专业支持** - Windows/macOS/Linux全平台专业安装包  
+✅ **统一系统管理** - 集成化的系统监控和控制中心  
+✅ **全球远程访问** - 突破局域网限制的远程电源管理  
+
+### 🚀 技术创新
+
+🎯 **向导式依赖安装** - 革命性的用户友好安装体验  
+🔧 **系统级部署能力** - 突破传统应用的权限限制  
+🌐 **智能平台检测** - 自动化的平台适配和推荐  
+📱 **PWA移动支持** - 完美的移动端远程管理体验  
+
+*让科研工作站的部署和管理变得简单而强大！* 🚀✨
+
+**NEXUS - 您的智能科研管理中心** 💫
 
 </div>

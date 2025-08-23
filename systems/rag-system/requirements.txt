@@ -24,16 +24,11 @@ openpyxl>=3.1.0
 beautifulsoup4>=4.12.0
 
 # 数据库
-sqlite3  # Python内置
+# sqlite3  # Python内置模块，无需安装
 
 # 工具库
-pathlib  # Python内置
-pickle  # Python内置
-datetime  # Python内置
-logging  # Python内置
-subprocess  # Python内置
-io  # Python内置
-typing  # Python内置
+# 以下为Python内置模块，无需安装：
+# pathlib, pickle, datetime, logging, subprocess, io, typing
 
 # 可选：如果需要GPU支持
 # faiss-gpu>=1.7.4  # 替换faiss-cpu

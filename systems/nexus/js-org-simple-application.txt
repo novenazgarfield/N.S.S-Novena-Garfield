@@ -1,0 +1,15 @@
+JS.ORG 域名申请信息
+==================
+
+子域名: nss-novena
+目标地址: novenazgarfield.github.io/research-workstation
+项目: NEXUS Research Workstation - N.S.S Novena Garfield
+GitHub: https://github.com/novenazgarfield/research-workstation
+
+申请理由:
+- 开源远程控制系统项目
+- 已有完整的代码和文档
+- 需要一个简短易记的官方域名
+- N.S.S Novena Garfield 是项目的特别版本
+
+最终域名: https://nss-novena.js.org

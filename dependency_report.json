@@ -1,0 +1,33 @@
+{
+  "timestamp": "1755874811.7305465",
+  "python_version": "3.12.10 | packaged by conda-forge | (main, Apr 10 2025, 22:21:13) [GCC 13.3.0]",
+  "installed_packages": [
+    "numpy",
+    "opencv-python",
+    "Pillow",
+    "torch",
+    "torchvision",
+    "scikit-learn",
+    "pandas",
+    "matplotlib",
+    "requests",
+    "pyyaml",
+    "ultralytics",
+    "pytesseract",
+    "easyocr",
+    "sqlalchemy",
+    "loguru",
+    "tqdm",
+    "psutil",
+    "transformers",
+    "accelerate",
+    "albumentations",
+    "timm",
+    "streamlit",
+    "plotly"
+  ],
+  "missing_packages": [],
+  "failed_packages": [],
+  "total_checked": 23,
+  "success_rate": 100.0
+}

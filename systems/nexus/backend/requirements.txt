@@ -1,0 +1,9 @@
+# NEXUS Backend Dependencies
+# WebSocket服务器依赖
+
+# WebSocket支持
+websockets>=12.0
+
+# 注意：以下模块为Python内置模块，无需安装
+# asyncio, json, logging, subprocess, uuid, datetime
+# pathlib, threading, queue, os, signal, typing
