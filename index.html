@@ -1,1 +1,157 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><title>NEXUS - N.S.S Novena Garfield</title><style>*{margin:0;padding:0}body{font-family:Arial;background:linear-gradient(45deg,#667eea,#764ba2);color:#fff;height:100vh;display:flex;align-items:center;justify-content:center;text-align:center}.card{background:rgba(255,255,255,0.1);padding:2rem;border-radius:20px;backdrop-filter:blur(10px)}h1{font-size:3rem;margin-bottom:1rem}p{margin:1rem 0}.btn{background:#ff6b6b;color:#fff;padding:1rem 2rem;border:none;border-radius:50px;text-decoration:none;display:inline-block;margin:0.5rem;transition:transform 0.3s}.btn:hover{transform:translateY(-2px)}</style></head><body><div class="card"><h1>🚀 NEXUS</h1><p><strong>N.S.S Novena Garfield</strong></p><p>革命性远程控制系统</p><a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield" class="btn">GitHub</a><a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield/releases" class="btn">下载</a></div></body></html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS - N.S.S Novena Garfield</title>
+    <meta name="description" content="NEXUS Research Workstation - N.S.S Novena Garfield Edition. 革命性远程指挥与控制系统">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 25px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 90%;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: #fff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        
+        .btn.secondary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .card {
+                padding: 2rem;
+            }
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>🚀 NEXUS</h1>
+        <div class="subtitle">N.S.S Novena Garfield</div>
+        <div class="description">
+            革命性远程指挥与控制系统<br>
+            Research Workstation
+        </div>
+        
+        <div class="buttons">
+            <a href="https://github.com/novenazgarfield/research-workstation/releases" class="btn">
+                <span>⬇️</span>
+                <span>下载 NEXUS</span>
+            </a>
+            <a href="https://github.com/novenazgarfield/research-workstation" class="btn secondary">
+                <span>📚</span>
+                <span>GitHub</span>
+            </a>
+        </div>
+        
+        <div class="footer">
+            © 2025 NEXUS Research Workstation<br>
+            <small>N.S.S Novena Garfield Edition</small>
+        </div>
+    </div>
+    
+    <script>
+        console.log('🚀 欢迎访问 NEXUS - N.S.S Novena Garfield！');
+        
+        // 添加点击统计
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                console.log('🎯 点击:', this.textContent.trim());
+            });
+        });
+    </script>
+</body>
+</html>
