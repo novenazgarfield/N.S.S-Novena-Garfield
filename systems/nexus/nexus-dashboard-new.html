@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* 深色主题色彩 */
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-card: #3a3a3a;
+            --bg-hover: #4a4a4a;
+            
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #808080;
+            
+            --accent-blue: #4a9eff;
+            --accent-green: #4ade80;
+            --accent-red: #ef4444;
+            --accent-orange: #f97316;
+            --accent-purple: #8b5cf6;
+            
+            --border-color: #404040;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            
+            --status-online: #22c55e;
+            --status-offline: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 侧边栏 */
+        .sidebar {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .logo-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 44px;
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .nav-item-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item-text {
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--status-offline);
+        }
+
+        .status-indicator.online {
+            background: var(--status-online);
+        }
+
+        .sidebar-footer {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* 主内容区 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .header {
+            height: 60px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .back-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .header-btn:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .content {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        /* 卡片网格 */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            max-width: 1200px;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .project-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .card-icon.nexus { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .card-icon.rag { background: linear-gradient(135deg, #06b6d4, #0891b2); }
+        .card-icon.platform { background: linear-gradient(135deg, #22c55e, #16a34a); }
+
+        .card-info h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .card-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .card-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .card-features {
+            margin-bottom: 20px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .feature-check {
+            color: var(--status-online);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3b82f6;
+        }
+
+        .btn-secondary {
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        /* RAG 聊天界面 */
+        .rag-chat {
+            display: none;
+            height: 100%;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .message.user .message-avatar {
+            background: var(--accent-green);
+        }
+
+        .message-content {
+            background: var(--bg-card);
+            padding: 12px 16px;
+            border-radius: 12px;
+            max-width: 70%;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.user .message-content {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-input-field {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .chat-input-field:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        .send-btn {
+            padding: 12px 20px;
+            background: var(--accent-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .send-btn:hover {
+            background: #3b82f6;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 240px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🚀</div>
+                    <div class="logo-text">NEXUS</div>
+                </div>
+                <div class="logo-subtitle">Command Center</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item active" onclick="showPage('dashboard')">
+                    <div class="nav-item-icon">📊</div>
+                    <div class="nav-item-text">Dashboard</div>
+                    <div class="status-indicator online"></div>
+                </button>
+                
+                <button class="nav-item" onclick="showPage('rag-system')">
+                    <div class="nav-item-icon">🧠</div>
+                    <div class="nav-item-text">RAG System</div>
+                    <div class="status-indicator online"></div>
+                </button>
+                
+                <button class="nav-item" onclick="showPage('changelog')">
+                    <div class="nav-item-icon">🐱</div>
+                    <div class="nav-item-text">Changelog Assistant</div>
+                    <div class="status-indicator online"></div>
+                </button>
+                
+                <button class="nav-item" onclick="showPage('chronicle')">
+                    <div class="nav-item-icon">📝</div>
+                    <div class="nav-item-text">Chronicle</div>
+                    <div class="status-indicator offline"></div>
+                </button>
+                
+                <button class="nav-item" onclick="showPage('genome')">
+                    <div class="nav-item-icon">🧬</div>
+                    <div class="nav-item-text">Genome Jigsaw</div>
+                    <div class="status-indicator online"></div>
+                </button>
+                
+                <button class="nav-item" onclick="showPage('molecular')">
+                    <div class="nav-item-icon">🧪</div>
+                    <div class="nav-item-text">Molecular Simulation</div>
+                    <div class="status-indicator online"></div>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="nav-item" onclick="showPage('settings')">
+                    <div class="nav-item-icon">⚙️</div>
+                    <div class="nav-item-text">Settings</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 头部 -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="back-btn">←</button>
+                    <h1 class="page-title">Research Workstation</h1>
+                </div>
+                <div class="header-right">
+                    <button class="header-btn">⚙️</button>
+                    <button class="header-btn">🔔</button>
+                    <button class="header-btn">👤</button>
+                </div>
+            </header>
+
+            <!-- Dashboard 内容 -->
+            <div id="dashboard-content" class="content">
+                <div class="cards-grid">
+                    <!-- NEXUS Remote Control 卡片 -->
+                    <div class="project-card">
+                        <div class="card-header">
+                            <div class="card-icon nexus">⚡</div>
+                            <div class="card-info">
+                                <h3>NEXUS Remote Control</h3>
+                                <p>Revolutionary Remote Command & Control System</p>
+                            </div>
+                        </div>
+                        <div class="card-description">
+                            突破局域网限制，实现真正的全球远程电源管理。支持远程开机、关机、重启，企业级安全保障。
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>全球远程访问 - 云服务器中转</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>完整电源管理 - WOL/关机/重启</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>零命令行体验 - 图形化界面</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>移动端优化 - PWA原生体验</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>企业级安全 - 256位加密</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">
+                                🚀 启动 NEXUS
+                            </button>
+                            <button class="btn btn-secondary">
+                                📁 文档
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- RAG System 卡片 -->
+                    <div class="project-card">
+                        <div class="card-header">
+                            <div class="card-icon rag">🧠</div>
+                            <div class="card-info">
+                                <h3>RAG System</h3>
+                                <p>Retrieval-Augmented Generation AI</p>
+                            </div>
+                        </div>
+                        <div class="card-description">
+                            基于DeepSeek + multilingual-e5 + FAISS的模块化RAG系统，支持多种文档格式的智能问答。
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>多格式文档 - PDF/DOCX/Excel/Markdown</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>智能检索 - 向量语义搜索</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>记忆系统 - 永久/临时记忆管理</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>多轮对话 - 上下文理解</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>API管理 - 多模型支持</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="showRAGChat()">
+                                🧠 启动 RAG
+                            </button>
+                            <button class="btn btn-secondary">
+                                📚 文档库
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Unified Platform 卡片 -->
+                    <div class="project-card">
+                        <div class="card-header">
+                            <div class="card-icon platform">📊</div>
+                            <div class="card-info">
+                                <h3>Unified Platform</h3>
+                                <p>Research Workstation Management</p>
+                            </div>
+                        </div>
+                        <div class="card-description">
+                            整个研究工作站的统一安装器、启动器和管理器，提供一站式的系统管理体验。
+                        </div>
+                        <div class="card-features">
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>系统级部署 - 舰队总指挥能力</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>依赖检查 - 自动环境配置</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-check">✓</span>
+                                <span>状态监控 - 实时系统状态</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">
+                                🚀 管理平台
+                            </button>
+                            <button class="btn btn-secondary">
+                                📋 系统状态
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAG 聊天界面 -->
+            <div id="rag-chat" class="rag-chat">
+                <div class="chat-header">
+                    <h2>RAG System - 智能问答</h2>
+                    <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">基于DeepSeek的检索增强生成系统</p>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message">
+                        <div class="message-avatar">🧠</div>
+                        <div class="message-content">
+                            你好！我是RAG智能助手，可以帮你分析文档、回答问题。请上传文档或直接提问。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chat-input">
+                    <div class="input-group">
+                        <input type="text" class="chat-input-field" placeholder="输入你的问题..." id="chatInput">
+                        <button class="send-btn" onclick="sendMessage()">发送</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 'dashboard';
+
+        function showPage(pageId) {
+            // 更新导航状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 隐藏所有内容
+            document.getElementById('dashboard-content').style.display = 'none';
+            document.getElementById('rag-chat').style.display = 'none';
+            
+            // 显示对应内容
+            if (pageId === 'dashboard') {
+                document.getElementById('dashboard-content').style.display = 'block';
+                document.querySelector('.page-title').textContent = 'Research Workstation';
+            } else if (pageId === 'rag-system') {
+                showRAGChat();
+            }
+            
+            currentPage = pageId;
+        }
+
+        function showRAGChat() {
+            document.getElementById('dashboard-content').style.display = 'none';
+            document.getElementById('rag-chat').style.display = 'flex';
+            document.querySelector('.page-title').textContent = 'RAG System';
+            
+            // 更新导航状态
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelector('[onclick="showPage(\'rag-system\')"]').classList.add('active');
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            // 添加用户消息
+            addMessage(message, 'user');
+            input.value = '';
+            
+            // 模拟AI回复
+            setTimeout(() => {
+                const responses = [
+                    '我正在分析你的问题，请稍等...',
+                    '根据文档内容，我找到了相关信息...',
+                    '这是一个很好的问题，让我为你详细解答...',
+                    '基于向量检索的结果，我可以告诉你...'
+                ];
+                const response = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(response, 'assistant');
+            }, 1000);
+        }
+
+        function addMessage(content, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = sender === 'user' ? '👤' : '🧠';
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // 回车发送消息
+        document.getElementById('chatInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
