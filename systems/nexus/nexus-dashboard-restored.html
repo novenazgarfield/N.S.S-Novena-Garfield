@@ -407,14 +407,33 @@
             display: none;
             height: 100%;
             flex-direction: column;
+            flex: 1;
         }
-
-
 
         .chat-messages {
             flex: 1;
             padding: 20px;
             overflow-y: auto;
+            min-height: 0; /* 重要：确保flex子元素可以收缩 */
+        }
+
+        /* 自定义滚动条样式 */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+            opacity: 0.3;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
         }
 
         .message {
