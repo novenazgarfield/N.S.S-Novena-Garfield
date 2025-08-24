@@ -422,22 +422,34 @@
             min-height: 0; /* 重要：确保flex子元素可以收缩 */
         }
 
-        /* 自定义滚动条样式 */
-        .chat-messages::-webkit-scrollbar {
+        /* 自定义滚动条样式 - 统一应用到所有滚动区域 */
+        .chat-messages::-webkit-scrollbar,
+        .sidebar-nav::-webkit-scrollbar,
+        .content::-webkit-scrollbar,
+        .settings-page::-webkit-scrollbar {
             width: 6px;
         }
 
-        .chat-messages::-webkit-scrollbar-track {
+        .chat-messages::-webkit-scrollbar-track,
+        .sidebar-nav::-webkit-scrollbar-track,
+        .content::-webkit-scrollbar-track,
+        .settings-page::-webkit-scrollbar-track {
             background: transparent;
         }
 
-        .chat-messages::-webkit-scrollbar-thumb {
+        .chat-messages::-webkit-scrollbar-thumb,
+        .sidebar-nav::-webkit-scrollbar-thumb,
+        .content::-webkit-scrollbar-thumb,
+        .settings-page::-webkit-scrollbar-thumb {
             background: var(--border-color);
             border-radius: 3px;
             opacity: 0.3;
         }
 
-        .chat-messages::-webkit-scrollbar-thumb:hover {
+        .chat-messages::-webkit-scrollbar-thumb:hover,
+        .sidebar-nav::-webkit-scrollbar-thumb:hover,
+        .content::-webkit-scrollbar-thumb:hover,
+        .settings-page::-webkit-scrollbar-thumb:hover {
             background: var(--text-muted);
         }
 
