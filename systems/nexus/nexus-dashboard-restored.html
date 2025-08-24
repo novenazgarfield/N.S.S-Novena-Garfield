@@ -409,27 +409,7 @@
             flex-direction: column;
         }
 
-        .chat-header {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border-color);
-            background: var(--bg-secondary);
-            transition: background-color 0.2s, border-color 0.2s;
-        }
 
-        .chat-header h2 {
-            margin: 0 0 4px 0;
-            color: var(--text-primary);
-            font-size: 18px;
-            font-weight: 600;
-            transition: color 0.2s;
-        }
-
-        .chat-header p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 14px;
-            transition: color 0.2s;
-        }
 
         .chat-messages {
             flex: 1;
@@ -854,10 +834,6 @@
 
             <!-- RAG 聊天界面 -->
             <div id="rag-chat" class="rag-chat">
-                <div class="chat-header">
-                    <h2>🧠 RAG System</h2>
-                    <p>智能文档问答助手</p>
-                </div>
                 
                 <div class="chat-messages" id="chatMessages">
                     <div class="message">
