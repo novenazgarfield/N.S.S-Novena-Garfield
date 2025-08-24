@@ -189,6 +189,7 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            position: relative; /* 为RAG界面的绝对定位提供参考 */
             transition: background-color 0.2s;
         }
 
@@ -405,9 +406,13 @@
         /* RAG 聊天界面 */
         .rag-chat {
             display: none;
-            height: 100%;
+            height: calc(100vh - 60px); /* 减去header高度 */
             flex-direction: column;
-            flex: 1;
+            position: absolute;
+            top: 60px; /* header高度 */
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         .chat-messages {
