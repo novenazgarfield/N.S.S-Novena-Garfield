@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
     <style>
         * {
@@ -37,6 +40,15 @@
             
             /* 动态高度变量 */
             --app-height: 100vh;
+            
+            /* 移动端专用变量 */
+            --mobile-header-height: 56px;
+            --mobile-nav-height: 60px;
+            --mobile-padding: 16px;
+            --mobile-card-gap: 12px;
+            --touch-target-size: 44px;
+            --mobile-font-size: 16px;
+            --mobile-line-height: 1.4;
         }
 
         [data-theme="light"] {
@@ -635,27 +647,490 @@
             line-height: 1.5;
         }
 
-        /* 响应式 */
+        /* 🌐 语言切换器 */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+        }
+
+        .language-switcher:hover {
+            background: var(--bg-hover);
+        }
+
+        .language-btn {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            min-width: 80px;
+        }
+
+        .language-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .language-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 4px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            min-width: 120px;
+            display: none;
+            z-index: 1001;
+        }
+
+        .language-dropdown.show {
+            display: block;
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .language-option:hover {
+            background: var(--bg-hover);
+        }
+
+        .language-option:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        .language-option:last-child {
+            border-radius: 0 0 8px 8px;
+        }
+
+        .language-option.active {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        /* 📱 移动端汉堡菜单 */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1002;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: all 0.2s;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--bg-hover);
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 1px;
+        }
+
+        .mobile-menu-btn.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .mobile-menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-btn.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* 📱 移动端遮罩层 */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .mobile-overlay.show {
+            opacity: 1;
+        }
+
+        /* 📱 平板端适配 (768px - 1024px) */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .sidebar {
+                width: 200px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+            
+            .project-card {
+                padding: 20px;
+            }
+            
+            .language-switcher {
+                top: 16px;
+                right: 16px;
+            }
+        }
+
+        /* 📱 移动端适配 (最大768px) */
         @media (max-width: 768px) {
+            /* 启用移动端菜单 */
+            .mobile-menu-btn {
+                display: flex;
+            }
+            
+            /* 侧边栏移动端样式 */
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                width: 280px;
+                height: 100vh;
+                z-index: 1000;
+                transition: left 0.3s ease;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            }
+            
+            .sidebar.mobile-open {
+                left: 0;
+            }
+            
+            /* 主内容区移动端调整 */
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            /* 头部移动端样式 */
+            .header {
+                height: var(--mobile-header-height);
+                padding: 0 var(--mobile-padding);
+                padding-left: 70px; /* 为汉堡菜单留空间 */
+            }
+            
+            .page-title {
+                font-size: 18px;
+            }
+            
+            .theme-toggle {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+            
+            /* 内容区移动端样式 */
+            .content {
+                padding: var(--mobile-padding);
+            }
+            
+            /* 卡片网格移动端 */
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: var(--mobile-card-gap);
+            }
+            
+            /* 项目卡片移动端优化 */
+            .project-card {
+                padding: 16px;
+                border-radius: 12px;
+            }
+            
+            .card-header {
+                margin-bottom: 12px;
+            }
+            
+            .card-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+            
+            .card-info h3 {
+                font-size: 16px;
+                margin-bottom: 4px;
+            }
+            
+            .card-info p {
+                font-size: 13px;
+            }
+            
+            /* 功能列表移动端 */
+            .card-features {
+                margin: 12px 0;
+            }
+            
+            .feature-item {
+                padding: 8px 0;
+                font-size: 13px;
+            }
+            
+            /* 按钮移动端优化 */
+            .card-actions {
+                gap: 8px;
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 13px;
+                min-height: var(--touch-target-size);
+                border-radius: 8px;
+            }
+            
+            /* 语言切换器移动端 */
+            .language-switcher {
+                top: 16px;
+                right: 16px;
+                padding: 6px;
+            }
+            
+            .language-btn {
+                padding: 6px 10px;
+                font-size: 13px;
+                min-width: 70px;
+            }
+            
+            /* RAG聊天界面移动端 */
+            .rag-chat {
+                height: calc(100vh - var(--mobile-header-height));
+            }
+            
+            .chat-messages {
+                padding: var(--mobile-padding);
+            }
+            
+            .message {
+                margin-bottom: 12px;
+            }
+            
+            .message-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+            }
+            
+            .message-content {
+                font-size: var(--mobile-font-size);
+                line-height: var(--mobile-line-height);
+                padding: 10px 12px;
+            }
+            
+            .chat-input {
+                padding: var(--mobile-padding);
+            }
+            
+            .chat-input-field {
+                font-size: var(--mobile-font-size);
+                padding: 12px 16px;
+                min-height: var(--touch-target-size);
+            }
+            
+            .send-btn {
+                min-width: var(--touch-target-size);
+                height: var(--touch-target-size);
+                font-size: 14px;
+            }
+            
+            /* 设置页面移动端 */
+            .settings-container {
+                padding: var(--mobile-padding);
+            }
+            
+            .settings-section {
+                padding: var(--mobile-padding);
+                margin-bottom: 12px;
+            }
+            
+            .settings-section h3 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            
+            /* 导航项移动端 */
+            .nav-item {
+                padding: 12px 20px;
+                margin: 4px 12px;
+            }
+            
+            .nav-item-icon {
+                width: 20px;
+                height: 20px;
+                font-size: 16px;
+            }
+            
+            .nav-item-text {
+                font-size: 14px;
+            }
+            
+            .status-indicator {
+                width: 6px;
+                height: 6px;
+            }
+        }
+
+        /* 📱 小屏手机适配 (最大480px) */
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 260px;
+            }
+            
+            .header {
+                padding-left: 60px;
+            }
+            
+            .page-title {
+                font-size: 16px;
+            }
+            
+            .project-card {
+                padding: 12px;
+            }
+            
+            .card-info h3 {
+                font-size: 15px;
+            }
+            
+            .card-info p {
+                font-size: 12px;
+            }
+            
+            .feature-item {
+                font-size: 12px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            
+            .language-switcher {
+                top: 12px;
+                right: 12px;
+            }
+            
+            .mobile-menu-btn {
+                top: 12px;
+                left: 12px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* 🌐 横屏适配 */
+        @media (max-width: 768px) and (orientation: landscape) {
+            .header {
+                height: 48px;
+            }
+            
+            .rag-chat {
+                height: calc(100vh - 48px);
+            }
+            
             .sidebar {
                 width: 240px;
             }
             
-            .cards-grid {
-                grid-template-columns: 1fr;
+            .mobile-menu-btn {
+                width: 40px;
+                height: 40px;
             }
+        }
 
-            .settings-container {
-                padding: 16px;
+        /* 🎯 触摸优化 */
+        @media (hover: none) and (pointer: coarse) {
+            .nav-item:hover {
+                background: var(--bg-secondary);
             }
-
-            .settings-section {
-                padding: 16px;
+            
+            .nav-item:active {
+                background: var(--bg-hover);
+                transform: scale(0.98);
+            }
+            
+            .btn:active {
+                transform: scale(0.95);
+            }
+            
+            .project-card:active {
+                transform: scale(0.98);
             }
         }
     </style>
 </head>
 <body>
+    <!-- 📱 移动端汉堡菜单按钮 -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <!-- 🌐 语言切换器 -->
+    <div class="language-switcher" id="languageSwitcher">
+        <button class="language-btn" id="languageBtn">
+            <span class="language-flag">🇨🇳</span>
+            <span class="language-name">中文</span>
+        </button>
+        <div class="language-dropdown" id="languageDropdown">
+            <div class="language-option active" data-lang="zh-CN">
+                <span>🇨🇳</span>
+                <span>简体中文</span>
+            </div>
+            <div class="language-option" data-lang="en-US">
+                <span>🇺🇸</span>
+                <span>English</span>
+            </div>
+            <div class="language-option" data-lang="ja-JP">
+                <span>🇯🇵</span>
+                <span>日本語</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 📱 移动端遮罩层 -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+    
     <div class="app-container">
         <!-- 侧边栏 -->
         <div class="sidebar">
@@ -975,9 +1450,14 @@
         </div>
     </div>
 
+    <!-- 🌐 引入语言包和国际化管理器 -->
+    <script src="i18n/languages.js"></script>
+    <script src="i18n/i18n-manager.js"></script>
+    
     <script>
         let currentPage = 'dashboard';
         let currentTheme = 'dark';
+        let i18n = null; // 国际化管理器实例
 
         // 页面标题映射
         const pageTitles = {
@@ -1192,6 +1672,253 @@
                     }
                 });
             }
+        });
+
+        // 🌐 国际化初始化
+        function initializeI18n() {
+            try {
+                i18n = initI18n();
+                if (i18n) {
+                    console.log('🌐 国际化系统初始化成功');
+                    
+                    // 更新语言切换器显示
+                    updateLanguageSwitcher();
+                    
+                    // 监听语言变化
+                    i18n.addObserver((language) => {
+                        console.log(`🌐 语言切换到: ${language}`);
+                        updateLanguageSwitcher();
+                        updatePageTitle();
+                    });
+                } else {
+                    console.warn('🌐 国际化系统初始化失败');
+                }
+            } catch (error) {
+                console.error('🌐 国际化系统初始化错误:', error);
+            }
+        }
+
+        // 更新语言切换器显示
+        function updateLanguageSwitcher() {
+            if (!i18n) return;
+            
+            const currentLang = i18n.getCurrentLanguage();
+            const langData = LANGUAGES[currentLang];
+            
+            if (langData) {
+                const flagElement = document.querySelector('.language-flag');
+                const nameElement = document.querySelector('.language-name');
+                
+                if (flagElement) flagElement.textContent = langData.flag;
+                if (nameElement) nameElement.textContent = langData.name;
+                
+                // 更新下拉选项的激活状态
+                document.querySelectorAll('.language-option').forEach(option => {
+                    option.classList.remove('active');
+                    if (option.dataset.lang === currentLang) {
+                        option.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // 更新页面标题
+        function updatePageTitle() {
+            if (!i18n) return;
+            
+            const titleElement = document.querySelector('.page-title');
+            if (titleElement && pageTitles[currentPage]) {
+                const titleKey = `titles.${pageTitles[currentPage].toLowerCase().replace(' ', '')}`;
+                const translatedTitle = i18n.t(titleKey, pageTitles[currentPage]);
+                titleElement.textContent = translatedTitle;
+            }
+        }
+
+        // 📱 移动端菜单功能
+        function initializeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.querySelector('.sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            if (!mobileMenuBtn || !sidebar || !mobileOverlay) return;
+            
+            // 汉堡菜单点击事件
+            mobileMenuBtn.addEventListener('click', function() {
+                const isOpen = sidebar.classList.contains('mobile-open');
+                
+                if (isOpen) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            });
+            
+            // 遮罩层点击关闭菜单
+            mobileOverlay.addEventListener('click', closeMobileMenu);
+            
+            // 侧边栏导航项点击后关闭菜单
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    if (window.innerWidth <= 768) {
+                        setTimeout(closeMobileMenu, 150); // 延迟关闭，让页面切换动画先执行
+                    }
+                });
+            });
+            
+            // 监听窗口大小变化
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768) {
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        // 打开移动端菜单
+        function openMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.querySelector('.sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            mobileMenuBtn.classList.add('active');
+            sidebar.classList.add('mobile-open');
+            mobileOverlay.style.display = 'block';
+            
+            // 延迟显示遮罩层动画
+            setTimeout(() => {
+                mobileOverlay.classList.add('show');
+            }, 10);
+            
+            // 防止背景滚动
+            document.body.style.overflow = 'hidden';
+        }
+
+        // 关闭移动端菜单
+        function closeMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const sidebar = document.querySelector('.sidebar');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            
+            mobileMenuBtn.classList.remove('active');
+            sidebar.classList.remove('mobile-open');
+            mobileOverlay.classList.remove('show');
+            
+            // 延迟隐藏遮罩层
+            setTimeout(() => {
+                mobileOverlay.style.display = 'none';
+            }, 300);
+            
+            // 恢复背景滚动
+            document.body.style.overflow = '';
+        }
+
+        // 🌐 语言切换功能
+        function initializeLanguageSwitcher() {
+            const languageBtn = document.getElementById('languageBtn');
+            const languageDropdown = document.getElementById('languageDropdown');
+            const languageOptions = document.querySelectorAll('.language-option');
+            
+            if (!languageBtn || !languageDropdown) return;
+            
+            // 语言按钮点击事件
+            languageBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                languageDropdown.classList.toggle('show');
+            });
+            
+            // 语言选项点击事件
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const selectedLang = this.dataset.lang;
+                    
+                    if (i18n && selectedLang) {
+                        i18n.switchLanguage(selectedLang);
+                    }
+                    
+                    languageDropdown.classList.remove('show');
+                });
+            });
+            
+            // 点击其他地方关闭下拉菜单
+            document.addEventListener('click', function() {
+                languageDropdown.classList.remove('show');
+            });
+            
+            // 阻止下拉菜单内部点击事件冒泡
+            languageDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+
+        // 📱 移动端适配优化
+        function initializeMobileOptimizations() {
+            // 设置CSS自定义属性用于移动端高度计算
+            function setAppHeight() {
+                const vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+            }
+            
+            // 初始设置
+            setAppHeight();
+            
+            // 监听窗口大小变化（处理移动端地址栏隐藏/显示）
+            window.addEventListener('resize', setAppHeight);
+            window.addEventListener('orientationchange', () => {
+                setTimeout(setAppHeight, 100);
+            });
+            
+            // 移动端触摸优化
+            if ('ontouchstart' in window) {
+                document.body.classList.add('touch-device');
+                
+                // 防止双击缩放
+                let lastTouchEnd = 0;
+                document.addEventListener('touchend', function(event) {
+                    const now = (new Date()).getTime();
+                    if (now - lastTouchEnd <= 300) {
+                        event.preventDefault();
+                    }
+                    lastTouchEnd = now;
+                }, false);
+            }
+            
+            // 移动端键盘处理
+            if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+                const viewport = document.querySelector('meta[name=viewport]');
+                if (viewport) {
+                    // 输入框获得焦点时调整视口
+                    document.addEventListener('focusin', function(e) {
+                        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                        }
+                    });
+                    
+                    // 输入框失去焦点时恢复视口
+                    document.addEventListener('focusout', function(e) {
+                        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover');
+                        }
+                    });
+                }
+            }
+        }
+
+        // 🚀 主初始化函数
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 NEXUS Research Workstation 初始化中...');
+            
+            // 初始化国际化系统
+            initializeI18n();
+            
+            // 初始化移动端菜单
+            initializeMobileMenu();
+            
+            // 初始化语言切换器
+            initializeLanguageSwitcher();
+            
+            // 初始化移动端优化
+            initializeMobileOptimizations();
+            
+            console.log('✅ NEXUS Research Workstation 初始化完成');
         });
     </script>
 </body>
