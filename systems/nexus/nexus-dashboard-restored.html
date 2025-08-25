@@ -1567,7 +1567,7 @@
             <nav class="sidebar-nav">
                 <button class="nav-item active" onclick="showPage('dashboard')">
                     <div class="nav-item-icon">📊</div>
-                    <div class="nav-item-text">N.S.S - Novena Garfield</div>
+                    <div class="nav-item-text" data-i18n="nav.dashboard">仪表板</div>
                     <div class="status-indicator online"></div>
                 </button>
                 
@@ -1627,8 +1627,8 @@
             <!-- 头部 -->
             <header class="header">
                 <div class="header-left">
-                    <button class="back-btn" onclick="window.history.back()">←</button>
-                    <h1 class="page-title">N.S.S - Novena Garfield</h1>
+                    <button class="back-btn" onclick="goBack()">←</button>
+                    <h1 class="page-title" data-i18n="titles.dashboard">仪表板</h1>
                 </div>
                 <div class="header-right">
                     <!-- 🌐 语言切换器 -->
@@ -2534,6 +2534,18 @@
             languageDropdown.addEventListener('click', function(e) {
                 e.stopPropagation();
             });
+        }
+
+        // 🔙 智能返回功能
+        function goBack() {
+            // 检查是否有历史记录且不是从外部链接直接进入
+            if (window.history.length > 1 && document.referrer && 
+                document.referrer.includes(window.location.hostname)) {
+                window.history.back();
+            } else {
+                // 如果没有合适的历史记录，返回到主页面或Dashboard
+                showPage('dashboard');
+            }
         }
 
         // 📱 移动端适配优化
