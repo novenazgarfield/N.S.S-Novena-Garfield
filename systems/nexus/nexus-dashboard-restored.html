@@ -202,9 +202,10 @@
 
         .sidebar-footer {
             padding: 20px;
-            padding-top: 24px; /* 稍微增加顶部间距，让设置按钮往下一点 */
             border-top: 1px solid var(--border-color);
             transition: border-color 0.2s;
+            /* 确保设置按钮与输入框底部对齐 */
+            margin-top: auto;
         }
 
         /* 主内容区 */
@@ -530,7 +531,6 @@
 
         .chat-input {
             padding: 20px;
-            padding-top: 24px; /* 稍微增加顶部间距，让输入框往下一点 */
             border-top: 1px solid var(--border-color);
             background: var(--bg-secondary);
             transition: background-color 0.2s, border-color 0.2s;
