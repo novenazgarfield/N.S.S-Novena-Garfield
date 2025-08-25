@@ -22,7 +22,7 @@ const LANGUAGES = {
         
         // 页面标题
         titles: {
-            dashboard: '仪表板',
+            dashboard: 'N.S.S - Novena Garfield',
             ragsystem: 'RAG系统',
             changlee: '长离',
             nexus: 'NEXUS',
