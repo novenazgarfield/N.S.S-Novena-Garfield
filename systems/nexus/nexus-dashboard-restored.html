@@ -1117,38 +1117,56 @@
             
             .chat-messages {
                 padding: var(--mobile-padding);
+                /* 优化移动端滚动 */
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
             }
             
             .message {
                 margin-bottom: 12px;
+                /* 防止消息过宽 */
+                max-width: 100%;
+                word-wrap: break-word;
             }
             
             .message-avatar {
                 width: 32px;
                 height: 32px;
                 font-size: 16px;
+                /* 确保头像不会缩小 */
+                flex-shrink: 0;
             }
             
             .message-content {
                 font-size: var(--mobile-font-size);
                 line-height: var(--mobile-line-height);
                 padding: 10px 12px;
+                /* 优化移动端文本显示 */
+                word-break: break-word;
+                overflow-wrap: break-word;
             }
             
             .chat-input {
                 padding: var(--mobile-padding);
+                /* 确保输入框在软键盘弹出时可见 */
+                position: sticky;
+                bottom: 0;
+                background: var(--bg-secondary);
+                border-top: 1px solid var(--border-color);
             }
             
             .chat-input-field {
-                font-size: var(--mobile-font-size);
+                font-size: 16px; /* 防止iOS缩放 */
                 padding: 12px 16px;
                 min-height: var(--touch-target-size);
+                border-radius: 12px;
             }
             
             .send-btn {
                 min-width: var(--touch-target-size);
                 height: var(--touch-target-size);
                 font-size: 14px;
+                border-radius: 12px;
             }
             
             /* 设置页面移动端 */
@@ -1277,6 +1295,180 @@
             
             .project-card:active {
                 transform: scale(0.98);
+            }
+
+            /* 增大触摸目标 */
+            .nav-item {
+                min-height: var(--touch-target-size);
+            }
+
+            .btn {
+                min-height: var(--touch-target-size);
+                padding: 12px 20px;
+            }
+
+            /* 优化滚动性能 */
+            .chat-messages {
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+        }
+
+        /* 📱 超小屏设备适配 (最大360px) */
+        @media (max-width: 360px) {
+            .sidebar {
+                width: 240px;
+            }
+
+            .header {
+                padding-left: 60px;
+            }
+
+            .page-title {
+                font-size: 16px;
+            }
+
+            .project-card {
+                padding: 12px;
+            }
+
+            .card-header h3 {
+                font-size: 16px;
+            }
+
+            .card-features {
+                font-size: 12px;
+            }
+
+            .mobile-menu-btn {
+                width: 36px;
+                height: 36px;
+                top: 12px;
+                left: 12px;
+            }
+
+            .mobile-menu-btn span {
+                width: 16px;
+            }
+        }
+
+        /* 📱 大屏手机适配 (481px - 640px) */
+        @media (min-width: 481px) and (max-width: 640px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 16px;
+            }
+
+            .project-card {
+                padding: 18px;
+            }
+        }
+
+        /* 🖥️ 大屏幕优化 (1440px+) */
+        @media (min-width: 1440px) {
+            .cards-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 24px;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+
+            .content {
+                max-width: 1400px;
+                margin: 0 auto;
+            }
+        }
+
+        /* 🖥️ 超大屏幕优化 (1920px+) */
+        @media (min-width: 1920px) {
+            .cards-grid {
+                grid-template-columns: repeat(5, 1fr);
+                max-width: 1800px;
+            }
+
+            .content {
+                max-width: 1800px;
+            }
+        }
+
+        /* 📱 折叠屏设备适配 */
+        @media (min-width: 600px) and (max-width: 900px) and (orientation: portrait) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .sidebar {
+                width: 240px;
+            }
+        }
+
+        /* 📱 平板横屏优化 */
+        @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+            .cards-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+
+            .project-card {
+                padding: 20px;
+            }
+        }
+
+        /* 🔄 动态岛适配 (iPhone 14 Pro系列) */
+        @media screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) {
+            .header {
+                padding-top: env(safe-area-inset-top, 0);
+                height: calc(60px + env(safe-area-inset-top, 0));
+            }
+
+            .mobile-menu-btn {
+                top: calc(16px + env(safe-area-inset-top, 0));
+            }
+        }
+
+        /* 🔄 刘海屏适配 */
+        @supports (padding: max(0px)) {
+            .header {
+                padding-left: max(24px, env(safe-area-inset-left));
+                padding-right: max(24px, env(safe-area-inset-right));
+            }
+
+            .sidebar {
+                padding-left: env(safe-area-inset-left, 0);
+            }
+
+            .mobile-menu-btn {
+                left: max(16px, env(safe-area-inset-left));
+            }
+        }
+
+        /* 🎯 高刷新率屏幕优化 */
+        @media (min-resolution: 120dpi) {
+            * {
+                will-change: auto;
+            }
+
+            .nav-item,
+            .project-card,
+            .btn {
+                backface-visibility: hidden;
+                transform: translateZ(0);
+            }
+        }
+
+        /* 📱 小屏幕密度优化 */
+        @media (max-width: 480px) and (min-resolution: 2dppx) {
+            .project-card {
+                border-width: 0.5px;
+            }
+
+            .sidebar {
+                border-right-width: 0.5px;
+            }
+
+            .header {
+                border-bottom-width: 0.5px;
             }
         }
     </style>
