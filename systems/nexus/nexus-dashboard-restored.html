@@ -87,6 +87,9 @@
         .app-container {
             display: flex;
             height: calc(var(--real-vh, 1vh) * 100); /* 使用动态视窗高度 */
+            width: 100vw; /* 强制容器宽度为视窗宽度 */
+            max-width: 100vw; /* 防止容器被撑大 */
+            overflow: hidden; /* 防止内容溢出 */
         }
 
         /* 侧边栏 */
@@ -191,6 +194,7 @@
             overflow: hidden; /* 隐藏溢出文本 */
             text-overflow: ellipsis; /* 长文本显示省略号 */
             min-width: 0; /* 允许flex项目收缩 */
+            max-width: 180px; /* 强制限制文本最大宽度，防止撑大侧边栏 */
             font-weight: 500;
         }
         

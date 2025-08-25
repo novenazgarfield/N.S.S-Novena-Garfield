@@ -21,6 +21,8 @@ html, body {
     display: flex;
     height: 100vh;
     width: 100vw;
+    max-width: 100vw; /* 防止容器被撑大 */
+    overflow: hidden; /* 防止内容溢出 */
     position: relative;
 }
 
@@ -121,6 +123,8 @@ html, body {
     text-overflow: ellipsis;
     line-height: 1.2;
     font-weight: 500;
+    max-width: 180px; /* 强制限制文本最大宽度，防止撑大侧边栏 */
+    min-width: 0; /* 允许flex项目收缩 */
 }
 
 .status-indicator {
