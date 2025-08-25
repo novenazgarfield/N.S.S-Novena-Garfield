@@ -155,8 +155,9 @@
             width: 100%;
             min-width: 200px; /* 设置最小宽度确保一致性 */
             text-align: left;
-            height: 48px; /* 固定高度确保所有导航项一致 */
+            min-height: 48px; /* 使用min-height而不是固定height，适应不同语言文字 */
             box-sizing: border-box; /* 确保padding包含在高度内 */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK JP', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', sans-serif;
         }
 
         .nav-item:hover {
@@ -182,11 +183,31 @@
         .nav-item-text {
             flex: 1;
             font-size: 14px;
-            line-height: 1.2; /* 固定行高确保一致性 */
+            line-height: 1.3; /* 优化行高适应CJK文字 */
             white-space: nowrap; /* 防止文本换行 */
             overflow: hidden; /* 隐藏溢出文本 */
             text-overflow: ellipsis; /* 长文本显示省略号 */
             min-width: 0; /* 允许flex项目收缩 */
+            font-weight: 500;
+        }
+        
+        /* 针对日语文字的特殊优化 */
+        [lang="ja-JP"] .nav-item-text {
+            font-weight: 400; /* 日语文字使用较细的字重 */
+            line-height: 1.4;
+            letter-spacing: 0.025em;
+            font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', 'Noto Sans CJK JP', sans-serif;
+        }
+        
+        [lang="ja-JP"] .nav-item {
+            min-height: 52px; /* 日语文字需要更多垂直空间 */
+            padding: 14px 20px; /* 增加垂直padding */
+        }
+        
+        [lang="ja-JP"] .page-title {
+            font-weight: 500;
+            line-height: 1.3;
+            font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', 'Noto Sans CJK JP', sans-serif;
         }
 
         .status-indicator {
