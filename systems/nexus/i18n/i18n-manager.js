@@ -91,6 +91,12 @@ class I18nManager {
             const key = element.getAttribute('data-i18n');
             const text = this.t(key);
             
+            // 检查是否是侧边栏导航项且启用了英文固定模式
+            const isNavItem = element.closest('.nav-item') && key.startsWith('nav.');
+            if (isNavItem && window.sidebarEnglishMode) {
+                return; // 跳过侧边栏项的翻译
+            }
+            
             if (element.tagName === 'INPUT' && element.type === 'text') {
                 element.placeholder = text;
             } else {
@@ -100,6 +106,11 @@ class I18nManager {
         
         // 更新特定元素
         this.updateSpecificElements(lang);
+        
+        // 如果启用了侧边栏英文模式，重新应用英文
+        if (window.sidebarEnglishMode && typeof window.updateSidebarToEnglish === 'function') {
+            window.updateSidebarToEnglish();
+        }
     }
     
     // 更新特定元素
@@ -554,6 +565,41 @@ class I18nManager {
     getLocale() {
         return this.currentLanguage;
     }
+    
+    // 公共方法：更新所有元素
+    updateElements() {
+        this.applyLanguage(this.currentLanguage);
+    }
+}
+
+// 获取浏览器语言
+function getBrowserLanguage() {
+    const browserLang = navigator.language || navigator.userLanguage;
+    
+    // 支持的语言映射
+    const supportedLanguages = {
+        'zh': 'zh-CN',
+        'zh-CN': 'zh-CN',
+        'zh-Hans': 'zh-CN',
+        'en': 'en-US',
+        'en-US': 'en-US',
+        'ja': 'ja-JP',
+        'ja-JP': 'ja-JP'
+    };
+    
+    // 精确匹配
+    if (supportedLanguages[browserLang]) {
+        return supportedLanguages[browserLang];
+    }
+    
+    // 语言前缀匹配
+    const langPrefix = browserLang.split('-')[0];
+    if (supportedLanguages[langPrefix]) {
+        return supportedLanguages[langPrefix];
+    }
+    
+    // 默认返回中文
+    return 'zh-CN';
 }
 
 // 创建全局实例
