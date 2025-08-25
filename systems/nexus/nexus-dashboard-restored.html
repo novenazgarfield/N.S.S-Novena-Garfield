@@ -248,6 +248,10 @@
             font-size: 18px;
             font-weight: 600;
             color: var(--text-primary);
+            min-width: 120px; /* 设置最小宽度确保一致性 */
+            white-space: nowrap; /* 防止标题换行 */
+            overflow: hidden; /* 隐藏溢出文本 */
+            text-overflow: ellipsis; /* 长标题显示省略号 */
         }
 
         .header-right {
@@ -1009,6 +1013,7 @@
             
             .page-title {
                 font-size: 18px;
+                min-width: 100px; /* 移动端稍小的最小宽度 */
             }
             
             .theme-toggle {
@@ -1188,6 +1193,7 @@
             
             .page-title {
                 font-size: 16px;
+                min-width: 80px; /* 小屏幕更小的最小宽度 */
             }
             
             .project-card {
