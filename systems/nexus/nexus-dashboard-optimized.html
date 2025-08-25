@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="description" content="NEXUS Research Workstation - Advanced AI-powered research platform">
+    <meta name="keywords" content="AI, Research, RAG, Machine Learning, Data Analysis">
+    <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
+    
+    <!-- 预加载关键资源 -->
+    <link rel="preload" href="assets/css/main.css" as="style">
+    <link rel="preload" href="assets/js/main.js" as="script">
+    
+    <!-- 样式表 -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    
+    <!-- PWA支持 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4a9eff">
+    
+    <!-- 图标 -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+</head>
+<body>
+    <!-- 加载指示器 -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">🚀</div>
+            <div class="loading-text">NEXUS</div>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- 主应用容器 -->
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <!-- 侧边栏头部 -->
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🚀</div>
+                    <div class="logo-text">NEXUS</div>
+                </div>
+                <div class="logo-subtitle">Command Center</div>
+            </div>
+
+            <!-- 导航菜单 -->
+            <nav class="nav-menu">
+                <button class="nav-item active" data-page="dashboard">
+                    <div class="nav-icon">📊</div>
+                    <div class="nav-text">Dashboard</div>
+                    <div class="nav-status online"></div>
+                </button>
+                
+                <button class="nav-item" data-page="rag">
+                    <div class="nav-icon">🧠</div>
+                    <div class="nav-text">RAG System</div>
+                    <div class="nav-status online"></div>
+                </button>
+                
+                <button class="nav-item" data-page="changlee">
+                    <div class="nav-icon">🐱</div>
+                    <div class="nav-text">Changlee</div>
+                    <div class="nav-status online"></div>
+                </button>
+                
+                <button class="nav-item" data-page="nexus">
+                    <div class="nav-icon">⚡</div>
+                    <div class="nav-text">NEXUS</div>
+                    <div class="nav-status online"></div>
+                </button>
+                
+                <button class="nav-item" data-page="bovine">
+                    <div class="nav-icon">🐄</div>
+                    <div class="nav-text">Bovine Insight</div>
+                    <div class="nav-status offline"></div>
+                </button>
+                
+                <button class="nav-item" data-page="chronicle">
+                    <div class="nav-icon">📝</div>
+                    <div class="nav-text">Chronicle</div>
+                    <div class="nav-status offline"></div>
+                </button>
+                
+                <button class="nav-item" data-page="genome">
+                    <div class="nav-icon">🧬</div>
+                    <div class="nav-text">Genome Jigsaw</div>
+                    <div class="nav-status online"></div>
+                </button>
+                
+                <button class="nav-item" data-page="molecular">
+                    <div class="nav-icon">🧪</div>
+                    <div class="nav-text">Molecular Simulation</div>
+                    <div class="nav-status online"></div>
+                </button>
+            </nav>
+
+            <!-- 侧边栏底部 -->
+            <div class="sidebar-footer">
+                <button class="nav-item" id="settingsBtn">
+                    <div class="nav-icon">⚙️</div>
+                    <div class="nav-text">Settings</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div class="main-content">
+            <!-- 顶部栏 -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="back-btn" id="backBtn">←</button>
+                    <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                </div>
+                
+                <div class="header-right">
+                    <button class="language-selector" id="languageToggle">
+                        <div class="language-flag">🇨🇳</div>
+                        <div class="language-text">简体中文</div>
+                    </button>
+                    <button class="header-btn" id="themeToggle">🌙</button>
+                    <button class="header-btn" id="settingsHeaderBtn">⚙️</button>
+                    <button class="header-btn">🔔</button>
+                    <button class="header-btn">👤</button>
+                </div>
+            </header>
+
+            <!-- Dashboard页面 -->
+            <div id="dashboardPage" class="page-content content" style="display: flex;">
+                <div class="dashboard-grid">
+                    <!-- NEXUS Remote Control卡片 -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">⚡</div>
+                            <div class="card-title-group">
+                                <h3>NEXUS Remote Control</h3>
+                                <p>Revolutionary Remote Command & Control System</p>
+                            </div>
+                        </div>
+                        <div class="card-description">
+                            Break through LAN restrictions to achieve true global remote power management. Support remote boot, shutdown, restart with enterprise-level security.
+                        </div>
+                        <ul class="card-features">
+                            <li>Global remote access - Cloud server relay</li>
+                            <li>Complete power management - WOL/Shutdown/Restart</li>
+                            <li>Zero command line experience - GUI interface</li>
+                            <li>Mobile optimization - PWA native experience</li>
+                            <li>Enterprise security - 256-bit encryption</li>
+                        </ul>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">🚀 Launch NEXUS</button>
+                            <button class="btn btn-secondary">📁 Documentation</button>
+                        </div>
+                    </div>
+
+                    <!-- RAG System卡片 -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">🧠</div>
+                            <div class="card-title-group">
+                                <h3>RAG System</h3>
+                                <p>Retrieval-Augmented Generation AI</p>
+                            </div>
+                        </div>
+                        <div class="card-description">
+                            Advanced AI-powered document analysis and question-answering system with multi-format support and intelligent retrieval capabilities.
+                        </div>
+                        <ul class="card-features">
+                            <li>Multi-format documents - PDF/DOCX/Excel/Markdown</li>
+                            <li>Intelligent retrieval - Vector semantic search</li>
+                            <li>Memory system - Permanent/Temporary memory management</li>
+                            <li>Multi-turn dialogue - Context understanding</li>
+                            <li>API management - Multi-model support</li>
+                        </ul>
+                        <div class="card-actions">
+                            <button class="btn btn-primary nav-item" data-page="rag">🧠 Launch RAG</button>
+                            <button class="btn btn-secondary">📚 Document Library</button>
+                        </div>
+                    </div>
+
+                    <!-- Unified Platform卡片 -->
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div class="card-icon">📊</div>
+                            <div class="card-title-group">
+                                <h3>Unified Platform</h3>
+                                <p>Research Workstation Management</p>
+                            </div>
+                        </div>
+                        <div class="card-description">
+                            Unified installer, launcher and manager for the entire research workstation, providing a one-stop system management experience.
+                        </div>
+                        <ul class="card-features">
+                            <li>System-level deployment - Fleet command capability</li>
+                            <li>Dependency check - Automatic environment configuration</li>
+                            <li>Status monitoring - Real-time system status</li>
+                        </ul>
+                        <div class="card-actions">
+                            <button class="btn btn-primary">🚀 Management Platform</button>
+                            <button class="btn btn-secondary">📋 System Status</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAG系统页面 -->
+            <div id="ragPage" class="page-content rag-container" style="display: none;">
+                <div class="rag-header">
+                    <div class="rag-welcome">
+                        <div class="rag-avatar">🤖</div>
+                        <div class="rag-welcome-text">
+                            你好！我是RAG智能助手，可以帮你分析文档、回答问题。请上传文档或直接提问。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="rag-chat" id="ragChat">
+                    <!-- 聊天消息将在这里动态添加 -->
+                </div>
+                
+                <div class="rag-input-container">
+                    <div class="chat-input">
+                        <input type="text" id="ragInput" placeholder="输入你的问题..." autocomplete="off">
+                        <button class="send-btn" id="ragSendBtn">发送</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他功能页面 -->
+            <div id="changleePage" class="page-content content" style="display: none;">
+                <div class="under-development">
+                    <div class="icon">🐱</div>
+                    <h2 data-i18n="under_development">功能开发中</h2>
+                    <p data-i18n="coming_soon">该功能正在开发中，敬请期待...</p>
+                </div>
+            </div>
+
+            <div id="nexusPage" class="page-content content" style="display: none;">
+                <div class="under-development">
+                    <div class="icon">⚡</div>
+                    <h2 data-i18n="under_development">功能开发中</h2>
+                    <p data-i18n="coming_soon">该功能正在开发中，敬请期待...</p>
+                </div>
+            </div>
+
+            <div id="bovinePage" class="page-content content" style="display: none;">
+                <div class="under-development">
+                    <div class="icon">🐄</div>
+                    <h2 data-i18n="under_development">功能开发中</h2>
+                    <p data-i18n="coming_soon">该功能正在开发中，敬请期待...</p>
+                </div>
+            </div>
+
+            <div id="chroniclePage" class="page-content content" style="display: none;">
+                <div class="under-development">
+                    <div class="icon">📝</div>
+                    <h2 data-i18n="under_development">功能开发中</h2>
+                    <p data-i18n="coming_soon">该功能正在开发中，敬请期待...</p>
+                </div>
+            </div>
+
+            <div id="genomePage" class="page-content content" style="display: none;">
+                <div class="under-development">
+                    <div class="icon">🧬</div>
+                    <h2 data-i18n="under_development">功能开发中</h2>
+                    <p data-i18n="coming_soon">该功能正在开发中，敬请期待...</p>
+                </div>
+            </div>
+
+            <div id="molecularPage" class="page-content content" style="display: none;">
+                <div class="under-development">
+                    <div class="icon">🧪</div>
+                    <h2 data-i18n="under_development">功能开发中</h2>
+                    <p data-i18n="coming_soon">该功能正在开发中，敬请期待...</p>
+                </div>
+            </div>
+
+            <!-- 设置页面 -->
+            <div id="settingsPage" class="page-content content" style="display: none;">
+                <div class="settings-container">
+                    <div class="settings-section">
+                        <div class="settings-header">
+                            <h3>外观设置</h3>
+                            <p>自定义界面外观和主题</p>
+                        </div>
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4>深色模式</h4>
+                                    <p>切换深色/浅色主题</p>
+                                </div>
+                                <div class="setting-control">
+                                    <div class="toggle active" id="darkModeToggle"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-header">
+                            <h3>语言设置</h3>
+                            <p>选择界面显示语言</p>
+                        </div>
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4>界面语言</h4>
+                                    <p>当前: 简体中文</p>
+                                </div>
+                                <div class="setting-control">
+                                    <button class="btn btn-secondary" id="languageSettingBtn">切换语言</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <div class="settings-header">
+                            <h3>系统信息</h3>
+                            <p>查看系统版本和状态</p>
+                        </div>
+                        <div class="settings-content">
+                            <div class="setting-item">
+                                <div class="setting-info">
+                                    <h4>版本信息</h4>
+                                    <p>NEXUS v2.0.0 - 优化版</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="assets/js/main.js"></script>
+    
+    <!-- 页面加载完成后隐藏加载屏幕 -->
+    <script>
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>
