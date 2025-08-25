@@ -154,6 +154,8 @@
             width: 100%;
             min-width: 200px; /* 设置最小宽度确保一致性 */
             text-align: left;
+            height: 48px; /* 固定高度确保所有导航项一致 */
+            box-sizing: border-box; /* 确保padding包含在高度内 */
         }
 
         .nav-item:hover {
@@ -179,6 +181,7 @@
         .nav-item-text {
             flex: 1;
             font-size: 14px;
+            line-height: 1.2; /* 固定行高确保一致性 */
             white-space: nowrap; /* 防止文本换行 */
             overflow: hidden; /* 隐藏溢出文本 */
             text-overflow: ellipsis; /* 长文本显示省略号 */
@@ -1159,6 +1162,7 @@
                 padding: 12px 20px;
                 margin: 4px 12px;
                 min-width: 180px; /* 移动端稍小的最小宽度 */
+                height: 44px; /* 移动端固定高度 */
             }
             
             .nav-item-icon {
