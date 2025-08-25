@@ -40,6 +40,7 @@
             
             /* 动态高度变量 */
             --app-height: 100vh;
+            --real-vh: 1vh; /* 真实视窗高度单位，将通过JS动态设置 */
             
             /* 移动端专用变量 */
             --mobile-header-height: 60px;
@@ -70,7 +71,7 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            height: 100vh;
+            height: calc(var(--real-vh, 1vh) * 100); /* 使用动态视窗高度 */
             overflow: hidden;
             margin: 0;
             padding: 0;
@@ -85,7 +86,7 @@
 
         .app-container {
             display: flex;
-            height: 100vh;
+            height: calc(var(--real-vh, 1vh) * 100); /* 使用动态视窗高度 */
         }
 
         /* 侧边栏 */
@@ -440,7 +441,7 @@
         /* RAG 聊天界面 */
         .rag-chat {
             display: none;
-            height: calc(100vh - 60px); /* 减去header高度 */
+            height: calc(var(--real-vh, 1vh) * 100 - 60px); /* 使用动态视窗高度减去header高度 */
             flex-direction: column;
             position: absolute;
             top: 60px; /* header高度 */
@@ -999,7 +1000,7 @@
                 left: -280px;
                 top: 0;
                 width: 280px;
-                height: 100vh;
+                height: calc(var(--real-vh, 1vh) * 100); /* 使用动态视窗高度 */
                 z-index: 1000;
                 transition: left 0.3s ease;
                 box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
@@ -1111,7 +1112,7 @@
             
             /* RAG聊天界面移动端 */
             .rag-chat {
-                height: calc(100vh - var(--mobile-header-height));
+                height: calc(var(--real-vh, 1vh) * 100 - var(--mobile-header-height)); /* 使用动态视窗高度 */
             }
             
             .chat-messages {
@@ -1246,7 +1247,7 @@
             }
             
             .rag-chat {
-                height: calc(100vh - 60px);
+                height: calc(var(--real-vh, 1vh) * 100 - 60px); /* 使用动态视窗高度 */
             }
             
             .sidebar {
@@ -2263,6 +2264,8 @@
                     document.addEventListener('focusin', function(e) {
                         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                             viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+                            // 延迟重新计算视窗高度，等待键盘弹出
+                            setTimeout(setRealViewportHeight, 300);
                         }
                     });
                     
@@ -2270,8 +2273,15 @@
                     document.addEventListener('focusout', function(e) {
                         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                             viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover');
+                            // 延迟重新计算视窗高度，等待键盘收起
+                            setTimeout(setRealViewportHeight, 300);
                         }
                     });
+                }
+                
+                // 额外的视觉视窗变化监听（iOS Safari专用）
+                if (window.visualViewport) {
+                    window.visualViewport.addEventListener('resize', setRealViewportHeight);
                 }
             }
         }
@@ -2282,8 +2292,28 @@
         }
 
         // 🚀 主初始化函数
+        // 动态视窗高度处理
+        function setRealViewportHeight() {
+            // 获取真实的视窗高度（排除浏览器UI）
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--real-vh', `${vh}px`);
+        }
+
+        // 初始设置
+        setRealViewportHeight();
+
+        // 监听窗口大小变化和方向变化
+        window.addEventListener('resize', setRealViewportHeight);
+        window.addEventListener('orientationchange', function() {
+            // 延迟执行，等待方向变化完成
+            setTimeout(setRealViewportHeight, 100);
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             console.log('🚀 NEXUS Research Workstation 初始化中...');
+            
+            // 确保视窗高度正确设置
+            setRealViewportHeight();
             
             // 初始化国际化系统
             initializeI18n();
