@@ -206,7 +206,7 @@ body {
 /* 侧边栏底部 - 精确对齐设置 */
 .sidebar-footer {
     padding: 20px;
-    padding-bottom: 14px; /* 精确调整，与RAG输入框对齐 */
+    padding-bottom: 18px; /* 精确微调，与RAG输入框底部完美对齐 */
     border-top: 1px solid var(--border-color);
     transition: border-color 0.2s;
     margin-top: auto;
