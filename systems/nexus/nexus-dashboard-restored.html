@@ -163,6 +163,8 @@
         .nav-item.active {
             background: var(--accent-blue);
             color: white;
+            border-left: 3px solid var(--accent-blue);
+            padding-left: 17px; /* 调整左边距以保持对齐 */
         }
 
         .nav-item-icon {
@@ -1178,8 +1180,8 @@
             <!-- 头部 -->
             <header class="header">
                 <div class="header-left">
-                    <button class="back-btn">←</button>
-                    <h1 class="page-title">Research Workstation</h1>
+                    <button class="back-btn" onclick="goToProjectInfo()">←</button>
+                    <h1 class="page-title">Dashboard</h1>
                 </div>
                 <div class="header-right">
                     <!-- 🌐 语言切换器 -->
@@ -1455,7 +1457,7 @@
 
         // 页面标题映射
         const pageTitles = {
-            'dashboard': 'Research Workstation',
+            'dashboard': 'Dashboard',
             'rag-system': 'RAG System',
             'changlee': 'Changlee',
             'nexus': 'NEXUS',
@@ -1500,7 +1502,7 @@
             }
             
             // 更新页面标题
-            document.querySelector('.page-title').textContent = pageTitles[pageId] || 'Research Workstation';
+            document.querySelector('.page-title').textContent = pageTitles[pageId] || 'Dashboard';
             currentPage = pageId;
         }
 
@@ -1510,6 +1512,9 @@
             document.getElementById('settings-page').style.display = 'none';
             document.getElementById('empty-page').style.display = 'none';
             document.querySelector('.page-title').textContent = 'RAG System';
+            
+            // 更新当前页面状态
+            currentPage = 'rag-system';
             
             // 更新导航状态
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -1904,6 +1909,11 @@
                     });
                 }
             }
+        }
+
+        // 🔗 跳转到项目说明页面
+        function goToProjectInfo() {
+            window.location.href = './project-info.html';
         }
 
         // 🚀 主初始化函数

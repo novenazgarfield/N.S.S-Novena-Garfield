@@ -22,7 +22,7 @@ const LANGUAGES = {
         
         // 页面标题
         titles: {
-            researchWorkstation: 'Research Workstation',
+            dashboard: 'Dashboard',
             ragSystem: 'RAG System',
             changlee: 'Changlee',
             nexus: 'NEXUS',
@@ -210,7 +210,7 @@ const LANGUAGES = {
         },
         
         titles: {
-            researchWorkstation: 'Research Workstation',
+            dashboard: 'Dashboard',
             ragSystem: 'RAG System',
             changlee: 'Changlee',
             nexus: 'NEXUS',
@@ -393,7 +393,7 @@ const LANGUAGES = {
         },
         
         titles: {
-            researchWorkstation: '研究ワークステーション',
+            dashboard: 'ダッシュボード',
             ragSystem: 'RAGシステム',
             changlee: 'チャンリー',
             nexus: 'NEXUS',
