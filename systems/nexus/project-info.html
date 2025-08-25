@@ -12,7 +12,7 @@
         }
 
         :root {
-            /* 深色主题色彩 - 与NEXUS Dashboard保持一致 */
+            /* 与NEXUS Dashboard完全一致的色彩系统 */
             --bg-primary: #1a1a1a;
             --bg-secondary: #2d2d2d;
             --bg-card: #3a3a3a;
@@ -31,6 +31,7 @@
             
             --border-color: #404040;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --gradient-primary: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
         }
 
         body {
@@ -38,32 +39,50 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 0 20px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 60px;
+        /* 头部导航 */
+        .header-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(26, 26, 26, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 16px 0;
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 12px 16px;
+            padding: 8px 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 14px;
             transition: all 0.2s;
-            z-index: 1000;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .back-btn:hover {
@@ -71,358 +90,617 @@
             transform: translateX(-2px);
         }
 
-        .logo {
-            font-size: 48px;
+        .nav-logo {
+            font-size: 20px;
             font-weight: bold;
-            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 16px;
         }
 
-        .subtitle {
-            font-size: 24px;
+        /* 主要内容区域 */
+        .main-content {
+            margin-top: 80px;
+            padding: 60px 0;
+        }
+
+        /* 英雄区域 */
+        .hero-section {
+            text-align: center;
+            padding: 80px 0;
+            background: radial-gradient(ellipse at center, rgba(74, 158, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .hero-title {
+            font-size: 64px;
+            font-weight: bold;
+            margin-bottom: 24px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 28px;
             color: var(--text-secondary);
-            margin-bottom: 8px;
+            margin-bottom: 16px;
+            font-weight: 300;
         }
 
-        .description {
+        .hero-description {
             font-size: 18px;
             color: var(--text-muted);
             max-width: 600px;
-            margin: 0 auto;
+            margin: 0 auto 40px;
+            line-height: 1.7;
         }
 
-        .section {
+        /* 内容区域 */
+        .content-section {
+            padding: 80px 0;
+        }
+
+        .section-header {
+            text-align: center;
             margin-bottom: 60px;
         }
 
         .section-title {
-            font-size: 32px;
+            font-size: 48px;
             font-weight: bold;
-            margin-bottom: 24px;
-            color: var(--accent-blue);
+            margin-bottom: 16px;
+            color: var(--text-primary);
         }
 
-        .section-content {
-            font-size: 16px;
+        .section-subtitle {
+            font-size: 20px;
             color: var(--text-secondary);
-            margin-bottom: 32px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
 
+        /* 特性网格 - 参考网站风格 */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
         }
 
         .feature-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.2s;
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .feature-card:hover {
             background: var(--bg-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
         }
 
         .feature-icon {
-            font-size: 32px;
-            margin-bottom: 16px;
+            font-size: 48px;
+            margin-bottom: 20px;
+            display: block;
         }
 
         .feature-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 12px;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 16px;
             color: var(--text-primary);
         }
 
         .feature-description {
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.7;
+            font-size: 16px;
         }
 
+        /* 技术栈标签 */
         .tech-stack {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 24px;
+            gap: 16px;
+            margin-top: 40px;
+            justify-content: center;
         }
 
         .tech-tag {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            padding: 8px 16px;
-            border-radius: 20px;
+            padding: 12px 20px;
+            border-radius: 25px;
             font-size: 14px;
             color: var(--text-secondary);
+            transition: all 0.2s ease;
+            font-weight: 500;
         }
 
+        .tech-tag:hover {
+            background: var(--accent-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* 统计数据网格 */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
         }
 
         .stat-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
+            border-radius: 16px;
+            padding: 40px 24px;
             text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent-green);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
         .stat-number {
-            font-size: 36px;
+            font-size: 48px;
             font-weight: bold;
             color: var(--accent-green);
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            line-height: 1;
         }
 
         .stat-label {
             color: var(--text-secondary);
-            font-size: 14px;
+            font-size: 16px;
+            font-weight: 500;
         }
 
-        .contact-info {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 32px;
+        /* 下载按钮区域 */
+        .download-section {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 60px 40px;
             text-align: center;
-            margin-top: 32px;
+            margin: 80px 0;
+            border: 1px solid var(--border-color);
         }
 
-        .contact-title {
-            font-size: 24px;
+        .download-title {
+            font-size: 36px;
             font-weight: bold;
             margin-bottom: 16px;
-            color: var(--accent-blue);
+            color: var(--text-primary);
         }
 
-        .contact-links {
+        .download-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .download-buttons {
             display: flex;
             justify-content: center;
-            gap: 24px;
+            gap: 20px;
             flex-wrap: wrap;
         }
 
-        .contact-link {
+        .download-btn {
+            background: var(--accent-blue);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .download-btn:hover {
+            background: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(74, 158, 255, 0.3);
+        }
+
+        .download-btn.primary {
+            background: var(--gradient-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn.primary::before {
+            content: '推荐';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-orange);
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        /* 页脚 */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
             display: flex;
             align-items: center;
             gap: 8px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            padding: 12px 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            transition: all 0.2s;
         }
 
-        .contact-link:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-            transform: translateY(-2px);
+        .footer-link:hover {
+            color: var(--accent-blue);
         }
 
+        .footer-text {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .container {
-                padding: 20px 16px;
+                padding: 0 16px;
             }
 
-            .logo {
-                font-size: 36px;
+            .hero-title {
+                font-size: 48px;
             }
 
-            .subtitle {
-                font-size: 20px;
+            .hero-subtitle {
+                font-size: 24px;
+            }
+
+            .hero-description {
+                font-size: 16px;
             }
 
             .section-title {
-                font-size: 24px;
+                font-size: 36px;
+            }
+
+            .section-subtitle {
+                font-size: 18px;
             }
 
             .features-grid {
                 grid-template-columns: 1fr;
+                gap: 24px;
             }
 
-            .contact-links {
+            .feature-card {
+                padding: 24px;
+            }
+
+            .download-section {
+                padding: 40px 20px;
+                margin: 60px 0;
+            }
+
+            .download-title {
+                font-size: 28px;
+            }
+
+            .download-buttons {
                 flex-direction: column;
                 align-items: center;
+            }
+
+            .download-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .stat-card {
+                padding: 24px 16px;
+            }
+
+            .stat-number {
+                font-size: 36px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-title {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 20px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <button class="back-btn" onclick="goBack()">← 返回</button>
-
-    <div class="container">
-        <div class="header">
-            <div class="logo">N.S.S Novena Garfield</div>
-            <div class="subtitle">Next-Generation Research Workstation</div>
-            <div class="description">
-                集成化研究工作站平台，提供全方位的科研计算、数据分析和系统管理解决方案
-            </div>
+    <!-- 头部导航 -->
+    <nav class="header-nav">
+        <div class="nav-content">
+            <a href="#" class="back-btn" onclick="goBack()">
+                <span>←</span>
+                <span>返回</span>
+            </a>
+            <div class="nav-logo">N.S.S Novena Garfield</div>
         </div>
+    </nav>
 
-        <div class="section">
-            <h2 class="section-title">🚀 项目概述</h2>
-            <div class="section-content">
-                N.S.S Novena Garfield 是一个现代化的研究工作站管理平台，旨在为科研人员提供统一的系统管理、远程控制和智能分析工具。
-                该平台集成了多个子系统，包括NEXUS远程管理、RAG智能助手、分子模拟、基因组分析等功能模块。
+    <!-- 主要内容 -->
+    <main class="main-content">
+        <!-- 英雄区域 -->
+        <section class="hero-section">
+            <div class="container">
+                <h1 class="hero-title">🚀 N.S.S</h1>
+                <p class="hero-subtitle">Novena Garfield - 革命性研究工作站管理平台</p>
+                <p class="hero-description">
+                    突破传统限制，实现真正的全球远程管理。集成化研究工作站平台，提供全方位的科研计算、数据分析和系统管理解决方案。
+                </p>
             </div>
+        </section>
 
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-title">NEXUS 远程管理</div>
-                    <div class="feature-description">
-                        突破局域网限制，实现真正的全球远程电源管理。支持远程唤醒、关机、重启，具备企业级安全保障。
+        <!-- 核心特性 -->
+        <section class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">🌟 核心特性</h2>
+                    <p class="section-subtitle">
+                        集成多个专业子系统，为科研人员提供统一的管理平台和智能分析工具
+                    </p>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🌍</div>
+                        <div class="feature-title">全球远程访问</div>
+                        <div class="feature-description">
+                            突破局域网限制，通过云服务器中转实现真正的广域网远程控制，支持多网络环境统一管理。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-title">完整电源管理</div>
+                        <div class="feature-description">
+                            支持远程开机(WOL)、远程关机、系统重启的完整电源管理功能，跨平台兼容Windows/Linux/macOS。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <div class="feature-title">零命令行体验</div>
+                        <div class="feature-description">
+                            完全图形化的安装和管理界面，专业安装包支持自定义路径，向导式依赖安装。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🧠</div>
+                        <div class="feature-title">RAG 智能助手</div>
+                        <div class="feature-description">
+                            基于检索增强生成技术的AI助手，支持多文档格式，提供智能对话记忆和多模型API管理。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-title">移动端优化</div>
+                        <div class="feature-description">
+                            完美的手机、平板体验，PWA可安装为原生应用，响应式设计适配所有设备。
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <div class="feature-title">企业级安全</div>
+                        <div class="feature-description">
+                            256位令牌认证、MAC白名单、操作审计、SSL加密传输，提供银行级安全保障。
+                        </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="feature-card">
-                    <div class="feature-icon">🧠</div>
-                    <div class="feature-title">RAG 智能助手</div>
-                    <div class="feature-description">
-                        基于检索增强生成技术的AI助手，支持多文档格式，提供智能对话记忆和多模型API管理。
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🧬</div>
-                    <div class="feature-title">基因组分析</div>
-                    <div class="feature-description">
-                        集成基因组拼图工具，支持大规模基因组数据处理和分析，提供可视化结果展示。
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🧪</div>
-                    <div class="feature-title">分子模拟</div>
-                    <div class="feature-description">
-                        集成GROMACS分子动力学模拟工具，支持蛋白质、药物分子等复杂系统的模拟计算。
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">🐄</div>
-                    <div class="feature-title">牛只识别系统</div>
-                    <div class="feature-description">
-                        基于计算机视觉的牛只识别和行为分析系统，支持实时监控和数据统计。
-                    </div>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">📝</div>
-                    <div class="feature-title">记录管理</div>
-                    <div class="feature-description">
-                        智能化的实验记录和数据管理系统，支持多格式文档处理和版本控制。
+        <!-- 下载体验区域 -->
+        <section class="content-section">
+            <div class="container">
+                <div class="download-section">
+                    <h2 class="download-title">🎯 立即体验 N.S.S</h2>
+                    <p class="download-subtitle">选择适合您操作系统的版本，开始享受真正的远程控制体验</p>
+                    <div class="download-buttons">
+                        <a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield/releases" class="download-btn primary" target="_blank">
+                            <span>🐧</span>
+                            <span>下载 Linux 版本</span>
+                        </a>
+                        <a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield/releases" class="download-btn" target="_blank">
+                            <span>🪟</span>
+                            <span>Windows (.exe)</span>
+                        </a>
+                        <a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield/releases" class="download-btn" target="_blank">
+                            <span>🍎</span>
+                            <span>macOS (.dmg)</span>
+                        </a>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="section">
-            <h2 class="section-title">🛠️ 技术栈</h2>
-            <div class="section-content">
-                项目采用现代化的技术栈，确保高性能、高可用性和良好的用户体验。
-            </div>
-            <div class="tech-stack">
-                <span class="tech-tag">HTML5 / CSS3</span>
-                <span class="tech-tag">JavaScript ES6+</span>
-                <span class="tech-tag">Python 3.x</span>
-                <span class="tech-tag">WebSocket</span>
-                <span class="tech-tag">RESTful API</span>
-                <span class="tech-tag">Docker</span>
-                <span class="tech-tag">GROMACS</span>
-                <span class="tech-tag">OpenAI API</span>
-                <span class="tech-tag">Wake-on-LAN</span>
-                <span class="tech-tag">Cloudflare</span>
-                <span class="tech-tag">GitHub Actions</span>
-                <span class="tech-tag">PWA</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <h2 class="section-title">📊 项目统计</h2>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">8+</div>
-                    <div class="stat-label">集成模块</div>
+        <!-- 技术栈 -->
+        <section class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">🛠️ 技术栈</h2>
+                    <p class="section-subtitle">
+                        项目采用现代化的技术栈，确保高性能、高可用性和良好的用户体验
+                    </p>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number">3</div>
-                    <div class="stat-label">支持语言</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">响应式设计</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">远程访问</div>
+                <div class="tech-stack">
+                    <span class="tech-tag">HTML5 / CSS3</span>
+                    <span class="tech-tag">JavaScript ES6+</span>
+                    <span class="tech-tag">Python 3.x</span>
+                    <span class="tech-tag">WebSocket</span>
+                    <span class="tech-tag">RESTful API</span>
+                    <span class="tech-tag">Docker</span>
+                    <span class="tech-tag">GROMACS</span>
+                    <span class="tech-tag">OpenAI API</span>
+                    <span class="tech-tag">Wake-on-LAN</span>
+                    <span class="tech-tag">Cloudflare</span>
+                    <span class="tech-tag">GitHub Actions</span>
+                    <span class="tech-tag">PWA</span>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <div class="section">
-            <h2 class="section-title">🌟 核心特性</h2>
-            <div class="section-content">
-                <ul style="list-style: none; padding: 0;">
-                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
-                        <span style="color: var(--accent-green);">✓</span>
-                        <span>跨平台兼容性 - 支持Windows、macOS、Linux</span>
-                    </li>
-                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
-                        <span style="color: var(--accent-green);">✓</span>
-                        <span>响应式设计 - 完美适配桌面端和移动端</span>
-                    </li>
-                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
-                        <span style="color: var(--accent-green);">✓</span>
-                        <span>多语言支持 - 中文、英文、日语界面</span>
-                    </li>
-                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
-                        <span style="color: var(--accent-green);">✓</span>
-                        <span>模块化架构 - 易于扩展和维护</span>
-                    </li>
-                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
-                        <span style="color: var(--accent-green);">✓</span>
-                        <span>实时通信 - WebSocket支持实时数据更新</span>
-                    </li>
-                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 12px;">
-                        <span style="color: var(--accent-green);">✓</span>
-                        <span>安全可靠 - 企业级安全保障和数据加密</span>
-                    </li>
-                </ul>
+        <!-- 项目统计 -->
+        <section class="content-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">📊 项目统计</h2>
+                    <p class="section-subtitle">
+                        数字说话，展现项目的强大能力和广泛适用性
+                    </p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">8+</div>
+                        <div class="stat-label">集成模块</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">支持语言</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">响应式设计</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">远程访问</div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+    </main>
 
-        <div class="contact-info">
-            <div class="contact-title">📞 联系信息</div>
-            <div class="contact-links">
-                <a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield" class="contact-link" target="_blank">
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield" class="footer-link" target="_blank">
                     <span>📁</span>
                     <span>GitHub Repository</span>
                 </a>
-                <a href="mailto:novena@garfield.com" class="contact-link">
+                <a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield/blob/main/systems/nexus/DEPLOYMENT_GUIDE.md" class="footer-link" target="_blank">
+                    <span>🚀</span>
+                    <span>部署指南</span>
+                </a>
+                <a href="https://github.com/novenazgarfield/N.S.S-Novena-Garfield/issues" class="footer-link" target="_blank">
+                    <span>🐛</span>
+                    <span>问题反馈</span>
+                </a>
+                <a href="mailto:novena@garfield.com" class="footer-link">
                     <span>📧</span>
                     <span>Email Support</span>
                 </a>
-                <a href="#" class="contact-link">
-                    <span>📚</span>
-                    <span>Documentation</span>
-                </a>
+            </div>
+            <div class="footer-text">
+                <p>🎉 <strong>N.S.S Novena Garfield</strong> - 让远程控制变得简单而强大</p>
+                <p>© 2025 Research Workstation Team. 采用 MIT 开源协议</p>
             </div>
         </div>
-    </div>
+    </footer>
 
     <script>
         function goBack() {
@@ -435,35 +713,118 @@
             }
         }
 
-        // 添加一些交互效果
+        // 现代化交互效果
         document.addEventListener('DOMContentLoaded', function() {
-            // 为特性卡片添加点击效果
-            const featureCards = document.querySelectorAll('.feature-card');
-            featureCards.forEach(card => {
-                card.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        this.style.transform = 'translateY(-2px)';
-                    }, 100);
-                });
-            });
+            // 滚动动画观察器
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
 
-            // 添加滚动动画
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.classList.add('animate-in');
                     }
+                });
+            }, observerOptions);
+
+            // 为所有需要动画的元素添加观察
+            const animateElements = document.querySelectorAll('.feature-card, .stat-card, .section-header, .download-section');
+            animateElements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(el);
+            });
+
+            // 添加动画类
+            const style = document.createElement('style');
+            style.textContent = `
+                .animate-in {
+                    opacity: 1 !important;
+                    transform: translateY(0) !important;
+                }
+            `;
+            document.head.appendChild(style);
+
+            // 特性卡片点击效果
+            const featureCards = document.querySelectorAll('.feature-card');
+            featureCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'translateY(-8px) scale(0.98)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-8px)';
+                    }, 150);
                 });
             });
 
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(20px)';
-                section.style.transition = 'opacity 0.6s, transform 0.6s';
-                observer.observe(section);
+            // 统计数字动画
+            const statNumbers = document.querySelectorAll('.stat-number');
+            const animateNumbers = (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const finalValue = target.textContent;
+                        const isNumber = !isNaN(parseInt(finalValue));
+                        
+                        if (isNumber) {
+                            const numValue = parseInt(finalValue);
+                            let current = 0;
+                            const increment = numValue / 30;
+                            const timer = setInterval(() => {
+                                current += increment;
+                                if (current >= numValue) {
+                                    target.textContent = finalValue;
+                                    clearInterval(timer);
+                                } else {
+                                    target.textContent = Math.floor(current) + (finalValue.includes('+') ? '+' : '');
+                                }
+                            }, 50);
+                        }
+                        numberObserver.unobserve(target);
+                    }
+                });
+            };
+
+            const numberObserver = new IntersectionObserver(animateNumbers, { threshold: 0.5 });
+            statNumbers.forEach(num => numberObserver.observe(num));
+
+            // 技术标签悬停效果
+            const techTags = document.querySelectorAll('.tech-tag');
+            techTags.forEach(tag => {
+                tag.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px) scale(1.05)';
+                });
+                tag.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // 导航栏滚动效果
+            let lastScrollY = window.scrollY;
+            const nav = document.querySelector('.header-nav');
+            
+            window.addEventListener('scroll', () => {
+                const currentScrollY = window.scrollY;
+                
+                if (currentScrollY > 100) {
+                    nav.style.background = 'rgba(26, 26, 26, 0.98)';
+                    nav.style.backdropFilter = 'blur(20px)';
+                } else {
+                    nav.style.background = 'rgba(26, 26, 26, 0.95)';
+                    nav.style.backdropFilter = 'blur(10px)';
+                }
+                
+                lastScrollY = currentScrollY;
+            });
+
+            // 平滑滚动到顶部
+            const backBtn = document.querySelector('.back-btn');
+            backBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setTimeout(() => goBack(), 300);
             });
         });
     </script>
