@@ -94,15 +94,16 @@
 
         /* 侧边栏 */
         .sidebar {
-            width: 280px;
-            min-width: 280px; /* 确保侧边栏宽度固定，不受内容影响 */
-            max-width: 280px; /* 防止内容撑大侧边栏 */
+            width: 280px !important; /* 强制固定宽度 */
+            min-width: 280px !important; /* 确保侧边栏宽度固定，不受内容影响 */
+            max-width: 280px !important; /* 防止内容撑大侧边栏 */
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             transition: background-color 0.2s, border-color 0.2s;
-            flex-shrink: 0; /* 防止侧边栏被压缩 */
+            flex-shrink: 0 !important; /* 防止侧边栏被压缩 */
+            box-sizing: border-box !important; /* 确保边框不影响宽度计算 */
         }
 
         .sidebar-header {
@@ -158,11 +159,12 @@
             cursor: pointer;
             border: none;
             background: none;
-            width: 100%;
-            max-width: 100%; /* 防止内容撑大导航项 */
+            width: 100% !important; /* 强制固定宽度 */
+            max-width: 100% !important; /* 防止内容撑大导航项 */
             text-align: left;
             min-height: 48px; /* 使用min-height而不是固定height，适应不同语言文字 */
-            box-sizing: border-box; /* 确保padding包含在高度内 */
+            box-sizing: border-box !important; /* 确保padding包含在高度内 */
+            overflow: hidden !important; /* 强制隐藏溢出内容 */
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK JP', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', sans-serif;
         }
 
@@ -190,11 +192,12 @@
             flex: 1;
             font-size: 14px;
             line-height: 1.3; /* 优化行高适应CJK文字 */
-            white-space: nowrap; /* 防止文本换行 */
-            overflow: hidden; /* 隐藏溢出文本 */
-            text-overflow: ellipsis; /* 长文本显示省略号 */
-            min-width: 0; /* 允许flex项目收缩 */
-            max-width: 180px; /* 强制限制文本最大宽度，防止撑大侧边栏 */
+            white-space: nowrap !important; /* 防止文本换行 */
+            overflow: hidden !important; /* 隐藏溢出文本 */
+            text-overflow: ellipsis !important; /* 长文本显示省略号 */
+            min-width: 0 !important; /* 允许flex项目收缩 */
+            max-width: 180px !important; /* 强制限制文本最大宽度，防止撑大侧边栏 */
+            width: 180px !important; /* 强制固定文本区域宽度 */
             font-weight: 500;
         }
         
@@ -2124,6 +2127,27 @@
             }
         }
 
+        // 强制固定侧边栏宽度的通用函数
+        function forceSidebarWidth() {
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.style.width = '280px';
+                sidebar.style.minWidth = '280px';
+                sidebar.style.maxWidth = '280px';
+                sidebar.style.flexShrink = '0';
+                sidebar.style.boxSizing = 'border-box';
+            }
+            
+            // 强制固定所有导航文本宽度
+            document.querySelectorAll('.nav-item-text').forEach(textElement => {
+                textElement.style.width = '180px';
+                textElement.style.maxWidth = '180px';
+                textElement.style.overflow = 'hidden';
+                textElement.style.textOverflow = 'ellipsis';
+                textElement.style.whiteSpace = 'nowrap';
+            });
+        }
+
         // 侧边栏英文固定功能
 
         function toggleSidebarEnglish(enabled) {
@@ -2139,6 +2163,9 @@
                     i18n.updateElements();
                 }
             }
+            
+            // 无论如何都强制固定侧边栏宽度
+            setTimeout(forceSidebarWidth, 100);
         }
 
         window.updateSidebarToEnglish = function() {
@@ -2160,9 +2187,24 @@
                     const textElement = item.querySelector('.nav-item-text');
                     if (textElement) {
                         textElement.textContent = navItems[pageId];
+                        // 强制应用固定宽度样式，防止文本撑大侧边栏
+                        textElement.style.width = '180px';
+                        textElement.style.maxWidth = '180px';
+                        textElement.style.overflow = 'hidden';
+                        textElement.style.textOverflow = 'ellipsis';
+                        textElement.style.whiteSpace = 'nowrap';
                     }
                 }
             });
+            
+            // 强制固定侧边栏宽度
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                sidebar.style.width = '280px';
+                sidebar.style.minWidth = '280px';
+                sidebar.style.maxWidth = '280px';
+                sidebar.style.flexShrink = '0';
+            }
         }
 
         function initSidebarEnglish() {
@@ -2312,6 +2354,9 @@
             if (i18n) {
                 console.log(`🌐 从设置页面切换语言到: ${language}`);
                 i18n.switchLanguage(language);
+                
+                // 语言切换后强制固定侧边栏宽度
+                setTimeout(forceSidebarWidth, 200);
             }
         }
 
@@ -2428,6 +2473,9 @@
                     if (i18n && selectedLang) {
                         console.log('🌐 开始切换语言到:', selectedLang);
                         i18n.switchLanguage(selectedLang);
+                        
+                        // 语言切换后强制固定侧边栏宽度
+                        setTimeout(forceSidebarWidth, 200);
                     } else {
                         console.error('🌐 语言切换失败 - i18n:', !!i18n, 'selectedLang:', selectedLang);
                     }
@@ -2552,6 +2600,9 @@
             
             // 初始化侧边栏英文固定功能
             initSidebarEnglish();
+            
+            // 强制固定侧边栏宽度
+            setTimeout(forceSidebarWidth, 500);
             
             console.log('✅ NEXUS Research Workstation 初始化完成');
             
