@@ -106,6 +106,19 @@
             box-sizing: border-box !important; /* 确保边框不影响宽度计算 */
         }
 
+        /* 终极覆盖规则 - 确保在所有情况下侧边栏宽度都是280px */
+        .sidebar,
+        .sidebar[style],
+        html .sidebar,
+        body .sidebar,
+        * .sidebar {
+            width: 280px !important;
+            min-width: 280px !important;
+            max-width: 280px !important;
+            flex-shrink: 0 !important;
+            box-sizing: border-box !important;
+        }
+
         .sidebar-header {
             padding: 20px;
             border-bottom: 1px solid var(--border-color);
@@ -1006,7 +1019,9 @@
         /* 📱 平板端适配 (768px - 1024px) */
         @media (max-width: 1024px) and (min-width: 769px) {
             .sidebar {
-                width: 200px;
+                width: 280px !important; /* 强制固定宽度 */
+                min-width: 280px !important;
+                max-width: 280px !important;
             }
             
             .cards-grid {
@@ -1249,7 +1264,9 @@
         /* 📱 小屏手机适配 (最大480px) */
         @media (max-width: 480px) {
             .sidebar {
-                width: 260px;
+                width: 280px !important; /* 强制固定宽度 */
+                min-width: 280px !important;
+                max-width: 280px !important;
             }
             
             .header {
@@ -1303,7 +1320,9 @@
             }
             
             .sidebar {
-                width: 240px;
+                width: 280px !important; /* 强制固定宽度 */
+                min-width: 280px !important;
+                max-width: 280px !important;
             }
             
             .mobile-menu-btn {
@@ -1351,7 +1370,9 @@
         /* 📱 超小屏设备适配 (最大360px) */
         @media (max-width: 360px) {
             .sidebar {
-                width: 240px;
+                width: 280px !important; /* 强制固定宽度 */
+                min-width: 280px !important;
+                max-width: 280px !important;
             }
 
             .header {
@@ -1433,7 +1454,9 @@
             }
 
             .sidebar {
-                width: 240px;
+                width: 280px !important; /* 强制固定宽度 */
+                min-width: 280px !important;
+                max-width: 280px !important;
             }
         }
 
@@ -1621,6 +1644,7 @@
                     </div>
                     <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggle">🌙</button>
                     <button class="header-btn" onclick="showPage('settings')">⚙️</button>
+
                     <button class="header-btn">🔔</button>
                     <button class="header-btn">👤</button>
                 </div>
@@ -2139,7 +2163,8 @@
             }
             
             // 强制固定所有导航文本宽度
-            document.querySelectorAll('.nav-item-text').forEach(textElement => {
+            const textElements = document.querySelectorAll('.nav-item-text');
+            textElements.forEach((textElement) => {
                 textElement.style.width = '180px';
                 textElement.style.maxWidth = '180px';
                 textElement.style.overflow = 'hidden';
@@ -2147,6 +2172,8 @@
                 textElement.style.whiteSpace = 'nowrap';
             });
         }
+
+
 
         // 侧边栏英文固定功能
 
@@ -2603,6 +2630,18 @@
             
             // 强制固定侧边栏宽度
             setTimeout(forceSidebarWidth, 500);
+            
+            // 监控侧边栏宽度变化
+            const sidebar = document.querySelector('.sidebar');
+            if (sidebar) {
+                // 定期检查并修复宽度
+                setInterval(function() {
+                    const currentWidth = sidebar.offsetWidth;
+                    if (currentWidth !== 280) {
+                        forceSidebarWidth();
+                    }
+                }, 2000);
+            }
             
             console.log('✅ NEXUS Research Workstation 初始化完成');
             
