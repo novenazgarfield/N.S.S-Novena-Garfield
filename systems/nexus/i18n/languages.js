@@ -30,7 +30,8 @@ const LANGUAGES = {
             chronicle: '实验记录仪',
             genome: '基因拼图',
             molecular: '分子模拟',
-            settings: '设置'
+            settings: '设置',
+            projectinfo: 'N.S.S - Novena Garfield'
         },
         
         // Dashboard 卡片
@@ -246,7 +247,8 @@ const LANGUAGES = {
             chronicle: 'Chronicle',
             genome: 'Genome Jigsaw',
             molecular: 'Molecular Simulation',
-            settings: 'Settings'
+            settings: 'Settings',
+            projectinfo: 'N.S.S - Novena Garfield'
         },
         
         cards: {
@@ -457,7 +459,8 @@ const LANGUAGES = {
             chronicle: 'クロニクル',
             genome: 'ゲノムジグソー',
             molecular: '分子シミュレーション',
-            settings: '設定'
+            settings: '設定',
+            projectinfo: 'N.S.S - Novena Garfield'
         },
         
         cards: {
