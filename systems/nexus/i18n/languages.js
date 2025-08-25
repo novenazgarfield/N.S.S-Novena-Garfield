@@ -9,7 +9,7 @@ const LANGUAGES = {
         
         // 导航和标题
         nav: {
-            dashboard: '仪表板',
+            dashboard: 'N.S.S - Novena Garfield',
             ragSystem: 'RAG系统',
             changlee: '长离',
             nexus: 'NEXUS',
