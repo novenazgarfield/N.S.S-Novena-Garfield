@@ -86,25 +86,28 @@
 
         .app-container {
             display: flex;
-            height: calc(var(--real-vh, 1vh) * 100); /* 使用动态视窗高度 */
-            width: 100vw; /* 强制容器宽度为视窗宽度 */
-            max-width: 100vw; /* 防止容器被撑大 */
-            overflow: hidden; /* 防止内容溢出 */
+            height: calc(var(--real-vh, 1vh) * 100);
+            width: 100vw;
+            max-width: 100vw;
+            overflow: hidden;
         }
 
         /* 侧边栏 */
         .sidebar {
-            width: 280px !important; /* 强制固定宽度 */
-            min-width: 280px !important; /* 确保侧边栏宽度固定，不受内容影响 */
-            max-width: 280px !important; /* 防止内容撑大侧边栏 */
+            width: 280px !important;
+            min-width: 280px !important;
+            max-width: 280px !important;
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             transition: background-color 0.2s, border-color 0.2s;
-            flex-shrink: 0 !important; /* 防止侧边栏被压缩 */
-            box-sizing: border-box !important; /* 确保边框不影响宽度计算 */
+            flex-shrink: 0 !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
         }
+        
+
 
         /* 终极覆盖规则 - 确保在所有情况下侧边栏宽度都是280px */
         .sidebar,
@@ -209,14 +212,14 @@
             overflow: hidden !important; /* 隐藏溢出文本 */
             text-overflow: ellipsis !important; /* 长文本显示省略号 */
             min-width: 0 !important; /* 允许flex项目收缩 */
-            max-width: 180px !important; /* 强制限制文本最大宽度，防止撑大侧边栏 */
-            width: 180px !important; /* 强制固定文本区域宽度 */
+            max-width: 140px !important; /* 更小的文本宽度限制 */
+            width: 140px !important; /* 固定更小的文本区域宽度 */
             font-weight: 500;
         }
         
         /* 针对日语文字的特殊优化 */
         [lang="ja-JP"] .nav-item-text {
-            font-weight: 400; /* 日语文字使用较细的字重 */
+            font-weight: 400;
             line-height: 1.4;
             letter-spacing: 0.025em;
             font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', 'Noto Sans CJK JP', sans-serif;
@@ -2151,26 +2154,18 @@
             }
         }
 
-        // 强制固定侧边栏宽度的通用函数
+        // 强制固定侧边栏宽度
         function forceSidebarWidth() {
             const sidebar = document.querySelector('.sidebar');
             if (sidebar) {
-                sidebar.style.width = '280px';
-                sidebar.style.minWidth = '280px';
-                sidebar.style.maxWidth = '280px';
-                sidebar.style.flexShrink = '0';
-                sidebar.style.boxSizing = 'border-box';
+                sidebar.style.setProperty('width', '280px', 'important');
+                sidebar.style.setProperty('min-width', '280px', 'important');
+                sidebar.style.setProperty('max-width', '280px', 'important');
+                sidebar.style.setProperty('flex-shrink', '0', 'important');
+                sidebar.style.setProperty('overflow', 'hidden', 'important');
             }
             
-            // 强制固定所有导航文本宽度
-            const textElements = document.querySelectorAll('.nav-item-text');
-            textElements.forEach((textElement) => {
-                textElement.style.width = '180px';
-                textElement.style.maxWidth = '180px';
-                textElement.style.overflow = 'hidden';
-                textElement.style.textOverflow = 'ellipsis';
-                textElement.style.whiteSpace = 'nowrap';
-            });
+            console.log('🔧 强制固定侧边栏宽度完成');
         }
 
 
@@ -2380,10 +2375,16 @@
         function changeLanguageFromSettings(language) {
             if (i18n) {
                 console.log(`🌐 从设置页面切换语言到: ${language}`);
+                
+                // 立即强制固定宽度
+                forceSidebarWidth();
+                
                 i18n.switchLanguage(language);
                 
-                // 语言切换后强制固定侧边栏宽度
+                // 语言切换后多次强制固定侧边栏宽度
+                setTimeout(forceSidebarWidth, 50);
                 setTimeout(forceSidebarWidth, 200);
+                setTimeout(forceSidebarWidth, 500);
             }
         }
 
@@ -2499,10 +2500,16 @@
                     
                     if (i18n && selectedLang) {
                         console.log('🌐 开始切换语言到:', selectedLang);
+                        
+                        // 立即强制固定宽度
+                        forceSidebarWidth();
+                        
                         i18n.switchLanguage(selectedLang);
                         
-                        // 语言切换后强制固定侧边栏宽度
+                        // 语言切换后多次强制固定侧边栏宽度
+                        setTimeout(forceSidebarWidth, 50);
                         setTimeout(forceSidebarWidth, 200);
+                        setTimeout(forceSidebarWidth, 500);
                     } else {
                         console.error('🌐 语言切换失败 - i18n:', !!i18n, 'selectedLang:', selectedLang);
                     }
@@ -2631,16 +2638,31 @@
             // 强制固定侧边栏宽度
             setTimeout(forceSidebarWidth, 500);
             
-            // 监控侧边栏宽度变化
+            // 监控侧边栏宽度变化 - 高频监控
             const sidebar = document.querySelector('.sidebar');
             if (sidebar) {
-                // 定期检查并修复宽度
+                // 高频检查并修复宽度
                 setInterval(function() {
                     const currentWidth = sidebar.offsetWidth;
                     if (currentWidth !== 280) {
+                        console.log('🚨 检测到宽度异常:', currentWidth, '立即修复!');
                         forceSidebarWidth();
                     }
-                }, 2000);
+                }, 100); // 每100ms检查一次
+                
+                // 监听DOM变化
+                const observer = new MutationObserver(function() {
+                    forceSidebarWidth();
+                });
+                
+                observer.observe(sidebar, {
+                    attributes: true,
+                    childList: true,
+                    subtree: true
+                });
+                
+                // 监听窗口大小变化
+                window.addEventListener('resize', forceSidebarWidth);
             }
             
             console.log('✅ NEXUS Research Workstation 初始化完成');
