@@ -42,7 +42,7 @@
             --app-height: 100vh;
             
             /* 移动端专用变量 */
-            --mobile-header-height: 56px;
+            --mobile-header-height: 60px;
             --mobile-nav-height: 60px;
             --mobile-padding: 16px;
             --mobile-card-gap: 12px;
@@ -1230,11 +1230,11 @@
         /* 🌐 横屏适配 */
         @media (max-width: 768px) and (orientation: landscape) {
             .header {
-                height: 48px;
+                height: 60px; /* 统一使用60px高度 */
             }
             
             .rag-chat {
-                height: calc(100vh - 48px);
+                height: calc(100vh - 60px);
             }
             
             .sidebar {
