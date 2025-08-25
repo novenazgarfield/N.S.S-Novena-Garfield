@@ -9,27 +9,28 @@ const LANGUAGES = {
         
         // 导航和标题
         nav: {
-            dashboard: 'Dashboard',
-            ragSystem: 'RAG System',
-            changlee: 'Changlee',
+            dashboard: '仪表板',
+            ragSystem: 'RAG系统',
+            changlee: '长离',
             nexus: 'NEXUS',
-            bovineInsight: 'Bovine Insight',
-            chronicle: 'Chronicle',
-            genomeJigsaw: 'Genome Jigsaw',
-            molecularSimulation: 'Molecular Simulation',
-            settings: 'Settings'
+            bovineInsight: '牛识别系统',
+            chronicle: '实验记录仪',
+            genomeJigsaw: '基因拼图',
+            molecularSimulation: '分子模拟',
+            settings: '设置'
         },
         
         // 页面标题
         titles: {
-            dashboard: 'Dashboard',
-            ragSystem: 'RAG System',
-            changlee: 'Changlee',
+            dashboard: '仪表板',
+            ragsystem: 'RAG系统',
+            changlee: '长离',
             nexus: 'NEXUS',
-            bovineInsight: 'Bovine Insight',
-            chronicle: 'Chronicle',
-            genomeJigsaw: 'Genome Jigsaw',
-            molecularSimulation: 'Molecular Simulation'
+            bovine: '牛识别系统',
+            chronicle: '实验记录仪',
+            genome: '基因拼图',
+            molecular: '分子模拟',
+            settings: '设置'
         },
         
         // Dashboard 卡片
@@ -149,6 +150,33 @@ const LANGUAGES = {
             error: '抱歉，处理请求时出现错误'
         },
         
+        // 设置页面
+        settings: {
+            appearance: "🎨 外观设置",
+            theme: "主题模式",
+            darkTheme: "深色主题",
+            lightTheme: "浅色主题", 
+            autoTheme: "跟随系统",
+            animations: "动画效果",
+            compactMode: "紧凑模式",
+            system: "🔧 系统设置",
+            autoSave: "自动保存",
+            notifications: "通知提醒",
+            language: "语言",
+            sidebarEnglish: "侧边栏固定英文",
+            performance: "⚡ 性能设置",
+            hardwareAcceleration: "硬件加速",
+            preloadContent: "预加载内容",
+            cacheSize: "缓存大小",
+            cacheSmall: "小 (100MB)",
+            cacheMedium: "中 (500MB)",
+            cacheLarge: "大 (1GB)",
+            about: "📊 关于",
+            version: "版本",
+            updateCheck: "更新检查",
+            checkUpdate: "检查更新"
+        },
+        
         // 通用按钮和操作
         common: {
             back: '返回',
@@ -211,13 +239,14 @@ const LANGUAGES = {
         
         titles: {
             dashboard: 'Dashboard',
-            ragSystem: 'RAG System',
+            ragsystem: 'RAG System',
             changlee: 'Changlee',
             nexus: 'NEXUS',
-            bovineInsight: 'Bovine Insight',
+            bovine: 'Bovine Insight',
             chronicle: 'Chronicle',
-            genomeJigsaw: 'Genome Jigsaw',
-            molecularSimulation: 'Molecular Simulation'
+            genome: 'Genome Jigsaw',
+            molecular: 'Molecular Simulation',
+            settings: 'Settings'
         },
         
         cards: {
@@ -335,6 +364,33 @@ const LANGUAGES = {
             error: 'Sorry, an error occurred while processing the request'
         },
         
+        // Settings page
+        settings: {
+            appearance: "🎨 Appearance",
+            theme: "Theme Mode",
+            darkTheme: "Dark Theme",
+            lightTheme: "Light Theme", 
+            autoTheme: "Follow System",
+            animations: "Animations",
+            compactMode: "Compact Mode",
+            system: "🔧 System",
+            autoSave: "Auto Save",
+            notifications: "Notifications",
+            language: "Language",
+            sidebarEnglish: "Keep Sidebar in English",
+            performance: "⚡ Performance",
+            hardwareAcceleration: "Hardware Acceleration",
+            preloadContent: "Preload Content",
+            cacheSize: "Cache Size",
+            cacheSmall: "Small (100MB)",
+            cacheMedium: "Medium (500MB)",
+            cacheLarge: "Large (1GB)",
+            about: "📊 About",
+            version: "Version",
+            updateCheck: "Update Check",
+            checkUpdate: "Check Update"
+        },
+        
         common: {
             back: 'Back',
             close: 'Close',
@@ -394,13 +450,14 @@ const LANGUAGES = {
         
         titles: {
             dashboard: 'ダッシュボード',
-            ragSystem: 'RAGシステム',
+            ragsystem: 'RAGシステム',
             changlee: 'チャンリー',
             nexus: 'NEXUS',
-            bovineInsight: '牛認識システム',
+            bovine: '牛認識システム',
             chronicle: 'クロニクル',
-            genomeJigsaw: 'ゲノムジグソー',
-            molecularSimulation: '分子シミュレーション'
+            genome: 'ゲノムジグソー',
+            molecular: '分子シミュレーション',
+            settings: '設定'
         },
         
         cards: {
@@ -516,6 +573,33 @@ const LANGUAGES = {
             welcome: '文書内容に基づいて、関連情報を見つけました...',
             thinking: '質問を分析中です。お待ちください...',
             error: '申し訳ございません。リクエスト処理中にエラーが発生しました'
+        },
+        
+        // 設定ページ
+        settings: {
+            appearance: "🎨 外観",
+            theme: "テーマモード",
+            darkTheme: "ダークテーマ",
+            lightTheme: "ライトテーマ", 
+            autoTheme: "システムに従う",
+            animations: "アニメーション",
+            compactMode: "コンパクトモード",
+            system: "🔧 システム",
+            autoSave: "自動保存",
+            notifications: "通知",
+            language: "言語",
+            sidebarEnglish: "サイドバーを英語で固定",
+            performance: "⚡ パフォーマンス",
+            hardwareAcceleration: "ハードウェアアクセラレーション",
+            preloadContent: "コンテンツの事前読み込み",
+            cacheSize: "キャッシュサイズ",
+            cacheSmall: "小 (100MB)",
+            cacheMedium: "中 (500MB)",
+            cacheLarge: "大 (1GB)",
+            about: "📊 について",
+            version: "バージョン",
+            updateCheck: "更新確認",
+            checkUpdate: "更新をチェック"
         },
         
         common: {
