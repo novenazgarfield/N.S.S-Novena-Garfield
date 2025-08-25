@@ -1901,7 +1901,7 @@
             <div id="project-info-page" class="content" style="display: none;">
                 <div class="project-info-container">
                     <div class="project-header">
-                        <button class="back-btn" onclick="showPage('dashboard')">← 返回</button>
+                        <button class="back-btn" onclick="goBack()">← 返回</button>
                         <h1>N.S.S - Novena Garfield</h1>
                     </div>
                     
@@ -2041,6 +2041,9 @@
             } else if (pageId === 'project-info') {
                 document.getElementById('project-info-page').style.display = 'block';
                 currentPage = 'project-info';
+                
+                // 更新导航状态
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
             } else {
                 // 其他页面显示空白页面
                 document.getElementById('empty-page').style.display = 'flex';
