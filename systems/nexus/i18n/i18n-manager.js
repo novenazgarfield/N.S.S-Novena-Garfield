@@ -45,16 +45,20 @@ class I18nManager {
     
     // 切换语言
     switchLanguage(language) {
+        console.log('🌐 switchLanguage被调用，目标语言:', language);
+        
         if (!this.translations[language]) {
             console.warn(`Language ${language} not supported`);
             return false;
         }
         
+        console.log('🌐 语言支持，开始切换...');
         this.currentLanguage = language;
         this.setStoredLanguage(language);
         this.applyLanguage(language);
         this.notifyObservers(language);
         
+        console.log('🌐 语言切换完成，当前语言:', this.currentLanguage);
         return true;
     }
     
@@ -169,29 +173,168 @@ class I18nManager {
     
     // 更新卡片内容
     updateCardContents(lang) {
-        // RAG System 卡片
-        this.updateCard('rag', lang.cards.ragSystem);
+        // 直接更新具体的文本内容
+        this.updateSpecificTexts(lang);
+    }
+    
+    // 更新具体的文本内容
+    updateSpecificTexts(lang) {
+        console.log('🔄 开始更新具体文本内容...');
         
-        // Changlee 卡片
-        this.updateCard('changlee', lang.cards.changlee);
+        // 更新卡片标题
+        const cardTitles = document.querySelectorAll('h3');
+        cardTitles.forEach(title => {
+            const text = title.textContent.trim();
+            if (text.includes('NEXUS Remote Control') || text.includes('NEXUS远程控制')) {
+                title.textContent = this.currentLanguage === 'en-US' ? 'NEXUS Remote Control' : 'NEXUS远程控制';
+            }
+            else if (text.includes('RAG System') || text.includes('RAG系统')) {
+                title.textContent = 'RAG System';
+            }
+            else if (text.includes('Unified Platform') || text.includes('统一平台')) {
+                title.textContent = 'Unified Platform';
+            }
+        });
         
-        // NEXUS 卡片
-        this.updateCard('nexus', lang.cards.nexus);
+        // 更新卡片描述
+        const descriptions = document.querySelectorAll('.card-description, p');
+        descriptions.forEach(desc => {
+            const text = desc.textContent.trim();
+            
+            // NEXUS卡片描述
+            if (text.includes('Revolutionary Remote Command') || text.includes('革命性远程命令')) {
+                desc.textContent = this.currentLanguage === 'en-US' ? 
+                    'Revolutionary Remote Command & Control System' : 
+                    'Revolutionary Remote Command & Control System';
+            }
+            // RAG系统描述
+            else if (text.includes('Retrieval-Augmented Generation')) {
+                desc.textContent = 'Retrieval-Augmented Generation AI';
+            }
+            // Unified Platform描述
+            else if (text.includes('整个研究工作站') || text.includes('Research Workstation Management')) {
+                desc.textContent = this.currentLanguage === 'en-US' ? 
+                    'Unified installer, launcher and manager for the entire research workstation, providing a one-stop system management experience.' : 
+                    '整个研究工作站的统一安装器、启动器和管理器，提供一站式的系统管理体验。';
+            }
+        });
         
-        // Bovine Insight 卡片
-        this.updateCard('bovine', lang.cards.bovineInsight);
+        // 更新特性列表
+        const features = document.querySelectorAll('.feature-item span:last-child');
+        features.forEach(feature => {
+            const text = feature.textContent.trim();
+            
+            // NEXUS特性 - 直接设置英文文本
+            if (text.includes('全球远程访问') || text.includes('Global remote access') || text.includes('云服务器中转')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Global remote access - Cloud server relay' : 
+                    '全球远程访问 - 云服务器中转';
+            }
+            else if (text.includes('完整电源管理') || text.includes('Complete power management') || text.includes('WOL')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Complete power management - WOL/Shutdown/Restart' : 
+                    '完整电源管理 - WOL/关机/重启';
+            }
+            else if (text.includes('零命令行体验') || text.includes('Zero command line experience') || text.includes('图形化界面')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Zero command line experience - GUI interface' : 
+                    '零命令行体验 - 图形化界面';
+            }
+            else if (text.includes('移动端优化') || text.includes('Mobile optimization') || text.includes('PWA')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Mobile optimization - PWA native experience' : 
+                    '移动端优化 - PWA原生体验';
+            }
+            else if (text.includes('企业级安全') || text.includes('Enterprise security') || text.includes('256位加密')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Enterprise security - 256-bit encryption' : 
+                    '企业级安全 - 256位加密';
+            }
+            
+            // RAG特性
+            else if (text.includes('多格式文档') || text.includes('Multi-format documents') || text.includes('PDF/DOCX')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Multi-format documents - PDF/DOCX/Excel/Markdown' : 
+                    '多格式文档 - PDF/DOCX/Excel/Markdown';
+            }
+            else if (text.includes('智能检索') || text.includes('Intelligent retrieval') || text.includes('向量语义搜索')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Intelligent retrieval - Vector semantic search' : 
+                    '智能检索 - 向量语义搜索';
+            }
+            else if (text.includes('记忆系统') || text.includes('Memory system') || text.includes('永久/临时记忆')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Memory system - Permanent/Temporary memory management' : 
+                    '记忆系统 - 永久/临时记忆管理';
+            }
+            else if (text.includes('多轮对话') || text.includes('Multi-turn dialogue') || text.includes('上下文理解')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Multi-turn dialogue - Context understanding' : 
+                    '多轮对话 - 上下文理解';
+            }
+            else if (text.includes('API管理') || text.includes('API management') || text.includes('多模型支持')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'API management - Multi-model support' : 
+                    'API管理 - 多模型支持';
+            }
+            
+            // Unified Platform特性
+            else if (text.includes('系统级部署') || text.includes('System-level deployment') || text.includes('舰队总指挥')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'System-level deployment - Fleet command capability' : 
+                    '系统级部署 - 舰队总指挥能力';
+            }
+            else if (text.includes('依赖检查') || text.includes('Dependency check') || text.includes('自动环境配置')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Dependency check - Automatic environment configuration' : 
+                    '依赖检查 - 自动环境配置';
+            }
+            else if (text.includes('状态监控') || text.includes('Status monitoring') || text.includes('实时系统状态')) {
+                feature.textContent = this.currentLanguage === 'en-US' ? 
+                    'Status monitoring - Real-time system status' : 
+                    '状态监控 - 实时系统状态';
+            }
+        });
         
-        // Chronicle 卡片
-        this.updateCard('chronicle', lang.cards.chronicle);
-        
-        // Genome Jigsaw 卡片
-        this.updateCard('genome', lang.cards.genomeJigsaw);
-        
-        // Molecular Simulation 卡片
-        this.updateCard('molecular', lang.cards.molecularSimulation);
-        
-        // Unified Platform 卡片
-        this.updateCard('unified', lang.cards.unifiedPlatform);
+        // 更新按钮文本
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => {
+            const text = button.textContent.trim();
+            
+            // Launch按钮
+            if (text.includes('启动 NEXUS') || text.includes('Launch NEXUS')) {
+                button.textContent = this.currentLanguage === 'en-US' ? 
+                    '🚀 Launch NEXUS' : 
+                    '🚀 启动 NEXUS';
+            }
+            else if (text.includes('启动 RAG') || text.includes('Launch RAG')) {
+                button.textContent = this.currentLanguage === 'en-US' ? 
+                    '🧠 Launch RAG' : 
+                    '🧠 启动 RAG';
+            }
+            else if (text.includes('管理平台') || text.includes('Management Platform')) {
+                button.textContent = this.currentLanguage === 'en-US' ? 
+                    '🚀 Management Platform' : 
+                    '🚀 管理平台';
+            }
+            
+            // 文档按钮
+            else if (text.includes('文档') && !text.includes('文档库') || text.includes('Documentation')) {
+                button.textContent = this.currentLanguage === 'en-US' ? 
+                    '📁 Documentation' : 
+                    '📁 文档';
+            }
+            else if (text.includes('文档库') || text.includes('Document Library')) {
+                button.textContent = this.currentLanguage === 'en-US' ? 
+                    '📚 Document Library' : 
+                    '📚 文档库';
+            }
+            else if (text.includes('系统状态') || text.includes('System Status')) {
+                button.textContent = this.currentLanguage === 'en-US' ? 
+                    '📋 System Status' : 
+                    '📋 系统状态';
+            }
+        });
     }
     
     // 更新单个卡片

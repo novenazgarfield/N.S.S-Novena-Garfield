@@ -649,35 +649,29 @@
 
         /* 🌐 语言切换器 */
         .language-switcher {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 8px;
-            box-shadow: var(--shadow);
-            transition: all 0.2s;
+            position: relative;
+            display: inline-block;
+            margin-right: 8px;
         }
 
         .language-switcher:hover {
-            background: var(--bg-hover);
+            /* 移除hover效果，因为现在是按钮级别的hover */
         }
 
         .language-btn {
-            background: none;
-            border: none;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
             cursor: pointer;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             display: flex;
             align-items: center;
             gap: 6px;
             transition: all 0.2s;
             min-width: 80px;
+            height: 32px;
         }
 
         .language-btn:hover {
@@ -808,10 +802,7 @@
                 padding: 20px;
             }
             
-            .language-switcher {
-                top: 16px;
-                right: 16px;
-            }
+            /* 语言切换器现在在header中，不需要固定位置 */
         }
 
         /* 📱 移动端适配 (最大768px) */
@@ -926,9 +917,14 @@
             }
             
             .language-btn {
-                padding: 6px 10px;
-                font-size: 13px;
-                min-width: 70px;
+                padding: 4px 8px;
+                font-size: 12px;
+                min-width: 60px;
+                height: 28px;
+            }
+            
+            .language-name {
+                display: none; /* 移动端只显示国旗 */
             }
             
             /* RAG聊天界面移动端 */
@@ -1044,10 +1040,7 @@
                 font-size: 12px;
             }
             
-            .language-switcher {
-                top: 12px;
-                right: 12px;
-            }
+            /* 语言切换器在header中，不需要固定位置 */
             
             .mobile-menu-btn {
                 top: 12px;
@@ -1106,27 +1099,7 @@
         <span></span>
     </button>
     
-    <!-- 🌐 语言切换器 -->
-    <div class="language-switcher" id="languageSwitcher">
-        <button class="language-btn" id="languageBtn">
-            <span class="language-flag">🇨🇳</span>
-            <span class="language-name">中文</span>
-        </button>
-        <div class="language-dropdown" id="languageDropdown">
-            <div class="language-option active" data-lang="zh-CN">
-                <span>🇨🇳</span>
-                <span>简体中文</span>
-            </div>
-            <div class="language-option" data-lang="en-US">
-                <span>🇺🇸</span>
-                <span>English</span>
-            </div>
-            <div class="language-option" data-lang="ja-JP">
-                <span>🇯🇵</span>
-                <span>日本語</span>
-            </div>
-        </div>
-    </div>
+
     
     <!-- 📱 移动端遮罩层 -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
@@ -1209,6 +1182,27 @@
                     <h1 class="page-title">Research Workstation</h1>
                 </div>
                 <div class="header-right">
+                    <!-- 🌐 语言切换器 -->
+                    <div class="language-switcher" id="languageSwitcher">
+                        <button class="language-btn" id="languageBtn">
+                            <span class="language-flag">🇨🇳</span>
+                            <span class="language-name">中文</span>
+                        </button>
+                        <div class="language-dropdown" id="languageDropdown">
+                            <div class="language-option active" data-lang="zh-CN">
+                                <span>🇨🇳</span>
+                                <span>简体中文</span>
+                            </div>
+                            <div class="language-option" data-lang="en-US">
+                                <span>🇺🇸</span>
+                                <span>English</span>
+                            </div>
+                            <div class="language-option" data-lang="ja-JP">
+                                <span>🇯🇵</span>
+                                <span>日本語</span>
+                            </div>
+                        </div>
+                    </div>
                     <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggle">🌙</button>
                     <button class="header-btn" onclick="showPage('settings')">⚙️</button>
                     <button class="header-btn">🔔</button>
@@ -1677,9 +1671,14 @@
         // 🌐 国际化初始化
         function initializeI18n() {
             try {
+                console.log('🌐 开始初始化国际化系统...');
+                console.log('🌐 LANGUAGES对象存在:', typeof LANGUAGES !== 'undefined');
+                console.log('🌐 initI18n函数存在:', typeof initI18n === 'function');
+                
                 i18n = initI18n();
                 if (i18n) {
                     console.log('🌐 国际化系统初始化成功');
+                    console.log('🌐 当前语言:', i18n.getCurrentLanguage());
                     
                     // 更新语言切换器显示
                     updateLanguageSwitcher();
@@ -1829,9 +1828,14 @@
             languageOptions.forEach(option => {
                 option.addEventListener('click', function() {
                     const selectedLang = this.dataset.lang;
+                    console.log('🌐 点击语言选项:', selectedLang);
+                    console.log('🌐 i18n对象存在:', !!i18n);
                     
                     if (i18n && selectedLang) {
+                        console.log('🌐 开始切换语言到:', selectedLang);
                         i18n.switchLanguage(selectedLang);
+                    } else {
+                        console.error('🌐 语言切换失败 - i18n:', !!i18n, 'selectedLang:', selectedLang);
                     }
                     
                     languageDropdown.classList.remove('show');
@@ -1919,6 +1923,17 @@
             initializeMobileOptimizations();
             
             console.log('✅ NEXUS Research Workstation 初始化完成');
+            
+            // 测试语言切换功能
+            setTimeout(() => {
+                console.log('🧪 测试语言切换功能...');
+                console.log('🧪 i18n对象:', i18n);
+                console.log('🧪 LANGUAGES对象:', typeof LANGUAGES !== 'undefined' ? 'loaded' : 'not loaded');
+                if (i18n) {
+                    console.log('🧪 当前语言:', i18n.getCurrentLanguage());
+                    console.log('🧪 支持的语言:', Object.keys(LANGUAGES));
+                }
+            }, 1000);
         });
     </script>
 </body>
