@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>N.S.S Novena Garfield - 项目说明</title>
+    <title>N.S.S - Novena Garfield</title>
     <style>
         * {
             margin: 0;
@@ -514,7 +514,7 @@
                 <span>←</span>
                 <span>返回</span>
             </a>
-            <div class="nav-logo">N.S.S Novena Garfield</div>
+            <div class="nav-logo">N.S.S - Novena Garfield</div>
         </div>
     </nav>
 
@@ -704,11 +704,11 @@
 
     <script>
         function goBack() {
-            // 如果是从NEXUS Dashboard打开的，返回到Dashboard
-            if (document.referrer.includes('nexus-dashboard')) {
+            // 直接返回到上一个页面（无论是Dashboard还是其他子项目）
+            if (window.history.length > 1) {
                 window.history.back();
             } else {
-                // 否则跳转到Dashboard
+                // 如果没有历史记录，默认跳转到Dashboard
                 window.location.href = './nexus-dashboard-restored.html';
             }
         }
