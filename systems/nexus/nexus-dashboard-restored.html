@@ -1627,7 +1627,7 @@
             <!-- 头部 -->
             <header class="header">
                 <div class="header-left">
-                    <button class="back-btn" onclick="goBack()">←</button>
+                    <button class="back-btn" onclick="handleBackButton()">←</button>
                     <h1 class="page-title" data-i18n="titles.dashboard">仪表板</h1>
                 </div>
                 <div class="header-right">
@@ -1897,14 +1897,8 @@
                 </div>
             </div>
 
-            <!-- 项目信息页面 -->
             <div id="project-info-page" class="content" style="display: none;">
                 <div class="project-info-container">
-                    <div class="project-header">
-                        <button class="back-btn" onclick="goBack()">← 返回</button>
-                        <h1>N.S.S - Novena Garfield</h1>
-                    </div>
-                    
                     <div class="project-content">
                         <section class="project-section">
                             <h2>🎯 项目概述</h2>
@@ -1992,7 +1986,8 @@
 
         // 页面标题映射
         const pageTitles = {
-            'dashboard': 'N.S.S - Novena Garfield',
+            'dashboard': '仪表板',
+            'project-info': 'N.S.S - Novena Garfield',
             'rag-system': 'RAG System',
             'changlee': 'Changlee',
             'nexus': 'NEXUS',
@@ -2044,6 +2039,9 @@
                 
                 // 更新导航状态
                 document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                
+                // 更新页面标题
+                updatePageTitle();
             } else {
                 // 其他页面显示空白页面
                 document.getElementById('empty-page').style.display = 'flex';
@@ -2403,9 +2401,10 @@
             if (!i18n) return;
             
             const titleElement = document.querySelector('.page-title');
-            if (titleElement && pageTitles[currentPage]) {
-                const titleKey = `titles.${pageTitles[currentPage].toLowerCase().replace(' ', '')}`;
-                const translatedTitle = i18n.t(titleKey, pageTitles[currentPage]);
+            if (titleElement && currentPage) {
+                // 直接使用currentPage作为key，因为i18n配置中的key就是页面ID
+                const titleKey = `titles.${currentPage.replace('-', '')}`;
+                const translatedTitle = i18n.t(titleKey, pageTitles[currentPage] || 'Dashboard');
                 titleElement.textContent = translatedTitle;
             }
         }
@@ -2616,6 +2615,20 @@
         // 🔗 显示项目说明页面
         function goToProjectInfo() {
             showPage('project-info');
+        }
+
+        // 🔙 智能返回按钮处理
+        function handleBackButton() {
+            if (currentPage === 'dashboard') {
+                // 在Dashboard页面，点击←进入项目说明
+                showPage('project-info');
+            } else if (currentPage === 'project-info') {
+                // 在项目说明页面，点击←返回Dashboard
+                goBack();
+            } else {
+                // 其他页面，使用智能返回
+                goBack();
+            }
         }
 
         // 🚀 主初始化函数
