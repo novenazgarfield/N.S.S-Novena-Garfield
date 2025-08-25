@@ -92,11 +92,14 @@
         /* 侧边栏 */
         .sidebar {
             width: 280px;
+            min-width: 280px; /* 确保侧边栏宽度固定，不受内容影响 */
+            max-width: 280px; /* 防止内容撑大侧边栏 */
             background: var(--bg-secondary);
             border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             transition: background-color 0.2s, border-color 0.2s;
+            flex-shrink: 0; /* 防止侧边栏被压缩 */
         }
 
         .sidebar-header {
@@ -153,7 +156,7 @@
             border: none;
             background: none;
             width: 100%;
-            min-width: 200px; /* 设置最小宽度确保一致性 */
+            max-width: 100%; /* 防止内容撑大导航项 */
             text-align: left;
             min-height: 48px; /* 使用min-height而不是固定height，适应不同语言文字 */
             box-sizing: border-box; /* 确保padding包含在高度内 */

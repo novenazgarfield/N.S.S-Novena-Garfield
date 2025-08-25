@@ -27,12 +27,15 @@ html, body {
 /* 侧边栏布局 */
 .sidebar {
     width: 280px;
+    min-width: 280px; /* 确保侧边栏宽度固定，不受内容影响 */
+    max-width: 280px; /* 防止内容撑大侧边栏 */
     background: var(--bg-secondary);
     border-right: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     transition: background-color 0.2s, border-color 0.2s;
     z-index: 100;
+    flex-shrink: 0; /* 防止侧边栏被压缩 */
 }
 
 .sidebar-header {
@@ -75,6 +78,7 @@ html, body {
 
 .nav-item {
     width: 100%;
+    max-width: 100%; /* 防止内容撑大导航项 */
     display: flex;
     align-items: center;
     gap: 12px;
