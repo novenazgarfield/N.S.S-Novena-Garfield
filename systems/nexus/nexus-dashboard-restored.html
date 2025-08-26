@@ -704,65 +704,162 @@
             transform: rotate(180deg);
         }
 
-        /* 连接状态栏样式 */
+        /* 连接状态悬浮框样式 */
         .connection-status {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-bottom: 1px solid #dee2e6;
-            padding: 8px 16px;
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+            min-width: 280px;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             font-size: 0.85em;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .connection-status.show {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.9em;
+        }
+
+        .status-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .status-close:hover {
+            background: rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
         }
 
         .status-indicator {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 12px 16px;
         }
 
         .status-dot {
-            font-size: 1.1em;
+            font-size: 1.2em;
             animation: pulse 2s infinite;
         }
 
         .status-text {
-            color: #6c757d;
+            color: var(--text-secondary);
             font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .status-details {
+            padding: 0 16px 12px;
+            font-size: 0.8em;
+            color: var(--text-tertiary);
+            line-height: 1.3;
         }
 
         /* 状态动画 */
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
         }
 
         /* 不同状态的样式 */
         .connection-status.connected {
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            border-bottom-color: #b8dacc;
+            background: linear-gradient(135deg, rgba(212, 237, 218, 0.95) 0%, rgba(195, 230, 203, 0.95) 100%);
+            border-color: rgba(40, 167, 69, 0.2);
         }
 
         .connection-status.connected .status-text {
             color: #155724;
         }
 
+        .connection-status.connected .status-details {
+            color: #0f5132;
+        }
+
         .connection-status.error {
-            background: linear-gradient(135deg, #f8d7da 0%, #f1b0b7 100%);
-            border-bottom-color: #f1b0b7;
+            background: linear-gradient(135deg, rgba(248, 215, 218, 0.95) 0%, rgba(241, 176, 183, 0.95) 100%);
+            border-color: rgba(220, 53, 69, 0.2);
         }
 
         .connection-status.error .status-text {
             color: #721c24;
         }
 
+        .connection-status.error .status-details {
+            color: #58151c;
+        }
+
         .connection-status.warning {
-            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-            border-bottom-color: #ffeaa7;
+            background: linear-gradient(135deg, rgba(255, 243, 205, 0.95) 0%, rgba(255, 234, 167, 0.95) 100%);
+            border-color: rgba(255, 193, 7, 0.2);
         }
 
         .connection-status.warning .status-text {
             color: #856404;
+        }
+
+        .connection-status.warning .status-details {
+            color: #664d03;
+        }
+
+        /* 暗色主题适配 */
+        [data-theme="dark"] .connection-status {
+            background: rgba(33, 37, 41, 0.95);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="dark"] .connection-status.connected {
+            background: linear-gradient(135deg, rgba(25, 135, 84, 0.2) 0%, rgba(32, 201, 151, 0.2) 100%);
+            border-color: rgba(25, 135, 84, 0.3);
+        }
+
+        [data-theme="dark"] .connection-status.error {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.2) 0%, rgba(233, 84, 104, 0.2) 100%);
+            border-color: rgba(220, 53, 69, 0.3);
+        }
+
+        [data-theme="dark"] .connection-status.warning {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.2) 0%, rgba(255, 205, 57, 0.2) 100%);
+            border-color: rgba(255, 193, 7, 0.3);
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .connection-status {
+                top: 70px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
+                max-width: none;
+            }
         }
 
         /* 功能菜单样式 */
@@ -2334,14 +2431,6 @@
             <!-- RAG 聊天界面 -->
             <div id="rag-chat" class="rag-chat">
                 
-                <!-- 连接状态栏 -->
-                <div class="connection-status" id="connectionStatus">
-                    <div class="status-indicator" id="statusIndicator">
-                        <span class="status-dot">🔄</span>
-                        <span class="status-text">正在连接RAG系统...</span>
-                    </div>
-                </div>
-                
                 <div class="chat-messages" id="chatMessages">
                     <div class="message">
                         <div class="message-avatar">🧠</div>
@@ -3321,9 +3410,22 @@
 
 
 
-        // RAG系统配置
+        // RAG系统配置 - 动态检测服务器地址
         const RAG_CONFIG = {
-            baseURL: 'http://localhost:5000',
+            baseURL: (() => {
+                // 如果是通过隧道访问，尝试使用相同的域名
+                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                    // 尝试使用当前域名的5000端口
+                    return `${window.location.protocol}//${window.location.hostname}:5000`;
+                }
+                // 本地开发环境
+                return 'http://localhost:5000';
+            })(),
+            fallbackURLs: [
+                'http://localhost:5000',
+                'http://127.0.0.1:5000',
+                `${window.location.protocol}//${window.location.hostname}:5000`
+            ],
             endpoints: {
                 health: '/api/health',
                 chat: '/api/chat',
@@ -3334,51 +3436,84 @@
             timeout: 10000
         };
 
+        // 状态框显示控制
+        let statusTimeout = null;
+        
+        // 显示连接状态
+        function showConnectionStatus() {
+            const statusBar = document.getElementById('connectionStatus');
+            statusBar.classList.add('show');
+            
+            // 清除之前的自动隐藏定时器
+            if (statusTimeout) {
+                clearTimeout(statusTimeout);
+                statusTimeout = null;
+            }
+        }
+        
+        // 隐藏连接状态
+        function hideConnectionStatus() {
+            const statusBar = document.getElementById('connectionStatus');
+            statusBar.classList.remove('show');
+        }
+        
+        // 自动隐藏连接状态（仅在成功时）
+        function autoHideConnectionStatus(delay = 3000) {
+            if (statusTimeout) {
+                clearTimeout(statusTimeout);
+            }
+            statusTimeout = setTimeout(() => {
+                hideConnectionStatus();
+            }, delay);
+        }
+        
         // 更新连接状态显示
         function updateConnectionStatus(status, message, details = '') {
             const statusBar = document.getElementById('connectionStatus');
             const statusDot = statusBar.querySelector('.status-dot');
             const statusText = statusBar.querySelector('.status-text');
+            const statusDetails = document.getElementById('statusDetails');
             
             // 清除所有状态类
-            statusBar.className = 'connection-status';
+            statusBar.className = 'connection-status show';
             
             switch (status) {
                 case 'connecting':
                     statusBar.classList.add('warning');
                     statusDot.textContent = '🔄';
+                    showConnectionStatus();
                     break;
                 case 'connected':
                     statusBar.classList.add('connected');
                     statusDot.textContent = '✅';
+                    showConnectionStatus();
+                    // 成功连接后3秒自动隐藏
+                    autoHideConnectionStatus(3000);
                     break;
                 case 'error':
                     statusBar.classList.add('error');
                     statusDot.textContent = '❌';
+                    showConnectionStatus();
+                    // 错误状态不自动隐藏，需要用户手动关闭
                     break;
                 case 'warning':
                     statusBar.classList.add('warning');
                     statusDot.textContent = '⚠️';
+                    showConnectionStatus();
                     break;
             }
             
             statusText.textContent = message;
-            
-            if (details) {
-                statusText.title = details;
-            }
+            statusDetails.textContent = details;
         }
 
-        // 测试RAG系统连接
-        async function testRAGConnection() {
-            console.log('🔍 开始测试RAG系统连接...');
-            updateConnectionStatus('connecting', '正在连接RAG系统...');
+        // 尝试连接到指定URL
+        async function tryConnectToURL(baseURL) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
             
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
-                
-                const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.health}`, {
+                const response = await fetch(`${baseURL}${RAG_CONFIG.endpoints.health}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -3390,70 +3525,91 @@
                 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('✅ RAG系统连接正常:', data);
+                    return { success: true, data, baseURL };
+                } else {
+                    return { success: false, error: `HTTP ${response.status}: ${response.statusText}`, baseURL };
+                }
+            } catch (error) {
+                clearTimeout(timeoutId);
+                return { success: false, error: error.message, baseURL };
+            }
+        }
+
+        // 测试RAG系统连接
+        async function testRAGConnection() {
+            console.log('🔍 开始测试RAG系统连接...');
+            updateConnectionStatus('connecting', '正在连接RAG系统...', '尝试多个服务器地址...');
+            
+            // 构建要尝试的URL列表
+            const urlsToTry = [RAG_CONFIG.baseURL, ...RAG_CONFIG.fallbackURLs.filter(url => url !== RAG_CONFIG.baseURL)];
+            
+            console.log('🔗 尝试连接的URL:', urlsToTry);
+            
+            for (let i = 0; i < urlsToTry.length; i++) {
+                const currentURL = urlsToTry[i];
+                console.log(`🔄 尝试连接 ${i + 1}/${urlsToTry.length}: ${currentURL}`);
+                
+                updateConnectionStatus('connecting', 
+                    `正在连接RAG系统... (${i + 1}/${urlsToTry.length})`,
+                    `当前尝试: ${currentURL}`
+                );
+                
+                const result = await tryConnectToURL(currentURL);
+                
+                if (result.success) {
+                    console.log('✅ RAG系统连接成功:', result.data);
+                    
+                    // 更新配置为成功的URL
+                    RAG_CONFIG.baseURL = result.baseURL;
                     
                     // 更新状态栏
                     updateConnectionStatus('connected', 
-                        `RAG系统已就绪 (${data.chat_history_count}条历史, ${data.documents_count}个文档)`,
-                        `服务地址: ${RAG_CONFIG.baseURL}\n系统时间: ${new Date(data.timestamp).toLocaleString('zh-CN')}`
+                        `RAG系统已就绪 (${result.data.chat_history_count}条历史, ${result.data.documents_count}个文档)`,
+                        `服务地址: ${result.baseURL}\n系统时间: ${new Date(result.data.timestamp).toLocaleString('zh-CN')}`
                     );
                     
-                    // 显示系统状态
-                    if (data.status === 'ok') {
+                    // 显示系统状态（仅在首次连接时）
+                    if (window.ragSystemReady === undefined) {
                         addMessage(`🎉 <strong>RAG系统已就绪</strong><br>
-                        📊 聊天历史: ${data.chat_history_count} 条<br>
-                        📚 文档数量: ${data.documents_count} 个<br>
-                        🕒 系统时间: ${new Date(data.timestamp).toLocaleString('zh-CN')}<br>
-                        🌐 服务地址: ${RAG_CONFIG.baseURL}<br>
+                        📊 聊天历史: ${result.data.chat_history_count} 条<br>
+                        📚 文档数量: ${result.data.documents_count} 个<br>
+                        🕒 系统时间: ${new Date(result.data.timestamp).toLocaleString('zh-CN')}<br>
+                        🌐 服务地址: ${result.baseURL}<br>
                         💡 您可以开始与AI助手对话了！`, 'assistant');
-                        
-                        // 设置连接状态
-                        window.ragSystemReady = true;
                     }
-                } else {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                }
-            } catch (error) {
-                console.error('❌ RAG系统连接失败:', error);
-                
-                // 更新状态栏
-                let statusMessage = 'RAG系统连接失败';
-                if (error.name === 'AbortError') {
-                    statusMessage = 'RAG系统连接超时';
-                } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                    statusMessage = 'RAG系统无法连接';
+                    
+                    // 设置连接状态
+                    window.ragSystemReady = true;
+                    return;
                 }
                 
-                updateConnectionStatus('error', statusMessage, 
-                    `错误: ${error.message}\n服务地址: ${RAG_CONFIG.baseURL}\n点击重新连接按钮重试`
-                );
-                
-                let errorMessage = '⚠️ <strong>RAG系统连接异常</strong><br>';
-                
-                if (error.name === 'AbortError') {
-                    errorMessage += '错误类型: 连接超时<br>';
-                } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                    errorMessage += '错误类型: 网络连接失败<br>';
-                } else {
-                    errorMessage += `错误类型: ${error.name}<br>`;
-                }
-                
-                errorMessage += `错误详情: ${error.message}<br>`;
-                errorMessage += `服务地址: ${RAG_CONFIG.baseURL}<br>`;
-                errorMessage += `浏览器: ${navigator.userAgent.split(' ')[0]}<br>`;
-                errorMessage += `当前页面: ${window.location.href}<br>`;
-                errorMessage += '<br>🔧 <strong>故障排除建议:</strong><br>';
-                errorMessage += '1. 检查RAG服务器是否运行在端口5000<br>';
-                errorMessage += '2. 点击功能菜单中的"重新连接"按钮<br>';
-                errorMessage += '3. 检查浏览器控制台的详细错误信息<br>';
-                errorMessage += '4. 确认防火墙没有阻止连接<br>';
-                errorMessage += '<br>💡 您仍可以使用其他功能，但AI对话功能暂时不可用。';
-                
-                addMessage(errorMessage, 'assistant');
-                
-                // 设置连接状态
-                window.ragSystemReady = false;
+                console.log(`❌ 连接失败 ${currentURL}:`, result.error);
             }
+            
+            // 所有URL都失败了
+            console.error('❌ 所有RAG服务器地址都无法连接');
+            
+            updateConnectionStatus('error', 'RAG系统连接失败', 
+                `已尝试 ${urlsToTry.length} 个服务器地址\n最后错误: 无法连接到任何服务器\n点击 ✕ 关闭此提示`
+            );
+            
+            let errorMessage = '⚠️ <strong>RAG系统连接异常</strong><br>';
+            errorMessage += '错误类型: 网络连接失败<br>';
+            errorMessage += `错误详情: 无法连接到任何RAG服务器<br>`;
+            errorMessage += `尝试的地址: ${urlsToTry.join(', ')}<br>`;
+            errorMessage += `浏览器: ${navigator.userAgent.split(' ')[0]}<br>`;
+            errorMessage += `当前页面: ${window.location.href}<br>`;
+            errorMessage += '<br>🔧 <strong>故障排除建议:</strong><br>';
+            errorMessage += '1. 检查RAG服务器是否运行在端口5000<br>';
+            errorMessage += '2. 如果使用隧道访问，确保RAG服务器也通过隧道暴露<br>';
+            errorMessage += '3. 点击功能菜单中的"重新连接"按钮<br>';
+            errorMessage += '4. 检查浏览器控制台的详细错误信息<br>';
+            errorMessage += '<br>💡 您仍可以使用其他功能，但AI对话功能暂时不可用。';
+            
+            addMessage(errorMessage, 'assistant');
+            
+            // 设置连接状态
+            window.ragSystemReady = false;
         }
 
         // 页面加载完成后初始化
@@ -3894,5 +4050,19 @@
             }, 1000);
         });
     </script>
+
+    <!-- 连接状态悬浮框 -->
+    <div class="connection-status" id="connectionStatus">
+        <div class="status-header">
+            <div class="status-title">🔧 系统状态</div>
+            <button class="status-close" onclick="hideConnectionStatus()">✕</button>
+        </div>
+        <div class="status-indicator" id="statusIndicator">
+            <span class="status-dot">🔄</span>
+            <span class="status-text">正在连接RAG系统...</span>
+        </div>
+        <div class="status-details" id="statusDetails"></div>
+    </div>
+
 </body>
 </html>

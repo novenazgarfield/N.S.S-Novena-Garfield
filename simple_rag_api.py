@@ -352,6 +352,15 @@ def internal_error(error):
     }), 500
 
 if __name__ == '__main__':
+    import argparse
+    
+    # 解析命令行参数
+    parser = argparse.ArgumentParser(description='RAG API服务器')
+    parser.add_argument('--host', default='0.0.0.0', help='绑定主机地址 (默认: 0.0.0.0)')
+    parser.add_argument('--port', type=int, default=5000, help='端口号 (默认: 5000)')
+    parser.add_argument('--debug', action='store_true', help='启用调试模式')
+    args = parser.parse_args()
+    
     print("🚀 启动简化版RAG系统API服务器...")
     print("✅ 这是一个演示版本，使用简单的文本匹配算法")
     
@@ -366,12 +375,13 @@ if __name__ == '__main__':
     print("  - POST /api/clear - 清空聊天记录")
     print("  - GET /api/stats - 系统统计")
     print("  - GET /api/health - 健康检查")
-    print("🎯 访问地址: http://localhost:5000")
+    print(f"🎯 访问地址: http://{args.host}:{args.port}")
+    print(f"🔧 调试模式: {'启用' if args.debug else '禁用'}")
     
     # 启动Flask应用
     app.run(
-        host='0.0.0.0',
-        port=5000,
-        debug=False,
+        host=args.host,
+        port=args.port,
+        debug=args.debug,
         threaded=True
     )
