@@ -1,0 +1,38 @@
+[
+  {
+    "role": "user",
+    "content": "测试记忆系统功能",
+    "timestamp": "2025-08-26T12:56:39.168207",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
+    "timestamp": "2025-08-26T12:56:39.168232",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "user",
+    "content": "测试前端记忆系统",
+    "timestamp": "2025-08-26T12:57:22.816684",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "抱歉，我没有找到相关的信息来回答您的问题。请尝试上传相关文档或重新表述问题。",
+    "timestamp": "2025-08-26T12:57:22.816703",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "user",
+    "content": "记忆系统测试完成！功能完美！",
+    "timestamp": "2025-08-26T12:59:19.445224",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
+    "timestamp": "2025-08-26T12:59:19.445241",
+    "task_name": "nexus_chat"
+  }
+]
