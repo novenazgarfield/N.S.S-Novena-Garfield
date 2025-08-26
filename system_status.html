@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG系统状态</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .status-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status-ok { border-left: 4px solid #4CAF50; }
+        .status-error { border-left: 4px solid #f44336; }
+        .status-warning { border-left: 4px solid #ff9800; }
+        pre {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .timestamp { color: #666; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <h1>🧠 RAG系统状态监控</h1>
+    
+    <div class="status-card">
+        <h3>🔄 实时状态检查</h3>
+        <button onclick="checkAllStatus()">刷新状态</button>
+        <button onclick="testChatAPI()">测试聊天</button>
+        <button onclick="clearResults()">清空结果</button>
+        <div class="timestamp" id="lastUpdate"></div>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        let testResults = [];
+
+        function addResult(title, status, data, error = null) {
+            const timestamp = new Date().toLocaleString('zh-CN');
+            const result = {
+                title,
+                status,
+                data,
+                error,
+                timestamp
+            };
+            testResults.push(result);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            const resultsDiv = document.getElementById('results');
+            const lastUpdateDiv = document.getElementById('lastUpdate');
+            
+            lastUpdateDiv.textContent = `最后更新: ${new Date().toLocaleString('zh-CN')}`;
+            
+            resultsDiv.innerHTML = testResults.map(result => {
+                const statusClass = result.status === 'ok' ? 'status-ok' : 
+                                  result.status === 'error' ? 'status-error' : 'status-warning';
+                
+                return `
+                    <div class="status-card ${statusClass}">
+                        <h3>${result.title}</h3>
+                        <div class="timestamp">${result.timestamp}</div>
+                        ${result.error ? `<p style="color: red;">❌ ${result.error}</p>` : ''}
+                        ${result.data ? `<pre>${JSON.stringify(result.data, null, 2)}</pre>` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function checkHealthAPI() {
+            try {
+                const response = await fetch('http://localhost:5000/api/health');
+                const data = await response.json();
+                addResult('🏥 健康检查', 'ok', data);
+            } catch (error) {
+                addResult('🏥 健康检查', 'error', null, error.message);
+            }
+        }
+
+        async function checkHistoryAPI() {
+            try {
+                const response = await fetch('http://localhost:5000/api/history?task_name=nexus_chat');
+                const data = await response.json();
+                addResult('📚 历史记录', 'ok', {
+                    total_messages: data.total_messages,
+                    success: data.success
+                });
+            } catch (error) {
+                addResult('📚 历史记录', 'error', null, error.message);
+            }
+        }
+
+        async function testChatAPI() {
+            try {
+                const testMessage = `测试消息 - ${new Date().toLocaleTimeString()}`;
+                const response = await fetch('http://localhost:5000/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: testMessage,
+                        task_name: 'status_test'
+                    })
+                });
+                
+                const data = await response.json();
+                addResult('💬 聊天API测试', 'ok', {
+                    request: testMessage,
+                    response: data.response,
+                    success: data.success,
+                    documents_used: data.documents_used
+                });
+            } catch (error) {
+                addResult('💬 聊天API测试', 'error', null, error.message);
+            }
+        }
+
+        async function checkCORS() {
+            try {
+                // 先发送预检请求
+                const preflightResponse = await fetch('http://localhost:5000/api/chat', {
+                    method: 'OPTIONS',
+                    headers: {
+                        'Origin': window.location.origin,
+                        'Access-Control-Request-Method': 'POST',
+                        'Access-Control-Request-Headers': 'Content-Type'
+                    }
+                });
+                
+                addResult('🌐 CORS预检', 'ok', {
+                    status: preflightResponse.status,
+                    headers: Object.fromEntries(preflightResponse.headers.entries())
+                });
+            } catch (error) {
+                addResult('🌐 CORS预检', 'error', null, error.message);
+            }
+        }
+
+        function checkBrowserInfo() {
+            const info = {
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                cookieEnabled: navigator.cookieEnabled,
+                onLine: navigator.onLine,
+                localStorage: typeof(Storage) !== "undefined",
+                fetch: typeof(fetch) !== "undefined",
+                currentURL: window.location.href,
+                origin: window.location.origin
+            };
+            addResult('🌐 浏览器信息', 'ok', info);
+        }
+
+        async function checkAllStatus() {
+            clearResults();
+            checkBrowserInfo();
+            await checkHealthAPI();
+            await checkCORS();
+            await checkHistoryAPI();
+        }
+
+        function clearResults() {
+            testResults = [];
+            updateDisplay();
+        }
+
+        // 页面加载时自动检查状态
+        window.addEventListener('load', () => {
+            setTimeout(checkAllStatus, 500);
+        });
+    </script>
+</body>
+</html>

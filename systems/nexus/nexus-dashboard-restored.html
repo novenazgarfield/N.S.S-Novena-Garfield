@@ -7,6 +7,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Cache buster: 20250826-112000 -->
     <style>
         * {
             margin: 0;
@@ -68,7 +72,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             height: calc(var(--real-vh, 1vh) * 100); /* 使用动态视窗高度 */
@@ -98,14 +102,42 @@
             min-width: 280px !important;
             max-width: 280px !important;
             background: var(--bg-secondary);
-            border-right: 1px solid var(--border-color);
+            border-right: none;
             display: flex;
             flex-direction: column;
             transition: background-color 0.2s, border-color 0.2s;
             flex-shrink: 0 !important;
             box-sizing: border-box !important;
             overflow: hidden !important;
+            position: relative;
         }
+
+        .sidebar::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--border-color);
+            transition: background-color 0.2s;
+            z-index: 10;
+            display: block;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            right: 0;
+            bottom: 80px; /* 恢复到原来的位置 */
+            width: 100vw; /* 延伸到屏幕右边 */
+            height: 1px;
+            background: var(--border-color);
+            transition: background-color 0.2s;
+            z-index: 10;
+            display: block;
+        }
+
         
 
 
@@ -181,7 +213,7 @@
             min-height: 48px; /* 使用min-height而不是固定height，适应不同语言文字 */
             box-sizing: border-box !important; /* 确保padding包含在高度内 */
             overflow: hidden !important; /* 强制隐藏溢出内容 */
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK JP', 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
 
         .nav-item:hover {
@@ -214,25 +246,32 @@
             min-width: 0 !important; /* 允许flex项目收缩 */
             max-width: 140px !important; /* 更小的文本宽度限制 */
             width: 140px !important; /* 固定更小的文本区域宽度 */
-            font-weight: 500;
+            font-weight: 500; /* 统一字体粗细 */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
         
-        /* 针对日语文字的特殊优化 */
-        [lang="ja-JP"] .nav-item-text {
-            font-weight: 500; /* 与默认保持一致 */
-            line-height: 1.3; /* 与默认保持一致 */
-            letter-spacing: normal; /* 与默认保持一致 */
-            font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', 'Noto Sans CJK JP', sans-serif;
+        /* 统一中英日文字体配置 */
+        [lang="ja-JP"] .nav-item-text,
+        [lang="en-US"] .nav-item-text,
+        [lang="zh-CN"] .nav-item-text {
+            font-weight: 500; /* 统一字体粗细 */
+            line-height: 1.3; /* 统一行高 */
+            letter-spacing: normal; /* 统一字符间距 */
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
         
-        [lang="ja-JP"] .nav-item {
-            /* 移除特殊高度设置，使用默认值 */
+        [lang="ja-JP"] .nav-item,
+        [lang="en-US"] .nav-item,
+        [lang="zh-CN"] .nav-item {
+            /* 统一导航项样式 */
         }
         
-        [lang="ja-JP"] .page-title {
-            font-weight: 500;
+        [lang="ja-JP"] .page-title,
+        [lang="en-US"] .page-title,
+        [lang="zh-CN"] .page-title {
+            font-weight: 500; /* 统一标题字体粗细 */
             line-height: 1.3;
-            font-family: 'Hiragino Sans', 'Yu Gothic UI', 'Meiryo UI', 'Noto Sans CJK JP', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
         }
 
         .status-indicator {
@@ -240,6 +279,8 @@
             height: 8px;
             border-radius: 50%;
             background: var(--status-offline);
+            margin-left: auto;
+            margin-right: 4px;
         }
 
         .status-indicator.online {
@@ -249,7 +290,6 @@
         .sidebar-footer {
             padding: 20px;
             padding-bottom: 14px; /* 微调回到中间值，寻找完美对齐点 */
-            border-top: 1px solid var(--border-color);
             transition: border-color 0.2s;
             /* 确保设置按钮与输入框底部对齐 */
             margin-top: auto;
@@ -282,17 +322,21 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 8px;
             height: 100%; /* 占满header高度 */
         }
 
         .back-btn {
-            background: none;
+            width: 36px;
+            height: 36px;
+            background: var(--bg-card);
             border: none;
             color: var(--text-secondary);
             cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.2s;
         }
 
@@ -317,7 +361,7 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 8px;
             height: 100%; /* 占满header高度 */
         }
 
@@ -352,7 +396,6 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            margin-right: 12px;
             font-size: 16px;
         }
 
@@ -578,26 +621,28 @@
 
         .chat-input {
             padding: 20px;
-            border-top: 1px solid var(--border-color);
             background: var(--bg-secondary);
             transition: background-color 0.2s, border-color 0.2s;
+            position: relative;
         }
 
         .input-group {
             display: flex;
             gap: 12px;
-            align-items: center; /* 确保垂直对齐 */
+            align-items: center;
+            margin: 0 auto;
+            max-width: calc(100% - 16px); /* 左右各留8px */
         }
 
         .chat-input-field {
             flex: 1;
-            padding: 12px 16px;
+            padding: 10px 16px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             border-radius: 8px;
             color: var(--text-primary);
             font-size: 14px;
-            height: 44px; /* 固定高度 */
+            height: 40px; /* 减少高度 */
             box-sizing: border-box;
         }
 
@@ -607,14 +652,14 @@
         }
 
         .send-btn {
-            padding: 12px 20px;
+            padding: 10px 20px;
             background: var(--accent-blue);
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 500;
-            height: 44px; /* 与输入框相同高度 */
+            height: 40px; /* 与输入框相同高度 */
             box-sizing: border-box;
             display: flex;
             align-items: center;
@@ -623,6 +668,352 @@
 
         .send-btn:hover {
             background: #3b82f6;
+        }
+
+        /* 功能按钮样式 */
+        .function-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .function-btn:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-blue);
+        }
+
+        .function-btn.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .function-btn.active .function-icon {
+            color: white;
+        }
+
+        .function-icon {
+            font-size: 18px;
+            transition: transform 0.2s ease;
+        }
+
+        .function-btn.active .function-icon {
+            transform: rotate(180deg);
+        }
+
+        /* 连接状态悬浮框样式 */
+        .connection-status {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 1000;
+            min-width: 280px;
+            max-width: 320px;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 16px;
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.08),
+                0 8px 16px rgba(0, 0, 0, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            font-size: 0.85em;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .connection-status.show {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px 12px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.6));
+        }
+
+        .status-title {
+            font-weight: 600;
+            color: #1a202c;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-close {
+            background: rgba(0, 0, 0, 0.04);
+            border: none;
+            color: #64748b;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+        }
+
+        .status-close:hover {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            transform: scale(1.05);
+        }
+
+        .connection-status .status-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 20px;
+        }
+
+        .status-dot {
+            font-size: 1.3em;
+            animation: pulse 2s infinite;
+            flex-shrink: 0;
+            margin-top: 1px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+        }
+
+        .status-text {
+            color: #374151;
+            font-weight: 500;
+            line-height: 1.5;
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .status-details {
+            padding: 12px 20px 16px;
+            font-size: 0.8em;
+            color: #6b7280;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.6));
+            border-radius: 0 0 16px 16px;
+            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+        }
+
+        /* 状态动画 */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* 不同状态的样式 */
+        .connection-status.connected {
+            background: linear-gradient(145deg, rgba(236, 253, 245, 0.98), rgba(209, 250, 229, 0.95));
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(16, 185, 129, 0.08),
+                0 8px 16px rgba(16, 185, 129, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .connection-status.connected .status-header {
+            background: linear-gradient(135deg, rgba(236, 253, 245, 0.9), rgba(220, 252, 231, 0.7));
+        }
+
+        .connection-status.connected .status-text {
+            color: #065f46;
+        }
+
+        .connection-status.connected .status-details {
+            color: #047857;
+            background: linear-gradient(135deg, rgba(220, 252, 231, 0.8), rgba(209, 250, 229, 0.6));
+        }
+
+        .connection-status.error {
+            background: linear-gradient(145deg, rgba(254, 242, 242, 0.98), rgba(252, 231, 243, 0.95));
+            border-color: rgba(239, 68, 68, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(239, 68, 68, 0.08),
+                0 8px 16px rgba(239, 68, 68, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .connection-status.error .status-header {
+            background: linear-gradient(135deg, rgba(254, 242, 242, 0.9), rgba(252, 231, 243, 0.7));
+        }
+
+        .connection-status.error .status-text {
+            color: #991b1b;
+        }
+
+        .connection-status.error .status-details {
+            color: #b91c1c;
+            background: linear-gradient(135deg, rgba(252, 231, 243, 0.8), rgba(254, 226, 226, 0.6));
+        }
+
+        .connection-status.warning {
+            background: linear-gradient(145deg, rgba(255, 251, 235, 0.98), rgba(254, 243, 199, 0.95));
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(245, 158, 11, 0.08),
+                0 8px 16px rgba(245, 158, 11, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        .connection-status.warning .status-header {
+            background: linear-gradient(135deg, rgba(255, 251, 235, 0.9), rgba(254, 243, 199, 0.7));
+        }
+
+        .connection-status.warning .status-text {
+            color: #92400e;
+        }
+
+        .connection-status.warning .status-details {
+            color: #a16207;
+            background: linear-gradient(135deg, rgba(254, 243, 199, 0.8), rgba(253, 230, 138, 0.6));
+        }
+
+        /* 暗色主题适配 */
+        [data-theme="dark"] .connection-status {
+            background: linear-gradient(145deg, rgba(31, 41, 55, 0.98), rgba(17, 24, 39, 0.95));
+            border-color: rgba(75, 85, 99, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 8px 16px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="dark"] .connection-status .status-header {
+            background: linear-gradient(135deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.7));
+            border-bottom-color: rgba(75, 85, 99, 0.2);
+        }
+
+        [data-theme="dark"] .connection-status .status-title {
+            color: #f9fafb;
+        }
+
+        [data-theme="dark"] .connection-status .status-close {
+            background: rgba(255, 255, 255, 0.1);
+            color: #9ca3af;
+        }
+
+        [data-theme="dark"] .connection-status .status-close:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+        }
+
+        [data-theme="dark"] .connection-status .status-text {
+            color: #e5e7eb;
+        }
+
+        [data-theme="dark"] .connection-status .status-details {
+            color: #9ca3af;
+            background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(31, 41, 55, 0.6));
+            border-top-color: rgba(75, 85, 99, 0.2);
+        }
+
+        [data-theme="dark"] .connection-status.connected {
+            background: linear-gradient(145deg, rgba(6, 78, 59, 0.98), rgba(4, 120, 87, 0.95));
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        [data-theme="dark"] .connection-status.connected .status-header {
+            background: linear-gradient(135deg, rgba(6, 78, 59, 0.9), rgba(4, 120, 87, 0.7));
+        }
+
+        [data-theme="dark"] .connection-status.error {
+            background: linear-gradient(145deg, rgba(127, 29, 29, 0.98), rgba(153, 27, 27, 0.95));
+            border-color: rgba(239, 68, 68, 0.4);
+        }
+
+        [data-theme="dark"] .connection-status.error .status-header {
+            background: linear-gradient(135deg, rgba(127, 29, 29, 0.9), rgba(153, 27, 27, 0.7));
+        }
+
+        [data-theme="dark"] .connection-status.warning {
+            background: linear-gradient(145deg, rgba(146, 64, 14, 0.98), rgba(161, 98, 7, 0.95));
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+
+        [data-theme="dark"] .connection-status.warning .status-header {
+            background: linear-gradient(135deg, rgba(146, 64, 14, 0.9), rgba(161, 98, 7, 0.7));
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            .connection-status {
+                top: 70px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
+                max-width: none;
+            }
+        }
+
+        /* 功能菜单样式 */
+        .function-menu {
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            min-width: 180px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+
+        .function-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .function-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-radius: 8px;
+            margin: 4px;
+        }
+
+        .function-item:hover {
+            background: var(--bg-hover);
+        }
+
+        .function-item-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .function-item-text {
+            font-size: 14px;
+            color: var(--text-primary);
+            white-space: nowrap;
         }
 
         /* 设置页面样式 */
@@ -729,9 +1120,87 @@
 
         /* 项目信息页面样式 */
         .project-info-container {
-            max-width: 1200px;
+            height: 100vh;
+            overflow: visible;
+            scroll-behavior: smooth;
+        }
+
+        /* 项目介绍首页 - 全屏显示 */
+        .project-hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .project-hero-title {
+            margin-bottom: 40px;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: nowrap;
+            white-space: nowrap;
+        }
+
+        .project-hero-title .rocket {
+            font-size: 60px;
+            color: var(--accent-blue);
+            font-weight: 700;
+        }
+
+        .project-hero-title .nss-title {
+            font-size: 60px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            letter-spacing: 6px;
+        }
+
+        .project-hero-title .novena-title {
+            font-size: 60px;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .project-hero h2 {
+            font-size: 32px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 0 0 40px 0;
+        }
+
+        .project-hero p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 800px;
             margin: 0 auto;
-            padding: 24px;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 14px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
         }
 
         .project-header {
@@ -739,7 +1208,7 @@
             align-items: center;
             gap: 16px;
             margin-bottom: 32px;
-            padding-bottom: 16px;
+            padding: 24px 24px 16px 24px;
             border-bottom: 1px solid var(--border-color);
         }
 
@@ -767,9 +1236,264 @@
         }
 
         .project-content {
+            padding: 0 24px 24px 24px;
             display: flex;
             flex-direction: column;
             gap: 32px;
+        }
+
+        /* 技术栈全屏页面 */
+        .tech-stack-hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .tech-stack-hero h2 {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tech-stack-hero .description {
+            font-size: 20px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+
+        .tech-stack-hero .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .tech-stack-hero .tech-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 12px;
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .tech-stack-hero .tech-item:hover {
+            background: var(--bg-hover);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        /* 下载页面样式 */
+        .download-hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            background: var(--bg-primary);
+        }
+
+        .download-container {
+            max-width: 1000px;
+            width: 100%;
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .download-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .download-icon {
+            font-size: 50px;
+        }
+
+        .download-header h2 {
+            font-size: 50px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin: 0;
+        }
+
+        .download-description {
+            font-size: 22px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, var(--accent-blue) 0%, #4a9eff 100%);
+            border: none;
+            border-radius: 15px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            min-width: 260px;
+            box-shadow: 0 8px 20px rgba(74, 158, 255, 0.3);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(74, 158, 255, 0.4);
+        }
+
+        .download-btn .btn-icon {
+            font-size: 28px;
+        }
+
+        .download-btn .btn-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .download-btn .btn-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .download-btn .btn-subtitle {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .download-btn.linux .btn-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff6b35;
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .download-links {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            margin-bottom: 50px;
+            flex-wrap: nowrap;
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .link-item:hover {
+            color: var(--accent-blue);
+        }
+
+        .link-icon {
+            font-size: 16px;
+        }
+
+        .download-footer {
+            padding-top: 50px;
+        }
+
+        .download-footer::before {
+            content: '';
+            display: block;
+            width: 80%;
+            max-width: 600px;
+            height: 1px;
+            background: var(--border-color);
+            margin: 0 auto 30px auto;
+        }
+
+        .download-footer p {
+            color: var(--text-secondary);
+            margin: 0;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .download-footer .copyright {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 12px;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .download-hero {
+                padding: 40px 20px;
+            }
+            
+            .download-container {
+                padding: 40px 20px;
+            }
+            
+            .download-header h2 {
+                font-size: 40px;
+            }
+            
+            .download-icon {
+                font-size: 40px;
+            }
+            
+            .download-description {
+                font-size: 18px;
+            }
+            
+            .download-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .download-btn {
+                min-width: 300px;
+            }
+            
+            .download-links {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
         }
 
         .project-section h2 {
@@ -890,7 +1614,6 @@
         .language-switcher {
             position: relative;
             display: inline-block;
-            margin-right: 8px;
         }
 
         .language-switcher:hover {
@@ -1064,6 +1787,28 @@
                 transition: left 0.3s ease;
                 box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
             }
+
+            .sidebar::after {
+                right: 0;
+                top: 0;
+                bottom: 0;
+                width: 1px;
+                background: var(--border-color);
+                z-index: 10;
+                display: block;
+            }
+
+            .sidebar::before {
+                right: 0;
+                bottom: 80px;
+                width: 100vw;
+                height: 1px;
+                background: var(--border-color);
+                z-index: 10;
+                display: block;
+            }
+
+
             
             .sidebar.mobile-open {
                 left: 0;
@@ -1211,7 +1956,6 @@
                 position: sticky;
                 bottom: 0;
                 background: var(--bg-secondary);
-                border-top: 1px solid var(--border-color);
             }
             
             .chat-input-field {
@@ -1794,15 +2538,44 @@
                     <div class="message">
                         <div class="message-avatar">🧠</div>
                         <div class="message-content">
-                            你好！我是RAG智能助手，可以帮你分析文档、回答问题。请上传文档或直接提问。
+                            你好！我是RAG智能助手，可以帮你分析文档、回答问题。<br><br>
+                            📋 支持格式：Markdown (.md), 文本 (.txt), 代码文件 (.py, .js, .html, .css), 配置文件 (.json, .xml, .yml) 等<br><br>
+                            请上传文档或直接提问！
                         </div>
                     </div>
                 </div>
                 
                 <div class="chat-input">
                     <div class="input-group">
+                        <button class="function-btn" onclick="toggleFunctionMenu()" id="functionBtn">
+                            <span class="function-icon">⚡</span>
+                        </button>
                         <input type="text" class="chat-input-field" placeholder="输入你的问题..." id="chatInput">
                         <button class="send-btn" onclick="sendMessage()">发送</button>
+                    </div>
+                    
+                    <!-- 功能菜单 -->
+                    <div class="function-menu" id="functionMenu">
+                        <div class="function-item" onclick="uploadFile()">
+                            <span class="function-item-icon">📁</span>
+                            <span class="function-item-text">上传文件</span>
+                        </div>
+                        <div class="function-item" onclick="recordAudio()">
+                            <span class="function-item-icon">🎤</span>
+                            <span class="function-item-text">语音输入</span>
+                        </div>
+                        <div class="function-item" onclick="showStorageStatus()">
+                            <span class="function-item-icon">💾</span>
+                            <span class="function-item-text">存储状态</span>
+                        </div>
+                        <div class="function-item" onclick="reconnectRAG()">
+                            <span class="function-item-icon">🔄</span>
+                            <span class="function-item-text">重新连接</span>
+                        </div>
+                        <div class="function-item" onclick="clearChat()">
+                            <span class="function-item-icon">🗑️</span>
+                            <span class="function-item-text">清空对话</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1899,6 +2672,21 @@
 
             <div id="project-info-page" class="content" style="display: none;">
                 <div class="project-info-container">
+                    <!-- 项目介绍首页 - 全屏显示 -->
+                    <div class="project-hero">
+                        <div class="project-hero-title">
+                            <span class="rocket">🚀</span>
+                            <span class="nss-title">N.S.S</span>
+                            <span class="novena-title">Novena Garfield</span>
+                        </div>
+                        <h2>科研工作管理平台</h2>
+                        <p>突破传统限制，实现真正的全球远程管理。集成化研究工作站平台，提供全方位的科研计算、数据分析和系统管理解决方案。</p>
+                        <div class="scroll-indicator">
+                            ↓ 向下滚动了解更多
+                        </div>
+                    </div>
+                    
+                    <!-- 详细内容部分 -->
                     <div class="project-content">
                         <section class="project-section">
                             <h2>🎯 项目概述</h2>
@@ -1953,19 +2741,88 @@
                             </ul>
                         </section>
 
-                        <section class="project-section">
-                            <h2>🚀 技术栈</h2>
-                            <div class="tech-stack">
-                                <span class="tech-tag">HTML5</span>
-                                <span class="tech-tag">CSS3</span>
-                                <span class="tech-tag">JavaScript</span>
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Node.js</span>
-                                <span class="tech-tag">AI/ML</span>
-                                <span class="tech-tag">WebGL</span>
-                                <span class="tech-tag">PWA</span>
+                    </div>
+                    
+                    <!-- 技术栈全屏页面 -->
+                    <div class="tech-stack-hero">
+                        <h2>🔧 技术栈</h2>
+                        <p class="description">项目采用现代化的技术栈，确保高性能、高可用性和良好的用户体验</p>
+                        <div class="tech-grid">
+                            <div class="tech-item">HTML5 / CSS3</div>
+                            <div class="tech-item">JavaScript ES6+</div>
+                            <div class="tech-item">Python 3.x</div>
+                            <div class="tech-item">WebSocket</div>
+                            <div class="tech-item">RESTful API</div>
+                            <div class="tech-item">Docker</div>
+                            <div class="tech-item">GROMACS</div>
+                            <div class="tech-item">OpenAI API</div>
+                            <div class="tech-item">Wake-on-LAN</div>
+                            <div class="tech-item">Cloudflare</div>
+                            <div class="tech-item">GitHub Actions</div>
+                            <div class="tech-item">PWA</div>
+                        </div>
+                    </div>
+
+                    <!-- 下载页面 -->
+                    <div class="download-hero">
+                        <div class="download-container">
+                            <div class="download-header">
+                                <div class="download-icon">🎯</div>
+                                <h2>立即体验 N.S.S</h2>
                             </div>
-                        </section>
+                            <p class="download-description">选择适合您操作系统的版本，开始享受真正的远程控制体验</p>
+                            
+                            <div class="download-buttons">
+                                <a href="#" class="download-btn linux">
+                                    <div class="btn-icon">🐧</div>
+                                    <div class="btn-content">
+                                        <div class="btn-title">下载 Linux 版本</div>
+                                        <div class="btn-subtitle">.AppImage</div>
+                                    </div>
+                                    <div class="btn-badge">推荐</div>
+                                </a>
+                                
+                                <a href="#" class="download-btn windows">
+                                    <div class="btn-icon">🪟</div>
+                                    <div class="btn-content">
+                                        <div class="btn-title">Windows (.exe)</div>
+                                        <div class="btn-subtitle">Windows 10/11</div>
+                                    </div>
+                                </a>
+                                
+                                <a href="#" class="download-btn macos">
+                                    <div class="btn-icon">🍎</div>
+                                    <div class="btn-content">
+                                        <div class="btn-title">macOS (.dmg)</div>
+                                        <div class="btn-subtitle">Intel & Apple Silicon</div>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="download-links">
+                                <a href="#" class="link-item">
+                                    <span class="link-icon">📁</span>
+                                    <span>GitHub Repository</span>
+                                </a>
+                                <a href="#" class="link-item">
+                                    <span class="link-icon">🚀</span>
+                                    <span>部署指南</span>
+                                </a>
+                                <a href="#" class="link-item">
+                                    <span class="link-icon">🐛</span>
+                                    <span>问题反馈</span>
+                                </a>
+                                <a href="#" class="link-item">
+                                    <span class="link-icon">📧</span>
+                                    <span>Email Support</span>
+                                </a>
+                            </div>
+
+                            <div class="download-footer">
+                                <p>🎉 N.S.S Novena Garfield - 让远程控制变得简单而强大</p>
+                                <p class="copyright">© 2025 Research Workstation Team. 采用 MIT 开源协议</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1980,6 +2837,134 @@
         let currentPage = 'dashboard';
         let currentTheme = 'dark';
         let i18n = null; // 国际化管理器实例
+        
+        // 聊天记录存储系统
+        const CHAT_STORAGE_KEY = 'nexus_rag_chat_history';
+        const MAX_STORED_MESSAGES = 100; // 最多存储100条消息
+        let currentTaskName = 'nexus_chat';
+        
+        // 聊天记录管理函数
+        function saveChatHistory() {
+            try {
+                const messages = [];
+                const messageElements = document.querySelectorAll('#chatMessages .message');
+                
+                messageElements.forEach(element => {
+                    const avatar = element.querySelector('.message-avatar')?.textContent || '👤';
+                    const content = element.querySelector('.message-content')?.innerHTML || '';
+                    const role = avatar === '🧠' ? 'assistant' : 'user';
+                    
+                    if (content.trim()) {
+                        messages.push({
+                            role: role,
+                            content: content,
+                            avatar: avatar,
+                            timestamp: Date.now()
+                        });
+                    }
+                });
+                
+                // 只保留最新的消息
+                const recentMessages = messages.slice(-MAX_STORED_MESSAGES);
+                localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(recentMessages));
+                
+                console.log(`💾 已保存 ${recentMessages.length} 条聊天记录`);
+            } catch (error) {
+                console.error('保存聊天记录失败:', error);
+            }
+        }
+        
+        function loadChatHistory() {
+            try {
+                const stored = localStorage.getItem(CHAT_STORAGE_KEY);
+                if (!stored) return false;
+                
+                const messages = JSON.parse(stored);
+                if (!Array.isArray(messages) || messages.length === 0) return false;
+                
+                const chatMessages = document.getElementById('chatMessages');
+                if (!chatMessages) return false;
+                
+                // 清空现有消息（除了欢迎消息）
+                const welcomeMessage = chatMessages.querySelector('.message');
+                chatMessages.innerHTML = '';
+                
+                // 恢复欢迎消息
+                if (welcomeMessage) {
+                    chatMessages.appendChild(welcomeMessage);
+                }
+                
+                // 恢复历史消息
+                messages.forEach(msg => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message';
+                    messageDiv.innerHTML = `
+                        <div class="message-avatar">${msg.avatar}</div>
+                        <div class="message-content">${msg.content}</div>
+                    `;
+                    chatMessages.appendChild(messageDiv);
+                });
+                
+                // 滚动到底部
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                console.log(`📚 已恢复 ${messages.length} 条聊天记录`);
+                return true;
+            } catch (error) {
+                console.error('加载聊天记录失败:', error);
+                return false;
+            }
+        }
+        
+        function clearChatHistory() {
+            try {
+                localStorage.removeItem(CHAT_STORAGE_KEY);
+                console.log('🗑️ 已清空本地聊天记录');
+            } catch (error) {
+                console.error('清空聊天记录失败:', error);
+            }
+        }
+        
+        function showStorageStatus() {
+            try {
+                const stored = localStorage.getItem(CHAT_STORAGE_KEY);
+                let messageCount = 0;
+                let storageSize = 0;
+                let lastUpdate = '无';
+                
+                if (stored) {
+                    const messages = JSON.parse(stored);
+                    messageCount = messages.length;
+                    storageSize = new Blob([stored]).size;
+                    
+                    // 找到最新消息的时间戳
+                    if (messages.length > 0) {
+                        const latestTimestamp = Math.max(...messages.map(m => m.timestamp || 0));
+                        if (latestTimestamp > 0) {
+                            lastUpdate = new Date(latestTimestamp).toLocaleString('zh-CN');
+                        }
+                    }
+                }
+                
+                const statusMessage = `
+                    📊 <strong>聊天记录存储状态</strong><br><br>
+                    💬 <strong>消息数量:</strong> ${messageCount} 条<br>
+                    📦 <strong>存储大小:</strong> ${(storageSize / 1024).toFixed(2)} KB<br>
+                    🕒 <strong>最后更新:</strong> ${lastUpdate}<br>
+                    💾 <strong>存储位置:</strong> 浏览器本地存储<br>
+                    🔄 <strong>自动保存:</strong> 已启用<br><br>
+                    <small>💡 提示: 聊天记录会自动保存到浏览器本地存储，刷新页面后会自动恢复。最多保存 ${MAX_STORED_MESSAGES} 条消息。</small>
+                `;
+                
+                addMessage(statusMessage, 'assistant');
+                
+            } catch (error) {
+                console.error('获取存储状态失败:', error);
+                addMessage('❌ 获取存储状态失败', 'assistant');
+            }
+            
+            toggleFunctionMenu();
+        }
         
         // 全局变量，供i18n-manager.js访问
         window.sidebarEnglishMode = false;
@@ -2005,6 +2990,11 @@
             });
             if (event && event.target) {
                 event.target.classList.add('active');
+            }
+            
+            // 隐藏连接状态框（只在RAG页面显示）
+            if (pageId !== 'rag-system') {
+                hideConnectionStatus();
             }
             
             // 隐藏所有内容
@@ -2249,7 +3239,7 @@
             }
         }
 
-        function sendMessage() {
+        async function sendMessage() {
             const input = document.getElementById('chatInput');
             const message = input.value.trim();
             
@@ -2259,17 +3249,79 @@
             addMessage(message, 'user');
             input.value = '';
             
-            // 模拟AI回复
-            setTimeout(() => {
-                const responses = [
-                    '我正在分析你的问题，请稍等...',
-                    '根据文档内容，我找到了相关信息...',
-                    '这是一个很好的问题，让我为你详细解答...',
-                    '基于向量检索的结果，我可以告诉你...'
-                ];
-                const response = responses[Math.floor(Math.random() * responses.length)];
-                addMessage(response, 'assistant');
-            }, 1000);
+            // 显示加载状态
+            const loadingMessage = addMessage('🤔 正在思考中...', 'assistant');
+            
+            try {
+                // 检查RAG系统状态
+                if (window.ragSystemReady === false) {
+                    loadingMessage.remove();
+                    addMessage('⚠️ RAG系统当前不可用，请等待系统就绪或刷新页面重试。', 'assistant');
+                    return;
+                }
+                
+                // 调用RAG系统API
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
+                
+                const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.chat}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        task_name: 'nexus_chat'
+                    }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                const data = await response.json();
+                
+                // 移除加载消息
+                loadingMessage.remove();
+                
+                if (data.success) {
+                    addMessage(data.response, 'assistant');
+                } else {
+                    addMessage(`❌ 抱歉，处理您的问题时出现错误: ${data.error}`, 'assistant');
+                }
+                
+            } catch (error) {
+                // 移除加载消息
+                loadingMessage.remove();
+                
+                console.error('API调用失败:', error);
+                
+                // 更详细的错误信息
+                let errorMessage = '❌ <strong>RAG系统调用失败</strong><br>';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage += '错误类型: 请求超时<br>';
+                    errorMessage += `超时时间: ${RAG_CONFIG.timeout/1000}秒<br>`;
+                } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    errorMessage += '错误类型: 网络连接失败<br>';
+                    errorMessage += `服务地址: ${RAG_CONFIG.baseURL}<br>`;
+                } else if (error.name === 'SyntaxError') {
+                    errorMessage += '错误类型: 服务器响应格式错误<br>';
+                } else {
+                    errorMessage += `错误类型: ${error.name}<br>`;
+                }
+                
+                errorMessage += `错误详情: ${error.message}<br>`;
+                errorMessage += `时间戳: ${new Date().toLocaleString('zh-CN')}<br>`;
+                errorMessage += '<br>🔧 <strong>建议操作:</strong><br>';
+                errorMessage += '1. 检查网络连接<br>';
+                errorMessage += '2. 刷新页面重试<br>';
+                errorMessage += '3. 联系系统管理员<br>';
+                
+                addMessage(errorMessage, 'assistant');
+                
+                // 标记系统为不可用
+                window.ragSystemReady = false;
+            }
         }
 
         function addMessage(content, sender) {
@@ -2285,13 +3337,413 @@
             
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // 自动保存聊天记录
+            saveChatHistory();
+            
+            // 返回消息元素，以便后续操作
+            return messageDiv;
+        }
+
+        // 功能菜单控制
+        function toggleFunctionMenu() {
+            const menu = document.getElementById('functionMenu');
+            const btn = document.getElementById('functionBtn');
+            
+            if (menu.classList.contains('show')) {
+                menu.classList.remove('show');
+                btn.classList.remove('active');
+            } else {
+                menu.classList.add('show');
+                btn.classList.add('active');
+            }
+        }
+
+        // 点击其他地方关闭菜单
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('functionMenu');
+            const btn = document.getElementById('functionBtn');
+            
+            if (!btn.contains(event.target) && !menu.contains(event.target)) {
+                menu.classList.remove('show');
+                btn.classList.remove('active');
+            }
+        });
+
+        // 功能菜单项
+        async function uploadFile() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '*/*'; // 支持所有文件类型
+            input.multiple = true; // 支持多文件上传
+            input.onchange = async function(e) {
+                const files = Array.from(e.target.files);
+                if (files.length === 0) return;
+                
+                // 显示上传的文件
+                files.forEach(file => {
+                    let icon = '📁';
+                    if (file.type.startsWith('image/')) {
+                        icon = '🖼️';
+                    } else if (file.type.includes('pdf')) {
+                        icon = '📄';
+                    } else if (file.type.includes('document') || file.type.includes('word')) {
+                        icon = '📝';
+                    } else if (file.name.endsWith('.md') || file.name.endsWith('.markdown')) {
+                        icon = '📋';
+                    } else if (file.name.endsWith('.txt')) {
+                        icon = '📄';
+                    } else if (file.name.match(/\.(py|js|html|css|json|xml|yml|yaml)$/)) {
+                        icon = '💻';
+                    }
+                    addMessage(`${icon} 正在上传文件: ${file.name}`, 'user');
+                });
+                
+                // 显示处理状态
+                const processingMessage = addMessage('📤 正在处理文件，请稍等...', 'assistant');
+                
+                try {
+                    // 创建FormData
+                    const formData = new FormData();
+                    files.forEach(file => {
+                        formData.append('files', file);
+                    });
+                    
+                    // 调用上传API
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout * 2); // 上传需要更长时间
+                    
+                    const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.upload}`, {
+                        method: 'POST',
+                        body: formData,
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    const data = await response.json();
+                    
+                    // 移除处理消息
+                    processingMessage.remove();
+                    
+                    if (data.success) {
+                        addMessage(`✅ ${data.message}！现在可以向我提问相关内容了。`, 'assistant');
+                    } else {
+                        addMessage(`❌ 文件处理失败: ${data.error}`, 'assistant');
+                    }
+                    
+                } catch (error) {
+                    // 移除处理消息
+                    processingMessage.remove();
+                    
+                    console.error('文件上传失败:', error);
+                    addMessage('❌ 文件上传失败，请确保后端服务正在运行。', 'assistant');
+                }
+            };
+            input.click();
+            toggleFunctionMenu();
         }
 
 
 
+        function recordAudio() {
+            addMessage('🎤 语音输入功能开发中...', 'user');
+            setTimeout(() => {
+                addMessage('语音输入功能即将上线，敬请期待！', 'assistant');
+            }, 500);
+            toggleFunctionMenu();
+        }
+
+        // 重新连接RAG系统
+        async function reconnectRAG() {
+            addMessage('🔄 正在重新连接RAG系统...', 'assistant');
+            
+            // 重置连接状态
+            window.ragSystemReady = undefined;
+            
+            // 重新测试连接
+            await testRAGConnection();
+            
+            toggleFunctionMenu();
+        }
+
+        async function clearChat() {
+            try {
+                // 调用清空API
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
+                
+                const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.clear}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        task_name: 'nexus_chat'
+                    }),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // 清空前端聊天记录
+                    const messagesContainer = document.getElementById('chatMessages');
+                    messagesContainer.innerHTML = `
+                        <div class="message">
+                            <div class="message-avatar">🧠</div>
+                            <div class="message-content">
+                                你好！我是RAG智能助手，可以帮你分析文档、回答问题。<br><br>📋 支持格式：Markdown (.md), 文本 (.txt), 代码文件 (.py, .js, .html, .css), 配置文件 (.json, .xml, .yml) 等<br><br>请上传文档或直接提问！
+                            </div>
+                        </div>
+                    `;
+                    
+                    // 清空本地存储
+                    clearChatHistory();
+                    
+                    addMessage('✅ 聊天记录已清空', 'assistant');
+                } else {
+                    addMessage(`❌ 清空失败: ${data.error}`, 'assistant');
+                }
+                
+            } catch (error) {
+                console.error('清空聊天记录失败:', error);
+                addMessage('❌ 清空聊天记录失败，请确保后端服务正在运行。', 'assistant');
+            }
+            
+            toggleFunctionMenu();
+        }
+
+
+
+        // RAG系统配置 - 动态检测服务器地址
+        const RAG_CONFIG = {
+            baseURL: (() => {
+                // 如果是通过隧道访问，优先尝试已知的RAG隧道地址
+                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+                    // 当前已启动的RAG隧道地址
+                    return 'https://recruitment-editorial-still-act.trycloudflare.com';
+                }
+                // 本地开发环境
+                return 'http://localhost:5000';
+            })(),
+            fallbackURLs: [
+                'https://recruitment-editorial-still-act.trycloudflare.com', // 当前RAG隧道
+                'http://localhost:5000',
+                'http://127.0.0.1:5000',
+                `${window.location.protocol}//${window.location.hostname}:5000`
+            ],
+            endpoints: {
+                health: '/api/health',
+                chat: '/api/chat',
+                history: '/api/history',
+                upload: '/api/upload',
+                clear: '/api/clear'
+            },
+            timeout: 10000
+        };
+
+        // 状态框显示控制
+        let statusTimeout = null;
+        
+        // 显示连接状态
+        function showConnectionStatus() {
+            const statusBar = document.getElementById('connectionStatus');
+            statusBar.classList.add('show');
+            
+            // 清除之前的自动隐藏定时器
+            if (statusTimeout) {
+                clearTimeout(statusTimeout);
+                statusTimeout = null;
+            }
+        }
+        
+        // 隐藏连接状态
+        function hideConnectionStatus() {
+            const statusBar = document.getElementById('connectionStatus');
+            statusBar.classList.remove('show');
+        }
+        
+        // 自动隐藏连接状态（仅在成功时）
+        function autoHideConnectionStatus(delay = 3000) {
+            if (statusTimeout) {
+                clearTimeout(statusTimeout);
+            }
+            statusTimeout = setTimeout(() => {
+                hideConnectionStatus();
+            }, delay);
+        }
+        
+        // 更新连接状态显示
+        function updateConnectionStatus(status, message, details = '') {
+            // 只在RAG系统页面显示状态框
+            if (currentPage !== 'rag-system') {
+                return;
+            }
+            
+            const statusBar = document.getElementById('connectionStatus');
+            const statusDot = statusBar.querySelector('.status-dot');
+            const statusText = statusBar.querySelector('.status-text');
+            const statusDetails = document.getElementById('statusDetails');
+            
+            // 清除所有状态类
+            statusBar.className = 'connection-status show';
+            
+            switch (status) {
+                case 'connecting':
+                    statusBar.classList.add('warning');
+                    statusDot.textContent = '🔄';
+                    showConnectionStatus();
+                    break;
+                case 'connected':
+                    statusBar.classList.add('connected');
+                    statusDot.textContent = '✅';
+                    showConnectionStatus();
+                    // 成功连接后3秒自动隐藏
+                    autoHideConnectionStatus(3000);
+                    break;
+                case 'error':
+                    statusBar.classList.add('error');
+                    statusDot.textContent = '❌';
+                    showConnectionStatus();
+                    // 错误状态不自动隐藏，需要用户手动关闭
+                    break;
+                case 'warning':
+                    statusBar.classList.add('warning');
+                    statusDot.textContent = '⚠️';
+                    showConnectionStatus();
+                    break;
+            }
+            
+            statusText.textContent = message;
+            statusDetails.textContent = details;
+        }
+
+        // 尝试连接到指定URL
+        async function tryConnectToURL(baseURL) {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
+            
+            try {
+                const response = await fetch(`${baseURL}${RAG_CONFIG.endpoints.health}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    return { success: true, data, baseURL };
+                } else {
+                    return { success: false, error: `HTTP ${response.status}: ${response.statusText}`, baseURL };
+                }
+            } catch (error) {
+                clearTimeout(timeoutId);
+                return { success: false, error: error.message, baseURL };
+            }
+        }
+
+        // 测试RAG系统连接
+        async function testRAGConnection() {
+            console.log('🔍 开始测试RAG系统连接...');
+            updateConnectionStatus('connecting', '正在连接RAG系统...', '尝试多个服务器地址...');
+            
+            // 构建要尝试的URL列表
+            const urlsToTry = [RAG_CONFIG.baseURL, ...RAG_CONFIG.fallbackURLs.filter(url => url !== RAG_CONFIG.baseURL)];
+            
+            console.log('🔗 尝试连接的URL:', urlsToTry);
+            
+            for (let i = 0; i < urlsToTry.length; i++) {
+                const currentURL = urlsToTry[i];
+                console.log(`🔄 尝试连接 ${i + 1}/${urlsToTry.length}: ${currentURL}`);
+                
+                updateConnectionStatus('connecting', 
+                    `正在连接RAG系统... (${i + 1}/${urlsToTry.length})`,
+                    `当前尝试: ${currentURL}`
+                );
+                
+                const result = await tryConnectToURL(currentURL);
+                
+                if (result.success) {
+                    console.log('✅ RAG系统连接成功:', result.data);
+                    
+                    // 更新配置为成功的URL
+                    RAG_CONFIG.baseURL = result.baseURL;
+                    
+                    // 更新状态栏
+                    updateConnectionStatus('connected', 
+                        `RAG系统已就绪 (${result.data.chat_history_count}条历史, ${result.data.documents_count}个文档)`,
+                        `服务地址: ${result.baseURL}\n系统时间: ${new Date(result.data.timestamp).toLocaleString('zh-CN')}`
+                    );
+                    
+                    // 显示系统状态（仅在首次连接时）
+                    if (window.ragSystemReady === undefined) {
+                        addMessage(`🎉 <strong>RAG系统已就绪</strong><br>
+                        📊 聊天历史: ${result.data.chat_history_count} 条<br>
+                        📚 文档数量: ${result.data.documents_count} 个<br>
+                        🕒 系统时间: ${new Date(result.data.timestamp).toLocaleString('zh-CN')}<br>
+                        🌐 服务地址: ${result.baseURL}<br>
+                        💡 您可以开始与AI助手对话了！`, 'assistant');
+                    }
+                    
+                    // 设置连接状态
+                    window.ragSystemReady = true;
+                    return;
+                }
+                
+                console.log(`❌ 连接失败 ${currentURL}:`, result.error);
+            }
+            
+            // 所有URL都失败了
+            console.error('❌ 所有RAG服务器地址都无法连接');
+            
+            updateConnectionStatus('error', 'RAG系统连接失败', 
+                `已尝试 ${urlsToTry.length} 个服务器地址\n\n🔧 快速解决方案:\n1. 运行: python start_rag_tunnel.py\n2. 等待隧道URL显示\n3. 刷新页面或点击重新连接\n\n点击 ✕ 关闭此提示`
+            );
+            
+            let errorMessage = '⚠️ <strong>RAG系统连接异常</strong><br>';
+            errorMessage += '错误类型: 网络连接失败<br>';
+            errorMessage += `错误详情: 无法连接到任何RAG服务器<br>`;
+            errorMessage += `尝试的地址: ${urlsToTry.join(', ')}<br>`;
+            errorMessage += `当前页面: ${window.location.href}<br>`;
+            errorMessage += '<br>🚀 <strong>快速解决方案:</strong><br>';
+            errorMessage += '1. 在终端运行: <code>python start_rag_tunnel.py</code><br>';
+            errorMessage += '2. 等待显示隧道URL<br>';
+            errorMessage += '3. 刷新页面或点击功能菜单中的"重新连接"<br>';
+            errorMessage += '<br>🔧 <strong>其他解决方案:</strong><br>';
+            errorMessage += '• 本地访问: <a href="http://localhost:52943/systems/nexus/nexus-dashboard-restored.html" target="_blank">http://localhost:52943</a><br>';
+            errorMessage += '• 手动启动隧道: <code>cloudflared tunnel --url http://localhost:5000</code><br>';
+            errorMessage += '• 查看详细指南: TUNNEL_ACCESS_GUIDE.md<br>';
+            errorMessage += '<br>💡 您仍可以使用其他功能，但AI对话功能暂时不可用。';
+            
+            addMessage(errorMessage, 'assistant');
+            
+            // 设置连接状态
+            window.ragSystemReady = false;
+        }
+
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             initTheme();
+            
+            // 恢复聊天记录
+            setTimeout(() => {
+                const restored = loadChatHistory();
+                if (restored) {
+                    console.log('📚 聊天记录已恢复');
+                }
+            }, 500); // 延迟500ms确保DOM完全加载
+            
+            // 测试RAG系统连接
+            setTimeout(() => {
+                testRAGConnection();
+            }, 1000);
             
             // 监听系统主题变化（仅在auto模式下）
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
@@ -2714,5 +4166,19 @@
             }, 1000);
         });
     </script>
+
+    <!-- 连接状态悬浮框 -->
+    <div class="connection-status" id="connectionStatus">
+        <div class="status-header">
+            <div class="status-title">🔧 系统状态</div>
+            <button class="status-close" onclick="hideConnectionStatus()">✕</button>
+        </div>
+        <div class="status-content" id="statusIndicator">
+            <span class="status-dot">🔄</span>
+            <span class="status-text">正在连接RAG系统...</span>
+        </div>
+        <div class="status-details" id="statusDetails"></div>
+    </div>
+
 </body>
 </html>

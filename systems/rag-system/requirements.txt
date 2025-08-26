@@ -4,6 +4,8 @@
 streamlit>=1.28.0
 fastapi>=0.104.0
 uvicorn>=0.24.0
+flask>=2.3.0
+flask-cors>=4.0.0
 
 # 机器学习和向量处理
 sentence-transformers>=2.2.2
