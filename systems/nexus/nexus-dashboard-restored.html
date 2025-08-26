@@ -704,6 +704,67 @@
             transform: rotate(180deg);
         }
 
+        /* 连接状态栏样式 */
+        .connection-status {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #dee2e6;
+            padding: 8px 16px;
+            font-size: 0.85em;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            font-size: 1.1em;
+            animation: pulse 2s infinite;
+        }
+
+        .status-text {
+            color: #6c757d;
+            font-weight: 500;
+        }
+
+        /* 状态动画 */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* 不同状态的样式 */
+        .connection-status.connected {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-bottom-color: #b8dacc;
+        }
+
+        .connection-status.connected .status-text {
+            color: #155724;
+        }
+
+        .connection-status.error {
+            background: linear-gradient(135deg, #f8d7da 0%, #f1b0b7 100%);
+            border-bottom-color: #f1b0b7;
+        }
+
+        .connection-status.error .status-text {
+            color: #721c24;
+        }
+
+        .connection-status.warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-bottom-color: #ffeaa7;
+        }
+
+        .connection-status.warning .status-text {
+            color: #856404;
+        }
+
         /* 功能菜单样式 */
         .function-menu {
             position: absolute;
@@ -2273,6 +2334,14 @@
             <!-- RAG 聊天界面 -->
             <div id="rag-chat" class="rag-chat">
                 
+                <!-- 连接状态栏 -->
+                <div class="connection-status" id="connectionStatus">
+                    <div class="status-indicator" id="statusIndicator">
+                        <span class="status-dot">🔄</span>
+                        <span class="status-text">正在连接RAG系统...</span>
+                    </div>
+                </div>
+                
                 <div class="chat-messages" id="chatMessages">
                     <div class="message">
                         <div class="message-avatar">🧠</div>
@@ -2306,6 +2375,10 @@
                         <div class="function-item" onclick="showStorageStatus()">
                             <span class="function-item-icon">💾</span>
                             <span class="function-item-text">存储状态</span>
+                        </div>
+                        <div class="function-item" onclick="reconnectRAG()">
+                            <span class="function-item-icon">🔄</span>
+                            <span class="function-item-text">重新连接</span>
                         </div>
                         <div class="function-item" onclick="clearChat()">
                             <span class="function-item-icon">🗑️</span>
@@ -2983,8 +3056,18 @@
             const loadingMessage = addMessage('🤔 正在思考中...', 'assistant');
             
             try {
+                // 检查RAG系统状态
+                if (window.ragSystemReady === false) {
+                    loadingMessage.remove();
+                    addMessage('⚠️ RAG系统当前不可用，请等待系统就绪或刷新页面重试。', 'assistant');
+                    return;
+                }
+                
                 // 调用RAG系统API
-                const response = await fetch('http://localhost:5000/api/chat', {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
+                
+                const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.chat}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2992,8 +3075,11 @@
                     body: JSON.stringify({
                         message: message,
                         task_name: 'nexus_chat'
-                    })
+                    }),
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
                 
                 const data = await response.json();
                 
@@ -3011,7 +3097,33 @@
                 loadingMessage.remove();
                 
                 console.error('API调用失败:', error);
-                addMessage('❌ 连接RAG系统失败，请确保后端服务正在运行。', 'assistant');
+                
+                // 更详细的错误信息
+                let errorMessage = '❌ <strong>RAG系统调用失败</strong><br>';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage += '错误类型: 请求超时<br>';
+                    errorMessage += `超时时间: ${RAG_CONFIG.timeout/1000}秒<br>`;
+                } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    errorMessage += '错误类型: 网络连接失败<br>';
+                    errorMessage += `服务地址: ${RAG_CONFIG.baseURL}<br>`;
+                } else if (error.name === 'SyntaxError') {
+                    errorMessage += '错误类型: 服务器响应格式错误<br>';
+                } else {
+                    errorMessage += `错误类型: ${error.name}<br>`;
+                }
+                
+                errorMessage += `错误详情: ${error.message}<br>`;
+                errorMessage += `时间戳: ${new Date().toLocaleString('zh-CN')}<br>`;
+                errorMessage += '<br>🔧 <strong>建议操作:</strong><br>';
+                errorMessage += '1. 检查网络连接<br>';
+                errorMessage += '2. 刷新页面重试<br>';
+                errorMessage += '3. 联系系统管理员<br>';
+                
+                addMessage(errorMessage, 'assistant');
+                
+                // 标记系统为不可用
+                window.ragSystemReady = false;
             }
         }
 
@@ -3101,10 +3213,16 @@
                     });
                     
                     // 调用上传API
-                    const response = await fetch('http://localhost:5000/api/upload', {
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout * 2); // 上传需要更长时间
+                    
+                    const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.upload}`, {
                         method: 'POST',
-                        body: formData
+                        body: formData,
+                        signal: controller.signal
                     });
+                    
+                    clearTimeout(timeoutId);
                     
                     const data = await response.json();
                     
@@ -3139,18 +3257,37 @@
             toggleFunctionMenu();
         }
 
+        // 重新连接RAG系统
+        async function reconnectRAG() {
+            addMessage('🔄 正在重新连接RAG系统...', 'assistant');
+            
+            // 重置连接状态
+            window.ragSystemReady = undefined;
+            
+            // 重新测试连接
+            await testRAGConnection();
+            
+            toggleFunctionMenu();
+        }
+
         async function clearChat() {
             try {
                 // 调用清空API
-                const response = await fetch('http://localhost:5000/api/clear', {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
+                
+                const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.clear}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         task_name: 'nexus_chat'
-                    })
+                    }),
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
                 
                 const data = await response.json();
                 
@@ -3184,6 +3321,141 @@
 
 
 
+        // RAG系统配置
+        const RAG_CONFIG = {
+            baseURL: 'http://localhost:5000',
+            endpoints: {
+                health: '/api/health',
+                chat: '/api/chat',
+                history: '/api/history',
+                upload: '/api/upload',
+                clear: '/api/clear'
+            },
+            timeout: 10000
+        };
+
+        // 更新连接状态显示
+        function updateConnectionStatus(status, message, details = '') {
+            const statusBar = document.getElementById('connectionStatus');
+            const statusDot = statusBar.querySelector('.status-dot');
+            const statusText = statusBar.querySelector('.status-text');
+            
+            // 清除所有状态类
+            statusBar.className = 'connection-status';
+            
+            switch (status) {
+                case 'connecting':
+                    statusBar.classList.add('warning');
+                    statusDot.textContent = '🔄';
+                    break;
+                case 'connected':
+                    statusBar.classList.add('connected');
+                    statusDot.textContent = '✅';
+                    break;
+                case 'error':
+                    statusBar.classList.add('error');
+                    statusDot.textContent = '❌';
+                    break;
+                case 'warning':
+                    statusBar.classList.add('warning');
+                    statusDot.textContent = '⚠️';
+                    break;
+            }
+            
+            statusText.textContent = message;
+            
+            if (details) {
+                statusText.title = details;
+            }
+        }
+
+        // 测试RAG系统连接
+        async function testRAGConnection() {
+            console.log('🔍 开始测试RAG系统连接...');
+            updateConnectionStatus('connecting', '正在连接RAG系统...');
+            
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
+                
+                const response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.health}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ RAG系统连接正常:', data);
+                    
+                    // 更新状态栏
+                    updateConnectionStatus('connected', 
+                        `RAG系统已就绪 (${data.chat_history_count}条历史, ${data.documents_count}个文档)`,
+                        `服务地址: ${RAG_CONFIG.baseURL}\n系统时间: ${new Date(data.timestamp).toLocaleString('zh-CN')}`
+                    );
+                    
+                    // 显示系统状态
+                    if (data.status === 'ok') {
+                        addMessage(`🎉 <strong>RAG系统已就绪</strong><br>
+                        📊 聊天历史: ${data.chat_history_count} 条<br>
+                        📚 文档数量: ${data.documents_count} 个<br>
+                        🕒 系统时间: ${new Date(data.timestamp).toLocaleString('zh-CN')}<br>
+                        🌐 服务地址: ${RAG_CONFIG.baseURL}<br>
+                        💡 您可以开始与AI助手对话了！`, 'assistant');
+                        
+                        // 设置连接状态
+                        window.ragSystemReady = true;
+                    }
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+            } catch (error) {
+                console.error('❌ RAG系统连接失败:', error);
+                
+                // 更新状态栏
+                let statusMessage = 'RAG系统连接失败';
+                if (error.name === 'AbortError') {
+                    statusMessage = 'RAG系统连接超时';
+                } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    statusMessage = 'RAG系统无法连接';
+                }
+                
+                updateConnectionStatus('error', statusMessage, 
+                    `错误: ${error.message}\n服务地址: ${RAG_CONFIG.baseURL}\n点击重新连接按钮重试`
+                );
+                
+                let errorMessage = '⚠️ <strong>RAG系统连接异常</strong><br>';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage += '错误类型: 连接超时<br>';
+                } else if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    errorMessage += '错误类型: 网络连接失败<br>';
+                } else {
+                    errorMessage += `错误类型: ${error.name}<br>`;
+                }
+                
+                errorMessage += `错误详情: ${error.message}<br>`;
+                errorMessage += `服务地址: ${RAG_CONFIG.baseURL}<br>`;
+                errorMessage += `浏览器: ${navigator.userAgent.split(' ')[0]}<br>`;
+                errorMessage += `当前页面: ${window.location.href}<br>`;
+                errorMessage += '<br>🔧 <strong>故障排除建议:</strong><br>';
+                errorMessage += '1. 检查RAG服务器是否运行在端口5000<br>';
+                errorMessage += '2. 点击功能菜单中的"重新连接"按钮<br>';
+                errorMessage += '3. 检查浏览器控制台的详细错误信息<br>';
+                errorMessage += '4. 确认防火墙没有阻止连接<br>';
+                errorMessage += '<br>💡 您仍可以使用其他功能，但AI对话功能暂时不可用。';
+                
+                addMessage(errorMessage, 'assistant');
+                
+                // 设置连接状态
+                window.ragSystemReady = false;
+            }
+        }
+
         // 页面加载完成后初始化
         document.addEventListener('DOMContentLoaded', function() {
             initTheme();
@@ -3195,6 +3467,11 @@
                     console.log('📚 聊天记录已恢复');
                 }
             }, 500); // 延迟500ms确保DOM完全加载
+            
+            // 测试RAG系统连接
+            setTimeout(() => {
+                testRAGConnection();
+            }, 1000);
             
             // 监听系统主题变化（仅在auto模式下）
             window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
