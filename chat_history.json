@@ -1,78 +1,6 @@
 [
   {
     "role": "user",
-    "content": "测试记忆系统功能",
-    "timestamp": "2025-08-26T12:56:39.168207",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "assistant",
-    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
-    "timestamp": "2025-08-26T12:56:39.168232",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "user",
-    "content": "测试前端记忆系统",
-    "timestamp": "2025-08-26T12:57:22.816684",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "assistant",
-    "content": "抱歉，我没有找到相关的信息来回答您的问题。请尝试上传相关文档或重新表述问题。",
-    "timestamp": "2025-08-26T12:57:22.816703",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "user",
-    "content": "记忆系统测试完成！功能完美！",
-    "timestamp": "2025-08-26T12:59:19.445224",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "assistant",
-    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
-    "timestamp": "2025-08-26T12:59:19.445241",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "user",
-    "content": "测试连接",
-    "timestamp": "2025-08-26T13:11:11.202737",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "assistant",
-    "content": "目前我的知识库中没有相关信息，请上传文档后再提问。",
-    "timestamp": "2025-08-26T13:11:11.202754",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "user",
-    "content": "你好，测试连接",
-    "timestamp": "2025-08-26T13:13:50.782068",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "assistant",
-    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
-    "timestamp": "2025-08-26T13:13:50.782087",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "user",
-    "content": "测试连接",
-    "timestamp": "2025-08-26T13:17:09.252324",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "assistant",
-    "content": "目前我的知识库中没有相关信息，请上传文档后再提问。",
-    "timestamp": "2025-08-26T13:17:09.252342",
-    "task_name": "nexus_chat"
-  },
-  {
-    "role": "user",
     "content": "系统状态检查测试",
     "timestamp": "2025-08-26T13:22:54.239117",
     "task_name": "status_check"
@@ -94,5 +22,41 @@
     "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
     "timestamp": "2025-08-26T13:29:19.588803",
     "task_name": "status_check"
+  },
+  {
+    "role": "user",
+    "content": "系统状态检查测试",
+    "timestamp": "2025-08-26T13:37:25.150590",
+    "task_name": "status_check"
+  },
+  {
+    "role": "assistant",
+    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
+    "timestamp": "2025-08-26T13:37:25.150606",
+    "task_name": "status_check"
+  },
+  {
+    "role": "user",
+    "content": "你好",
+    "timestamp": "2025-08-26T13:38:04.420893",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "抱歉，我没有找到相关的信息来回答您的问题。请尝试上传相关文档或重新表述问题。",
+    "timestamp": "2025-08-26T13:38:04.420909",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "user",
+    "content": "帮我总结一下文档",
+    "timestamp": "2025-08-26T13:39:34.270098",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "根据文档内容，关于您的问题，我找到了以下相关信息：\n\nMarkdown文档: README.md\n\n# 🧬 Research Workstation - 综合科研工作站\n\n[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)\n[![Python](https://img.shields.io/badge/python-3.8+-green.svg)](https://python.org)\n[![Node.js](https://img.shields.io/badge/node.js-16+-green.svg)](https://nodejs.org)\n[![AI Powered](https://img.shields.io/badge/AI-Powered-orange.svg)](README.md)\n\n> 🎓 **从传统规则驱动系统成功升级为AI驱动的智能科研平台**\n\n一个集成多个AI驱动系统的综合科研工作站，包含RAG智能问答、牛只识别分析、桌面宠物学习助手、实验记录系统等多个子系统，为科研工作提供全方位的智能化支持。\n\n---\n\n## 🌟 项目亮点\n\n### 🚀 最新AI升级 (2025年8月)\n- **🐄 BovineInsight**: 集成Meta DINOv2无监督特征提取 + 智谱GLM-4V专家级文本分析\n- **🤖 Changlee**: 集成Google Gemma 2 (2B)本地AI核心，实现完全本地化智能对话\n- **📊 多模态融合**: 传统算法 + 深度学习 + 大语言模型的三重融合架构\n- **🔒 隐私保护**: 本地AI运行，数据不上传云端\n\n### 🎯 核心价值\n- **科研价值**: 解决数据标注难题，生成论文级分析报告\n- **用户体验**: 隐私保护的智能对话，个性化学习陪伴\n- **技术创新**: 模块化设计，便于维护和扩展\n\n---\n\n## 🏗️ 系统架构\n\n```\nResearch Workstation\n├── 🚀 NEXUS远程指挥中心        # 全球远程电源管理 + WebSocket + PWA\n├── 🤖 RAG智能问答系统          # DeepSeek + multilingual-e5 + FAISS\n├── 🐄 BovineInsight牛只识别    # DINOv2 + GLM-4V + 传统CV算法\n├── 🐱 Changlee桌面宠物         # 混合AI架构 + Electron + React\n├── 📊 Chronicle实验记录器      # 无头微服务 + AI分析引擎\n├── 🧬 Genome Jigsaw测序分析    # 自动化细菌基因组分析流水线\n├── 🧬 Molecular Simulation     # 分子动力学模拟工具箱\n├── 🔧 API管理系统             # 统一配置管理 + 安全存储\n└── 🛠️ 工具集                  # 部署工具 + 测试工具 + 文档\n```\n\n---\n\n## 🎯 核心系统详解\n\n### 🚀 NEXUS远程指挥与控制系统 ⭐ **革命性新增**\n**全球远程电源管理和控制系统**\n\n#### 🌍 核心突破\n- **🌐 全球远程访问**: 突破局域网限制，真正的广域网远程控制\n- **⚡ 完整电源管理**: 远程开机(WOL) + 远程关机 + 系统重启\n- **🛡️ 企业级安全**: 令牌认证 + MAC白名单 + 操作审计\n- **📱 移动端优化**: 手机、平板完美支持，PWA可安装\n\n#### 🌟 核心功能\n- **远程唤醒 (WOL)**: Wake-on-LAN技术远程开机\n- **远程关机**: 安全关闭远程电脑，支持延迟执行\n- **系统重启**: 远程重启功能，维护更便捷\n- **云服务器中转**: 通过云端中转实现稳定的远程访问\n- **多网络管理**: 统一管理家庭、办公室等多个网络环境\n- **实时通信**: WebSocket双向通信，毫秒级响应\n\n#### 🛠️ 技术栈\n- **前端**: React 18 + TypeScript + Material-UI + PWA\n- **后端**: Python + WebSocket + Wake-on-LAN\n- **云端中转**: 多网络管理 + 安全认证\n- **跨平台**: Windows/Linux/macOS全平台兼容\n- **移动端**: 响应式设计 + 触摸优化\n\n#### 📁 核心模块\n```\nnexus/\n├── backend/websocket_server.py         # WebSocket服务器 ⭐\n├── cloud_wol_relay.py                  # 云端WOL中转服务 ⭐\n├── scripts/wake_computer.sh            # 远程唤醒脚本\n├── scripts/shutdown_computer.sh        # 远程关机脚本 ⭐\n├── src/components/remote/              # 远程控制界面 ⭐\n│   └── RemoteCommandCenter.tsx\n├── test_remote_center.html             # 功能测试页面\n└── docs/                               # 完整文档集\n    ├── WAKE_ON_LAN_GUIDE.md           # WOL使用指南\n    ├── WAN_REMOTE_ACCESS_GUIDE.md     # 广域网访问指南\n    └── POWER_MANAGEMENT_COMPLETE.md   # 功能完成报告\n```\n\n#### 🎯 使用场景\n- **📱 出差远程办公**: 酒店用手机远程唤醒家里工作站\n- **💡 智能节能管理**: 下班远程关机，上班远程唤醒\n- **🚨 紧急故障处理**: 半夜远程唤醒备用服务器\n- **🏠 智能家居集成**: 语音控制电脑开关机\n\n#### 🌐 部署方案\n1. **云服务器中转** (推荐) - 真正的全球访问\n2. **FRP内网穿透** - 简单高效的穿透方案\n3. **VPN远程访问** - 企业级安全方案\n4. **路由器端口转发** - 最简单的直连方案\n\n---\n\n### 🤖 RAG智能问答系统\n**基于DeepSeek + multilingual-e5 + FAISS的模块化RAG系统**\n\n#### 🌟 核心特性\n- **多文档格式支持**: PDF、Word、TXT、Markdown等\n- **智能对话记忆**: 上下文感知的多轮对话\n- **多模态检索**: 文本 + 图像的混合检索\n- **移动端适配**: PWA支持，跨平台访问\n- **API集成**: Gemini、DeepSeek等多种LLM支持\n\n#### 🛠️ 技术栈\n- **后端**: Python + Streamlit + FAISS\n- **LLM**: DeepSeek-V2.5 / Google Gemini\n- **嵌入模型**: multilingual-e5-large\n- **数据库**: SQLite + 向量数据库\n- **部署**: Docker + Cloudflare Tunnel\n\n#### 📁 核心模块\n```\nrag-system/\n├── core/rag_system.py          # 主要业务逻辑\n├── llm/llm_manager.py          # LLM管理\n├── retrieval/vector_store.py   # 向量检索\n├── document/document_processor.py # 文档处理\n├── memory/memory_manager.py    # 记忆管理\n└── database/chat_db.py         # 聊天记录\n```\n\n---\n\n### 🐄 BovineInsight牛只识别系统 ⭐ **博士级AI升级**\n**多摄像头牛只身份识别与体况评分系统**\n\n#### 🧠 AI升级亮点\n- **🔬 DINOv2无监督特征提取器**: Meta最新Vision Transformer，768维特征向量\n- **📝 GLM-4V专家级文本分析**: 智谱AI视觉语言模型，生成论文级BCS报告\n- **🎯 多模态融合分析**: 传统方法(60%) + DINOv2特征(40%) + GLM-4V文本\n\n#### 🌟 核心功能\n- **双重身份识别**: 耳标OCR + 花色重识别(Re-ID)\n- **自动体况评分**: BCS 1-5分精确评估\n- **专家级报告生成**: 结构化分析报告，包含饲养建议\n- **多摄像头协同**: 不同角度的综合分析\n\n#### 🛠️ 技术栈\n- **深度学习**: PyTorch + DINOv2 + GLM-4V\n- **计算机视觉**: OpenCV + YOLOv8\n- **特征提取**: Siamese Networks + Triplet Loss\n- **文本分析**: Transformers + 智谱AI API\n\n#### 📁 核心模块\n```\nbovine-insight/\n├── src/feature_extraction/     # DINOv2特征提取器 ⭐\n├── src/text_analysis/          # GLM-4V文本分析 ⭐\n├── src/identification/         # 身份识别模块\n├── src/body_condition/         # 增强BCS分析器 ⭐\n├── src/detection/              # 目标检测\n└── src/database/               # 数据管理\n```\n\n---\n\n### 🐱 Changlee桌面宠物 ⭐ **混合AI核心**\n**情感陪伴型英语学习桌面宠物**\n\n#### 🤖 混合AI升级亮点\n- **🧠 本地AI核心**: Google Gemma 2 (2B)本地运行，完全隐私保护\n- **☁️ 云端API集成**: 支持Gemini、DeepSeek等多种云端AI服务\n- **🔄 智能切换**: 自动选择最佳AI服务，支持手动切换和回退\n- **💬 长离人格化**: 温暖智慧的AI学习伙伴，个性化对话\n- **⚡ FastAPI微服务**: 高性能异步API架构，支持并发处理\n\n#### 🌟 核心特性\n- **智能桌宠**: 可拖拽的2D宠物，多种状态动画\n- **漂流瓶推送**: 智能时机推送学习内容\n- **学习胶囊**: 美观的卡片式学习界面\n- **魔法沙滩**: 游戏化拼写练习\n- **智能复习**: 间隔重复算法优化记忆\n\n#### 🛠️ 技术栈\n- **前端**: Electron + React + CSS Animation\n- **后端**: Node.js + Express + FastAPI\n- **本地AI**: Google Gemma 2 (2B) + Transformers\n- **数据**: SQLite + 间隔重复算法\n\n#### 📁 核心模块\n```\nChanglee/\n├── src/backend/services/HybridAIService.py   # 混合AI服务核心 ⭐\n├── src/backend/hybrid_ai_server.py           # FastAPI混合AI服务器 ⭐\n├── config/ai_config.js                      # AI服务配置管理 ⭐\n├── src/renderer/components/LocalAIChat.jsx   # AI聊天组件\n├── src/backend/services/ChronicleService.js  # Chronicle集成\n└── start_with_local_ai.js                    # 集成启动脚本\n```\n\n---\n\n### 📊 Chronicle实验记录器\n**AI驱动的自动化实验记录微服务**\n\n#### 🌟 核心特性\n- **无头微服务**: 后台静默运行，不干扰工作流程\n- **智能分析引擎**: AI提炼关键信息，生成结构化报告\n- **多维度监控**: 文件系统、活动窗口、命令行监控\n- **RESTful API**: 标准化接口，易于集成\n\n#### 🛠️ 技术栈\n- **后端**: Node.js + Express + SQLite\n- **监控**: chokidar + active-win\n- **AI分析**: LLM集成，智能摘要\n- **API**: RESTful设计\n\n#### 📁 核心模块\n```\nchronicle/\n├── src/services/DataCollector.js    # 数据采集服务\n├── src/services/AnalysisEngine.js   # AI分析引擎\n├── src/api/SessionController.js     # 会话控制API\n└── src/database/SessionManager.js   # 会话管理\n```\n\n---\n\n### 🔧 API管理系统\n**统一的API配置管理和私有密钥管理服务**\n\n#### 🌟 核心特性\n- **统一配置管理**: 所有子系统的API端点配置\n- **安全密钥存储**: 加密存储私有API密钥\n- **权限控制**: 基于角色的访问控制\n- **可视化管理**: Web界面管理API配置\n- **使用监控**: API调用统计和监控\n\n#### 🛠️ 技术栈\n- **后端**: Python + Flask\n- **安全**: 加密存储 + 权限控制\n- **前端**: Web管理界面\n- **集成**: 支持所有子系统\n\n---\n\n### 🧬 Genome Jigsaw测序分析系统 ⭐ **新增**\n**自动化细菌全基因组测序数据分析流水线**\n\n#### 🌟 核心特性\n- **完整分析流程**: 质量控制 → 数据清洗 → 基因组组装 → 注释 → 泛基因组分析 → 系统发育分析 → 基因筛选\n- **一键自动化**: 单个脚本完成从原始数据到最终结果的全流程分析\n- **标准化工具链**: FastQC + fastp + SPAdes + Prokka + Roary + MAFFT + IQ-TREE + ABricate\n- **智能报告生成**: 自动生成详细的分析报告和统计信息\n- **多样本支持**: 批量处理多个菌株的测序数据\n\n#### 🛠️ 技术栈\n- **环境管理**: Conda + Bioconda\n- **质量控制**: FastQC + MultiQC + fastp\n- **基因组组装**: SPAdes\n- **基因组注释**: Prokka\n- **比较基因组学**: Roary + MAFFT + IQ-TREE\n- **基因筛选**: ABricate (多数据库支持)\n\n#### 📁 核心模块\n```\ngenome-jigsaw/\n├── environment.yml                 # Conda环境配置\n├── run_genome_jigsaw.sh           # 主执行脚本 ⭐\n├── config/default.yaml            # 默认配置参数\n├── scripts/setup.py               # 环境初始化\n└── docs/USAGE.md                  # 详细使用指南\n```\n\n---\n\n### 🧬 Molecular Simulation Toolkit ⭐ **新增**\n**标准化分子动力学模拟工具箱**\n\n#### 🌟 核心特性\n- **模块化SOP脚本**: 系统搭建 + 模拟执行 + 轨迹分析的标准作业流程\n- **高度可配置**: 通过简单变量修改适应不同研究体系\n- **发表级图表**: 自动生成高质量的科研图表和统计分析\n- **批量处理**: 支持多个PDB文件的批量模拟分析\n- **专业示例**: Cas14a和多糖合成酶的完整分析流程\n\n#### 🛠️ 技术栈\n- **分子模拟**: GROMACS + AMBER/CHARMM力场\n- **数据分析**: Python + Matplotlib + NumPy\n- **图表生成**: Seaborn + 发表级样式\n- **批量处理**: Bash脚本自动化\n\n#### 📁 核心模块\n```\nmolecular-simulation-toolkit/\n├── sop_scripts/                   # 标准作业流程脚本 ⭐\n│   ├── sop_prepare_system.sh     # 系统搭建SOP\n│   ├── sop_run_simulation.sh     # 模拟执行SOP\n│   └── sop_analyze_trajectory.sh # 轨迹分析SOP\n├── analysis_tools/plot_results.py # 发表级图表生成 ⭐\n├── templates/mdp_files/           # MDP参数模板\n├── examples/                      # 使用示例\n│   ├── cas14a_example/           # Cas14a蛋白质示例\n│   └── enzyme_example/           # 多糖合成酶示例\n└── utilities/batch_runner.sh     # 批量处理工具\n```\n\n---\n\n## 🚀 快速开始\n\n### 📋 环境要求\n- **Python**: 3.8+\n- **Node.js**: 16+\n- **内存**: 8GB+ (推荐16GB+)\n- **GPU**: 可选，但推荐用于AI模型加载\n\n### ⚡ 一键启动\n\n#### 1. 启动NEXUS远程指挥中心 ⭐ **新增**\n```bash\ncd systems/nexus\n\n# 安装依赖\nnpm install\n\n# 启动前端界面\nnpm run dev\n\n# 启动WebSocket服务器\ncd backend && python3 websocket_server.py\n\n# 访问服务\n# 主界面: http://localhost:5173\n# 测试页面: http://localhost:52333/test_remote_center.html\n# WebSocket: ws://localhost:8765\n\n# 移动端访问 (PWA可安装)\n# 手机浏览器访问主界面，点击\"添加到主屏幕\"\n```\n\n#### 2. 启动完整集成系统\n```bash\n# 启动Changlee + 本地AI + Chronicle集成\ncd systems/Changlee\nnode start_with_local_ai.js\n\n# 访问服务\n# Changlee主服务: http://localhost:3001\n# 本地AI服务: http://localhost:8001\n# Chronicle服务: http://localhost:3000\n```\n\n#### 2. 启动RAG智能问答系统\n```bash\ncd systems/rag-system\npip install -r requirements.txt\npython run.py\n\n# 访问: http://localhost:8501\n```\n\n#### 3. 启动BovineInsight分析系统\n```bash\ncd systems/bovine-insight\npip install -r requirements.txt\npython src/main.py\n\n# 支持DINOv2特征提取和GLM-4V文本分析\n```\n\n#### 4. 启动API管理系统\n```bash\ncd api_management\npython start_api_manager.py start\n\n# Web管理界面: http://localhost:5000\n```\n\n#### 5. 运行Genome Jigsaw测序分析\n```bash\ncd systems/genome-jigsaw\n\n# 创建conda环境\nconda env create -f environment.yml\nconda activate genome-jigsaw\n\n# 运行完整分析流水线\n./run_genome_jigsaw.sh /path/to/your/fastq/files\n\n# 查看结果: results/GENOME_JIGSAW_REPORT.txt\n```\n\n#### 6. 使用Molecular Simulation Toolkit\n```bash\ncd systems/molecular-simulation-toolkit\n\n# 复制工具箱到项目目录\ncp -r . /path/to/your/project/\n\n# 配置并运行完整MD模拟流程\n./sop_scripts/sop_prepare_system.sh\n./sop_scripts/sop_run_simulation.sh\n./sop_scripts/sop_analyze_trajectory.sh\n\n# 生成发表级图表\npython analysis_tools/plot_results.py --summary analysis/\n```\n\n### 🔧 环境配置\n\n#### Python依赖安装\n```bash\n# 安装基础依赖\npip install -r requirements.txt\n\n# 安装AI模型依赖（BovineInsight + Changlee）\npip install -r systems/Changlee/requirements_local_ai.txt\npip install -r systems/bovine-insight/requirements.txt\n\n# 安装生物信息学工具依赖（Genome Jigsaw）\nconda env create -f systems/genome-jigsaw/environment.yml\n\n# 安装分子模拟工具依赖（需要GROMACS）\n# 请参考GROMACS官方安装指南\n```\n\n#### Node.js依赖安装\n```bash\n# Changlee桌面宠物\ncd systems/Changlee\nnpm install\n\n# Chronicle实验记录器\ncd systems/chronicle\nnpm install\n```\n\n---\n\n## 🎯 使用场景\n\n### 🔬 科研场景\n- **远程实验管理**: NEXUS远程控制实验室设备开关机 ⭐\n- **文献调研**: RAG系统快速检索和总结文献\n- **实验记录**: Chronicle自动记录实验过程\n- **数据分析**: BovineInsight提供专业级分析报告\n- **基因组学研究**: Genome Jigsaw自动化测序数据分析\n- **分子模拟**: Molecular Simulation Toolkit标准化MD模拟\n- **学术写作**: AI辅助生成论文级文本描述\n- **设备维护**: 远程重启故障设备，提高实验效率 ⭐\n\n### 📚 教育场景\n- **英语学习**: Changlee提供个性化学习陪伴\n- **知识问答**: RAG系统回答专业问题\n- **学习记录**: Chronicle跟踪学习进度\n- **智能辅导**: 本地AI提供隐私保护的学习指导\n\n### 🏭 产业场景\n- **远程运维**: NEXUS实现全球设备远程管理 ⭐\n- **畜牧业**: BovineInsight自动化牛只管理\n- **生物技术**: Genome Jigsaw细菌基因组分析\n- **制药工业**: Molecular Simulation药物-靶点模拟\n- **智能客服**: RAG系统提供专业问答\n- **数据分析**: 多模态AI融合分析\n- **流程优化**: Chronicle记录和分析工作流程\n- **节能管理**: 智能化电源管理，降低运营成本 ⭐\n\n---\n\n## 🛠️ 开发指南\n\n### 📁 项目结构\n```\nresearch-workstation/\n├── 📂 systems/                    # 核心系统\n│   ├── 🚀 nexus/                 # NEXUS远程指挥中心 ⭐\n│   ├── 🤖 rag-system/            # RAG智能问答\n│   ├── 🐄 bovine-insight/        # 牛只识别分析\n│   ├── 🐱 Changlee/              # 桌面宠物\n│   ├── 📊 chronicle/             # 实验记录器\n│   ├── 🧬 genome-jigsaw/         # 基因组测序分析\n│   └── 🧬 molecular-simulation-toolkit/ # 分子动力学模拟\n├── 📂 api_management/             # API管理系统\n├── 📂 tools/                     # 开发工具\n├── 📂 docs/                      # 文档集合\n├── 📂 tests/                     # 测试文件\n├── 📂 logs/                      # 日志文件\n└── 📂 data/                      # 数据目录\n```\n\n### 🔧 开发环境设置\n```bash\n# 1. 克隆项目\ngit clone https://github.com/novenazgarfield/research-workstation.git\ncd research-workstation\n\n# 2. 设置Python环境\npython -m venv venv\nsource venv/bin/activate  # Linux/Mac\n# venv\\Scripts\\activate   # Windows\n\n# 3. 安装依赖\npip install -r requirements.txt\n\n# 4. 设置Node.js环境\ncd systems/nexus\nnpm install\ncd ../Changlee\nnpm install\ncd ../chronicle\nnpm install\n\n# 5. 设置生物信息学环境\ncd ../genome-jigsaw\nconda env create -f environment.yml\n\n# 6. 检查GROMACS安装（用于分子模拟）\ngmx --version\n```\n\n### 🧪 测试系统\n```bash\n# 测试NEXUS远程指挥中心 ⭐\ncd systems/nexus\n# 启动WebSocket服务器\npython3 backend/websocket_server.py &\n# 访问测试页面: http://localhost:52333/test_remote_center.html\n\n# 测试AI升级功能\npython systems/test_upgrades.py\n\n# 测试RAG系统\ncd systems/rag-system\npython test_basic.py\n\n# 测试Changlee集成\ncd systems/Changlee\nnode test_chronicle_integration.js\n\n# 测试Genome Jigsaw\ncd systems/genome-jigsaw\n./scripts/test_pipeline.sh --test-env\n\n# 测试Molecular Simulation Toolkit\ncd systems/molecular-simulation-toolkit\n# 需要GROMACS环境\n```\n\n---\n\n## 📊 技术规格\n\n### 🤖 AI模型规格\n| 系统 | 核心模型 | 参数规模 | 主要功能 | 运行方式 |\n|------|----------|----------|----------|----------|\n| **BovineInsight** | DINOv2 + GLM-4V | 86M-9B | 无监督特征+专家文本 | 云端+本地 |\n| **Changlee** | Gemma 2 + Gemini + DeepSeek | 2B-236B | 混合智能对话 | 本地+云端 |\n| **RAG系统** | DeepSeek + E5 | 236B+560M | 智能问答检索 | 云端API |\n| **Chronicle** | LLM集成 | 可配置 | 智能分析摘要 | 云端API |\n| **Genome Jigsaw** | 生物信息学工具链 | - | 基因组分析流水线 | 本地计算 |\n| **Molecular Simulation** | GROMACS + 分析工具 | - | 分子动力学模拟 | 本地计算 |\n\n### 🏗️ 架构特点\n- **模块化设计**: 各系统独立部署，松耦合架构\n- **多模态融合**: 文本、图像、语音的综合处理\n- **隐私保护**: 本地AI运行，敏感数据不上传\n- **可扩展性**: 标准化API接口，易于集成新功能\n- **容错能力**: 优雅降级，重试机制，健康监控\n\n---\n\n## 🎯 未来发展方向\n\n### 🚀 短期目标 (3-6个月)\n- **🔧 性能优化**: 模型量化，推理加速，内存优化\n- **📱 移动端扩展**: PWA增强，移动端适配\n- **🌐 多语言支持**: 国际化界面，多语言模型\n- **🔒 安全增强**: 端到端加密，权限细化\n- **🧬 工具扩展**: 更多生物信息学和计算生物学工具\n\n### 🌟 中期目标 (6-12个月)\n- **🧠 模型升级**: 集成最新的开源大模型\n- **🔗 系统集成**: 更深度的跨系统协作\n- **📊 数据分析**: 高级分析和可视化功能\n- **🤖 自动化**: 更多自动化工作流程\n- **🧬 专业化**: 针对特定科研领域的深度定制\n\n### 🎓 长期愿景 (1-2年)\n- **🌍 开源生态**: 构建开发者社区和插件生态\n- **🏭 产业应用**: 面向特定行业的定制化解决方案\n- **🔬 科研平台**: 成为标准化的科研工作站平台\n- **🎯 智能化**: 全面AI驱动的智能科研助手\n\n---\n\n## 🤝 贡献指南\n\n### 💡 如何贡献\n1. **Fork项目** 并创建特性分支\n2. **提交更改** 并添加测试\n3. **确保测试通过** 并更新文档\n4. **提交Pull Request** 并描述更改\n\n### 🐛 问题报告\n- 使用GitHub Issues报告bug\n- 提供详细的复现步骤\n- 包含系统环境信息\n\n### 📝 开发规范\n- 遵循PEP 8 (Python) 和ESLint (JavaScript)\n- 添加适当的注释和文档\n- 编写单元测试覆盖新功能\n\n---\n\n## 📄 许可证\n\n本项目采用 [MIT License](LICENSE) 开源协议。\n\n---\n\n## 🙏 致谢\n\n### 🤖 AI模型和技术\n- **Meta**: DINOv2视觉特征提取模型\n- **智谱AI**: GLM-4V视觉语言模型\n- **Google**: Gemma 2本地化语言模型\n- **DeepSeek**: 高性能语言模型API\n- **OpenAI**: 技术架构参考\n\n### 🛠️ 开源项目\n- **PyTorch**: 深度学习框架\n- **Transformers**: 模型加载和推理\n- **Electron**: 跨平台桌面应用\n- **React**: 前端用户界面\n- **FastAPI**: 高性能API框架\n- **GROMACS**: 分子动力学模拟引擎\n- **Bioconda**: 生物信息学软件包管理\n\n---\n\n## 📞 联系方式\n\n- **项目主页**: [GitHub Repository](https://github.com/novenazgarfield/research-workstation)\n- **问题反馈**: [GitHub Issues](https://github.com/novenazgarfield/research-workstation/issues)\n- **讨论交流**: [GitHub Discussions](https://github.com/novenazgarfield/research-workstation/discussions)\n\n---\n\n<div align=\"center\">\n\n**🎉 从传统规则驱动系统成功升级为AI驱动的智能科研平台！**\n\n[![Star this repo](https://img.shields.io/github/stars/novenazgarfield/research-workstation?style=social)](https://github.com/novenazgarfield/research-workstation)\n[![Fork this repo](https://img.shields.io/github/forks/novenazgarfield/research-workstation?style=social)](https://github.com/novenazgarfield/research-workstation/fork)\n\n*让AI为科研工作赋能，让智能化成为生产力！* 🚀✨\n\n</div>",
+    "timestamp": "2025-08-26T13:39:34.271312",
+    "task_name": "nexus_chat"
   }
 ]
