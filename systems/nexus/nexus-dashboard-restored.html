@@ -279,6 +279,8 @@
             height: 8px;
             border-radius: 50%;
             background: var(--status-offline);
+            margin-left: auto;
+            margin-right: 4px;
         }
 
         .status-indicator.online {
@@ -710,8 +712,8 @@
             top: 80px;
             right: 20px;
             z-index: 1000;
-            min-width: 300px;
-            max-width: 380px;
+            min-width: 280px;
+            max-width: 320px;
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.3);
@@ -2988,6 +2990,11 @@
                 event.target.classList.add('active');
             }
             
+            // 隐藏连接状态框（只在RAG页面显示）
+            if (pageId !== 'rag-system') {
+                hideConnectionStatus();
+            }
+            
             // 隐藏所有内容
             document.getElementById('dashboard-content').style.display = 'none';
             document.getElementById('rag-chat').style.display = 'none';
@@ -3569,6 +3576,11 @@
         
         // 更新连接状态显示
         function updateConnectionStatus(status, message, details = '') {
+            // 只在RAG系统页面显示状态框
+            if (currentPage !== 'rag-system') {
+                return;
+            }
+            
             const statusBar = document.getElementById('connectionStatus');
             const statusDot = statusBar.querySelector('.status-dot');
             const statusText = statusBar.querySelector('.status-text');
