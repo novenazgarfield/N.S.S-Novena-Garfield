@@ -34,5 +34,53 @@
     "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
     "timestamp": "2025-08-26T12:59:19.445241",
     "task_name": "nexus_chat"
+  },
+  {
+    "role": "user",
+    "content": "测试连接",
+    "timestamp": "2025-08-26T13:11:11.202737",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "目前我的知识库中没有相关信息，请上传文档后再提问。",
+    "timestamp": "2025-08-26T13:11:11.202754",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "user",
+    "content": "你好，测试连接",
+    "timestamp": "2025-08-26T13:13:50.782068",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
+    "timestamp": "2025-08-26T13:13:50.782087",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "user",
+    "content": "测试连接",
+    "timestamp": "2025-08-26T13:17:09.252324",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "assistant",
+    "content": "目前我的知识库中没有相关信息，请上传文档后再提问。",
+    "timestamp": "2025-08-26T13:17:09.252342",
+    "task_name": "nexus_chat"
+  },
+  {
+    "role": "user",
+    "content": "系统状态检查测试",
+    "timestamp": "2025-08-26T13:22:54.239117",
+    "task_name": "status_check"
+  },
+  {
+    "role": "assistant",
+    "content": "我需要更多的文档信息才能回答您的问题。请上传相关文档。",
+    "timestamp": "2025-08-26T13:22:54.239133",
+    "task_name": "status_check"
   }
 ]
