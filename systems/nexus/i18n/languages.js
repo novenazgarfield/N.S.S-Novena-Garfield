@@ -15,7 +15,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovineInsight: '牛识别系统',
             chronicle: '实验记录仪',
-            genomeNebula: 'Genome 星云',
+            genomeNebula: '基因星云',
             molecularSimulation: '分子模拟',
             settings: '设置'
         },
@@ -28,7 +28,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovine: '牛识别系统',
             chronicle: '实验记录仪',
-            genome: 'Genome 星云',
+            genome: '基因星云',
             molecular: '分子模拟',
             settings: '设置',
             projectinfo: 'N.S.S - Novena Garfield'

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Genome 星云 - 轻量版</title>
+    <title>基因星云 - 轻量版</title>
     <style>
         body {
             margin: 0;
@@ -120,14 +120,14 @@
     <div id="container">
         <div id="loading">
             <div class="spinner"></div>
-            <p>正在生成轻量版Genome 星云...</p>
+            <p>正在生成轻量版基因星云...</p>
         </div>
 
         <div id="info-panel">
             <div class="performance-warning">
                 ⚡ 轻量版：100个基因点，优化GPU性能
             </div>
-            <h2>🧬 Genome 星云 (轻量版)</h2>
+            <h2>🧬 基因星云 (轻量版)</h2>
             <p><strong>优化:</strong> 低多边形点云</p>
             <p><strong>性能:</strong> 适合低端GPU</p>
             <p><strong>操作:</strong></p>
@@ -175,7 +175,7 @@
         let genePoints = [];
 
         function initScene() {
-            console.log('🚀 初始化轻量版Genome 星云...');
+            console.log('🚀 初始化轻量版基因星云...');
 
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x000011);
@@ -230,7 +230,7 @@
         }
 
         function createGeneCloud() {
-            console.log('🌌 创建轻量版Genome 星云...');
+            console.log('🌌 创建轻量版基因星云...');
 
             geneGroup.clear();
             genePoints = [];
@@ -247,7 +247,7 @@
             updateGeneStats();
             fitCameraToCloud();
 
-            console.log('✅ 轻量版Genome 星云创建完成');
+            console.log('✅ 轻量版基因星云创建完成');
         }
 
         function createGenePoint(gene, index, smallGeom, mediumGeom, largeGeom) {
@@ -360,7 +360,7 @@
         }
 
         function init() {
-            console.log('🧬 轻量版Genome 星云系统启动...');
+            console.log('🧬 轻量版基因星云系统启动...');
             
             initScene();
             
