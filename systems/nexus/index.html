@@ -1613,54 +1613,7 @@
             margin: 0;
         }
 
-        .simulation-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
 
-        .info-panel {
-            background: var(--bg-card);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-            padding: 20px;
-        }
-
-        .info-panel h4 {
-            margin: 0 0 15px 0;
-            color: var(--text-primary);
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .status-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-        }
-
-        .status-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .status-value {
-            color: var(--accent-blue);
-            font-weight: 500;
-        }
-
-        .instruction-item {
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.4;
-        }
-
-        .instruction-item:last-child {
-            margin-bottom: 0;
-        }
 
         /* 3D画布样式 */
         .simulation-canvas {
@@ -3508,31 +3461,7 @@
                             </div>
                         </div>
                         
-                        <div class="simulation-info">
-                            <div class="info-panel">
-                                <h4>📊 模拟状态</h4>
-                                <div class="status-item">
-                                    <span>状态:</span>
-                                    <span id="molecular-status" class="status-value">未启动</span>
-                                </div>
-                                <div class="status-item">
-                                    <span>版本:</span>
-                                    <span id="molecular-version-display" class="status-value">轻量版</span>
-                                </div>
-                                <div class="status-item">
-                                    <span>原子数:</span>
-                                    <span id="molecular-atoms" class="status-value">0</span>
-                                </div>
-                            </div>
-                            
-                            <div class="info-panel">
-                                <h4>🎯 操作说明</h4>
-                                <div class="instruction-item">🖱️ 鼠标拖拽: 旋转视角</div>
-                                <div class="instruction-item">🔄 滚轮: 缩放视图</div>
-                                <div class="instruction-item">🎯 重置: 恢复初始视角</div>
-                                <div class="instruction-item">🔲 线框: 切换显示模式</div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -3572,31 +3501,7 @@
                             </div>
                         </div>
                         
-                        <div class="simulation-info">
-                            <div class="info-panel">
-                                <h4>📊 基因星云状态</h4>
-                                <div class="status-item">
-                                    <span>状态:</span>
-                                    <span id="genome-status" class="status-value">未启动</span>
-                                </div>
-                                <div class="status-item">
-                                    <span>版本:</span>
-                                    <span id="genome-version-display" class="status-value">轻量版</span>
-                                </div>
-                                <div class="status-item">
-                                    <span>基因数:</span>
-                                    <span id="genome-count" class="status-value">0</span>
-                                </div>
-                            </div>
-                            
-                            <div class="info-panel">
-                                <h4>🎯 操作说明</h4>
-                                <div class="instruction-item">🖱️ 鼠标拖拽: 旋转星云</div>
-                                <div class="instruction-item">🔄 滚轮: 缩放视图</div>
-                                <div class="instruction-item">👆 点击基因: 查看详情</div>
-                                <div class="instruction-item">🔄 重新生成: 刷新数据</div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -5753,7 +5658,6 @@
             console.log('🚀 启动分子模拟...');
             
             const container = document.getElementById('molecular-canvas-container');
-            const statusElement = document.getElementById('molecular-status');
             
             // 获取选择的版本
             const selectedVersion = document.querySelector('input[name="molecular-version"]:checked').value;
@@ -5785,7 +5689,6 @@
                 // 更新状态
                 statusElement.textContent = '运行中';
                 statusElement.style.color = '#4CAF50';
-                document.getElementById('molecular-atoms').textContent = isLite ? '10' : '15';
                 
                 console.log('✅ 分子模拟启动成功');
             } catch (error) {
@@ -5836,7 +5739,6 @@
             const container = document.getElementById('molecular-canvas-container');
             const startBtn = document.getElementById('molecular-start-btn');
             const stopBtn = document.getElementById('molecular-stop-btn');
-            const statusElement = document.getElementById('molecular-status');
             
             // 清理3D场景
             if (molecularSimulation) {
@@ -5890,14 +5792,12 @@
             // 更新UI状态
             statusElement.textContent = '未启动';
             statusElement.style.color = '#6c757d';
-            document.getElementById('molecular-atoms').textContent = '0';
             
             console.log('✅ 分子模拟已停止');
         }
 
         function updateMolecularVersionDisplay() {
             const selectedVersion = document.querySelector('input[name="molecular-version"]:checked').value;
-            const displayElement = document.getElementById('molecular-version-display');
             displayElement.textContent = selectedVersion === 'lite' ? '轻量版' : '完整版';
         }
 
@@ -5906,7 +5806,6 @@
             console.log('🚀 启动基因星云...');
             
             const container = document.getElementById('genome-canvas-container');
-            const statusElement = document.getElementById('genome-status');
             
             // 获取选择的版本
             const selectedVersion = document.querySelector('input[name="genome-version"]:checked').value;
@@ -5938,7 +5837,6 @@
                 // 更新状态
                 statusElement.textContent = '运行中';
                 statusElement.style.color = '#4CAF50';
-                document.getElementById('genome-count').textContent = isLite ? '100' : '500';
                 
                 console.log('✅ 基因星云启动成功');
             } catch (error) {
@@ -5989,7 +5887,6 @@
             const container = document.getElementById('genome-canvas-container');
             const startBtn = document.getElementById('genome-start-btn');
             const stopBtn = document.getElementById('genome-stop-btn');
-            const statusElement = document.getElementById('genome-status');
             
             // 清理3D场景
             if (genomeSimulation) {
@@ -6043,14 +5940,12 @@
             // 更新UI状态
             statusElement.textContent = '未启动';
             statusElement.style.color = '#6c757d';
-            document.getElementById('genome-count').textContent = '0';
             
             console.log('✅ 基因星云已停止');
         }
 
         function updateGenomeVersionDisplay() {
             const selectedVersion = document.querySelector('input[name="genome-version"]:checked').value;
-            const displayElement = document.getElementById('genome-version-display');
             displayElement.textContent = selectedVersion === 'lite' ? '轻量版' : '完整版';
         }
 
