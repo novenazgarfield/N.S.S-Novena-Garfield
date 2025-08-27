@@ -2937,10 +2937,10 @@
                         <h3 data-i18n="settings.ai">🧠 AI模型配置</h3>
                         <div class="setting-item">
                             <label data-i18n="settings.aiConfig">AI配置管理</label>
-                            <button class="btn btn-primary" onclick="if(aiConfigManager) { aiConfigManager.showConfigModal(); } else { alert('AI配置管理器正在初始化中，请稍后再试...'); }" data-i18n="settings.manageAI">管理AI配置</button>
+                            <button class="btn btn-primary" onclick="if(aiConfigManager) { aiConfigManager.showConfigModal(); } else { alert('AI配置管理器正在初始化中，请稍后再试...'); }" data-i18n="settings.manageAI">管理AI模型</button>
                         </div>
                         <div class="setting-item">
-                            <label data-i18n="settings.aiStatus">当前AI状态</label>
+                            <label data-i18n="settings.aiStatus">AI系统状态</label>
                             <span class="status-info" id="aiStatusInfo">🔄 检查中...</span>
                         </div>
                     </div>
@@ -4061,14 +4061,14 @@
                 const ragData = await ragResponse.json();
                 
                 if (energyData.status === 'healthy' && ragData.status === 'healthy') {
-                    statusElement.innerHTML = '✅ AI系统运行正常';
+                    statusElement.innerHTML = i18n ? i18n.t('settings.aiOnline') : '✅ AI系统运行正常';
                     statusElement.style.color = 'var(--success-color)';
                 } else {
-                    statusElement.innerHTML = '⚠️ AI系统部分异常';
+                    statusElement.innerHTML = i18n ? i18n.t('settings.aiPartial') : '⚠️ AI系统部分异常';
                     statusElement.style.color = 'var(--warning-color)';
                 }
             } catch (error) {
-                statusElement.innerHTML = '❌ AI系统离线';
+                statusElement.innerHTML = i18n ? i18n.t('settings.aiOffline') : '❌ AI系统离线';
                 statusElement.style.color = 'var(--error-color)';
             }
         }
