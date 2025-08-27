@@ -1,0 +1,61 @@
+{
+  "name": "changlee-pet-framework",
+  "version": "1.0.0",
+  "description": "长离桌面宠物 - 3D/2D模型展示框架",
+  "main": "ChangleePetDemo.jsx",
+  "scripts": {
+    "dev": "echo '请在主项目中运行开发服务器'",
+    "build": "echo '请在主项目中运行构建命令'",
+    "test": "echo '测试功能开发中...'",
+    "docs": "echo '文档已生成在 README.md'"
+  },
+  "keywords": [
+    "desktop-pet",
+    "3d-rendering",
+    "2d-animation",
+    "three.js",
+    "pixi.js",
+    "changlee",
+    "pet-simulation"
+  ],
+  "author": "N.S.S Novena Garfield",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "peerDependencies": {
+    "three": "^0.158.0",
+    "pixi.js": "^7.3.2"
+  },
+  "devDependencies": {
+    "@types/three": "^0.158.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/novenazgarfield/N.S.S-Novena-Garfield.git",
+    "directory": "systems/nexus/src/features/changlee"
+  },
+  "bugs": {
+    "url": "https://github.com/novenazgarfield/N.S.S-Novena-Garfield/issues"
+  },
+  "homepage": "https://github.com/novenazgarfield/N.S.S-Novena-Garfield#readme",
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "files": [
+    "components/",
+    "services/",
+    "assets/",
+    "*.jsx",
+    "*.js",
+    "README.md",
+    "package.json"
+  ]
+}

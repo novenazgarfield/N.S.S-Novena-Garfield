@@ -87,4 +87,13 @@ data/processed/*
 test_output/
 coverage/
 .coverage
+
+# Browser and debugging
 .browser_screenshots/
+temp/browser_screenshots/
+*.screenshot.png
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo

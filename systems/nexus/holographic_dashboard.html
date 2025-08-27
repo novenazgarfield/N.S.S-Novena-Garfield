@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS仪表盘 - 第一块全息屏幕</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* 3D场景容器 */
+        #scene-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* 全息屏幕样式 */
+        .holographic-screen {
+            width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1) 0%, rgba(255, 0, 255, 0.1) 100%);
+            border: 2px solid rgba(0, 255, 255, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 255, 0.3),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .holographic-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: scan 3s infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .screen-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00FFFF;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .screen-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .holographic-button {
+            background: linear-gradient(45deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            color: #00FFFF;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+        }
+
+        .holographic-button:hover {
+            background: linear-gradient(45deg, rgba(0, 255, 255, 0.4), rgba(255, 0, 255, 0.4));
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* 控制面板 */
+        #control-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            max-width: 300px;
+        }
+
+        #control-panel h2 {
+            margin: 0 0 15px 0;
+            color: #00FFFF;
+            font-size: 1.5em;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        #control-panel p {
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .control-button {
+            background: linear-gradient(45deg, #00FFFF, #0080FF);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 255, 255, 0.3);
+        }
+
+        /* 状态信息 */
+        #status-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            min-width: 200px;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .status-value {
+            color: #00FFFF;
+            font-weight: bold;
+        }
+
+        /* 加载动画 */
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 200;
+        }
+
+        .holographic-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(0, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #00FFFF;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 网格背景效果 */
+        .grid-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: grid-move 20s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes grid-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <!-- 网格背景 -->
+        <div class="grid-background"></div>
+        
+        <!-- 3D场景容器 -->
+        <div id="scene-container"></div>
+        
+        <!-- 加载动画 -->
+        <div id="loading">
+            <div class="holographic-spinner"></div>
+            <p style="color: #00FFFF;">正在初始化全息系统...</p>
+        </div>
+
+        <!-- 控制面板 -->
+        <div id="control-panel">
+            <h2>🌐 NEXUS全息仪表盘</h2>
+            <p><strong>目标:</strong> 第一块全息屏幕</p>
+            <p><strong>技术:</strong> Three.js + CSS3DRenderer</p>
+            <p><strong>功能:</strong> 3D空间中的HTML元素</p>
+            <p><strong>操作:</strong></p>
+            <ul style="font-size: 12px; margin: 10px 0; padding-left: 20px;">
+                <li>鼠标拖拽: 旋转视角</li>
+                <li>滚轮: 缩放</li>
+                <li>右键拖拽: 平移</li>
+                <li>点击屏幕: 交互操作</li>
+            </ul>
+            <div>
+                <button class="control-button" onclick="resetCamera()">🎯 重置视角</button>
+                <button class="control-button" onclick="toggleAnimation()">🌟 动画效果</button>
+                <button class="control-button" onclick="addNewScreen()">➕ 添加屏幕</button>
+            </div>
+        </div>
+
+        <!-- 状态信息 */
+        <div id="status-info">
+            <h4 style="margin: 0 0 10px 0; color: #00FFFF;">系统状态</h4>
+            <div class="status-item">
+                <span>全息屏幕:</span>
+                <span class="status-value" id="screen-count">0</span>
+            </div>
+            <div class="status-item">
+                <span>渲染模式:</span>
+                <span class="status-value">CSS3D</span>
+            </div>
+            <div class="status-item">
+                <span>交互状态:</span>
+                <span class="status-value" id="interaction-status">就绪</span>
+            </div>
+            <div class="status-item">
+                <span>动画:</span>
+                <span class="status-value" id="animation-status">开启</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 全息屏幕模板 (隐藏) -->
+    <div id="screen-templates" style="display: none;">
+        <!-- 欢迎屏幕 -->
+        <div id="welcome-screen" class="holographic-screen">
+            <div class="screen-title">🌟 欢迎来到NEXUS</div>
+            <div class="screen-content">
+                <p>这是第一块全息屏幕！</p>
+                <p>您现在正在体验3D空间中的HTML元素。</p>
+                <p>这项技术将彻底改变用户界面的未来。</p>
+                <button class="holographic-button" onclick="showMessage('欢迎屏幕被点击了！')">
+                    点击测试
+                </button>
+            </div>
+        </div>
+
+        <!-- 控制屏幕 -->
+        <div id="control-screen" class="holographic-screen">
+            <div class="screen-title">⚙️ 系统控制</div>
+            <div class="screen-content">
+                <p>全息系统运行正常</p>
+                <p>CPU使用率: <span style="color: #00FF00;">23%</span></p>
+                <p>内存使用: <span style="color: #FFFF00;">1.2GB</span></p>
+                <p>网络状态: <span style="color: #00FF00;">在线</span></p>
+                <button class="holographic-button" onclick="runDiagnostic()">
+                    运行诊断
+                </button>
+            </div>
+        </div>
+
+        <!-- 数据屏幕 -->
+        <div id="data-screen" class="holographic-screen">
+            <div class="screen-title">📊 数据分析</div>
+            <div class="screen-content">
+                <p>实时数据流监控</p>
+                <div style="margin: 10px 0;">
+                    <div style="background: rgba(0,255,0,0.2); height: 20px; width: 80%; border-radius: 10px; position: relative;">
+                        <div style="background: #00FF00; height: 100%; width: 65%; border-radius: 10px;"></div>
+                    </div>
+                    <small>处理进度: 65%</small>
+                </div>
+                <button class="holographic-button" onclick="refreshData()">
+                    刷新数据
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js 核心库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+    
+    <!-- CSS3D渲染器 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/renderers/CSS3DRenderer.js"></script>
+    
+    <!-- 轨道控制器 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let holographicScreens = [];
+        let animationEnabled = true;
+        let screenCounter = 0;
+
+        // 屏幕配置
+        const screenConfigs = [
+            {
+                id: 'welcome-screen',
+                position: { x: 0, y: 0, z: 0 },
+                rotation: { x: 0, y: 0, z: 0 }
+            },
+            {
+                id: 'control-screen',
+                position: { x: -400, y: 200, z: -200 },
+                rotation: { x: 0, y: Math.PI / 4, z: 0 }
+            },
+            {
+                id: 'data-screen',
+                position: { x: 400, y: -100, z: 100 },
+                rotation: { x: Math.PI / 8, y: -Math.PI / 3, z: 0 }
+            }
+        ];
+
+        // 初始化场景
+        function initScene() {
+            console.log('🚀 初始化NEXUS全息仪表盘...');
+
+            // 创建场景
+            scene = new THREE.Scene();
+
+            // 创建摄像机
+            camera = new THREE.PerspectiveCamera(
+                75, 
+                window.innerWidth / window.innerHeight, 
+                1, 
+                5000
+            );
+            camera.position.set(500, 300, 800);
+
+            // 创建CSS3D渲染器
+            renderer = new THREE.CSS3DRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.domElement.style.position = 'absolute';
+            renderer.domElement.style.top = '0';
+            
+            document.getElementById('scene-container').appendChild(renderer.domElement);
+
+            // 创建轨道控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = true;
+            controls.enablePan = true;
+            controls.minDistance = 200;
+            controls.maxDistance = 2000;
+
+            console.log('✅ 场景初始化完成');
+        }
+
+        // 创建全息屏幕
+        function createHolographicScreens() {
+            console.log('🌐 创建全息屏幕...');
+
+            screenConfigs.forEach((config, index) => {
+                createSingleScreen(config, index);
+            });
+
+            updateScreenCount();
+            console.log('✅ 全息屏幕创建完成');
+        }
+
+        // 创建单个屏幕
+        function createSingleScreen(config, index) {
+            // 获取屏幕模板
+            const screenTemplate = document.getElementById(config.id);
+            if (!screenTemplate) {
+                console.error(`屏幕模板未找到: ${config.id}`);
+                return;
+            }
+
+            // 克隆屏幕元素
+            const screenElement = screenTemplate.cloneNode(true);
+            screenElement.id = `${config.id}-3d-${index}`;
+            screenElement.style.display = 'block';
+
+            // 创建CSS3D对象
+            const css3dObject = new THREE.CSS3DObject(screenElement);
+            
+            // 设置位置和旋转
+            css3dObject.position.set(config.position.x, config.position.y, config.position.z);
+            css3dObject.rotation.set(config.rotation.x, config.rotation.y, config.rotation.z);
+
+            // 添加到场景
+            scene.add(css3dObject);
+
+            // 保存引用
+            holographicScreens.push({
+                object: css3dObject,
+                element: screenElement,
+                config: config,
+                originalPosition: { ...config.position },
+                originalRotation: { ...config.rotation }
+            });
+
+            console.log(`✅ 创建屏幕: ${config.id}`);
+        }
+
+        // 添加新屏幕
+        function addNewScreen() {
+            screenCounter++;
+            
+            // 创建新的屏幕元素
+            const newScreenElement = document.createElement('div');
+            newScreenElement.className = 'holographic-screen';
+            newScreenElement.innerHTML = `
+                <div class="screen-title">🆕 新屏幕 #${screenCounter}</div>
+                <div class="screen-content">
+                    <p>这是动态创建的全息屏幕</p>
+                    <p>创建时间: ${new Date().toLocaleTimeString()}</p>
+                    <p>屏幕编号: ${screenCounter}</p>
+                    <button class="holographic-button" onclick="removeScreen(${holographicScreens.length})">
+                        删除此屏幕
+                    </button>
+                </div>
+            `;
+
+            // 随机位置
+            const position = {
+                x: (Math.random() - 0.5) * 800,
+                y: (Math.random() - 0.5) * 400,
+                z: (Math.random() - 0.5) * 600
+            };
+
+            const rotation = {
+                x: (Math.random() - 0.5) * Math.PI / 2,
+                y: (Math.random() - 0.5) * Math.PI,
+                z: (Math.random() - 0.5) * Math.PI / 4
+            };
+
+            // 创建CSS3D对象
+            const css3dObject = new THREE.CSS3DObject(newScreenElement);
+            css3dObject.position.set(position.x, position.y, position.z);
+            css3dObject.rotation.set(rotation.x, rotation.y, rotation.z);
+
+            // 添加到场景
+            scene.add(css3dObject);
+
+            // 保存引用
+            holographicScreens.push({
+                object: css3dObject,
+                element: newScreenElement,
+                config: { id: `dynamic-screen-${screenCounter}`, position, rotation },
+                originalPosition: position,
+                originalRotation: rotation
+            });
+
+            updateScreenCount();
+            console.log(`✅ 添加新屏幕: dynamic-screen-${screenCounter}`);
+        }
+
+        // 删除屏幕
+        function removeScreen(index) {
+            if (index >= 0 && index < holographicScreens.length) {
+                const screen = holographicScreens[index];
+                scene.remove(screen.object);
+                holographicScreens.splice(index, 1);
+                updateScreenCount();
+                console.log(`🗑️ 删除屏幕: ${screen.config.id}`);
+            }
+        }
+
+        // 更新屏幕计数
+        function updateScreenCount() {
+            document.getElementById('screen-count').textContent = holographicScreens.length;
+        }
+
+        // 重置摄像机
+        function resetCamera() {
+            camera.position.set(500, 300, 800);
+            camera.lookAt(0, 0, 0);
+            controls.target.set(0, 0, 0);
+            controls.update();
+            console.log('🎯 摄像机已重置');
+        }
+
+        // 切换动画
+        function toggleAnimation() {
+            animationEnabled = !animationEnabled;
+            document.getElementById('animation-status').textContent = animationEnabled ? '开启' : '关闭';
+            console.log(`🌟 动画效果: ${animationEnabled ? '开启' : '关闭'}`);
+        }
+
+        // 显示消息
+        function showMessage(message) {
+            document.getElementById('interaction-status').textContent = '交互中';
+            alert(message);
+            setTimeout(() => {
+                document.getElementById('interaction-status').textContent = '就绪';
+            }, 1000);
+        }
+
+        // 运行诊断
+        function runDiagnostic() {
+            document.getElementById('interaction-status').textContent = '诊断中';
+            console.log('🔧 运行系统诊断...');
+            
+            setTimeout(() => {
+                alert('系统诊断完成！\n\n✅ 全息系统: 正常\n✅ 渲染引擎: 正常\n✅ 交互系统: 正常');
+                document.getElementById('interaction-status').textContent = '就绪';
+            }, 2000);
+        }
+
+        // 刷新数据
+        function refreshData() {
+            document.getElementById('interaction-status').textContent = '刷新中';
+            console.log('📊 刷新数据...');
+            
+            // 模拟数据更新
+            const progressBar = document.querySelector('#data-screen-3d-2 .screen-content div div');
+            if (progressBar) {
+                const newWidth = Math.random() * 100;
+                progressBar.style.width = newWidth + '%';
+                progressBar.parentElement.nextElementSibling.textContent = `处理进度: ${Math.round(newWidth)}%`;
+            }
+            
+            setTimeout(() => {
+                document.getElementById('interaction-status').textContent = '就绪';
+            }, 1000);
+        }
+
+        // 隐藏加载界面
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 500);
+        }
+
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 更新控制器
+            controls.update();
+
+            // 动画效果
+            if (animationEnabled) {
+                const time = Date.now() * 0.001;
+                
+                holographicScreens.forEach((screen, index) => {
+                    // 轻微的浮动效果
+                    const floatY = Math.sin(time + index) * 10;
+                    screen.object.position.y = screen.originalPosition.y + floatY;
+                    
+                    // 轻微的旋转效果
+                    const rotateY = Math.sin(time * 0.5 + index) * 0.1;
+                    screen.object.rotation.y = screen.originalRotation.y + rotateY;
+                });
+            }
+            
+            // 渲染场景
+            renderer.render(scene, camera);
+        }
+
+        // 窗口大小调整
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // 初始化应用
+        function init() {
+            console.log('🌐 NEXUS全息仪表盘系统启动...');
+            
+            initScene();
+            
+            // 延迟创建屏幕以模拟加载过程
+            setTimeout(() => {
+                createHolographicScreens();
+                hideLoading();
+            }, 1500);
+            
+            animate();
+            
+            // 添加事件监听器
+            window.addEventListener('resize', onWindowResize, false);
+            
+            console.log('✅ NEXUS全息仪表盘系统初始化完成');
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

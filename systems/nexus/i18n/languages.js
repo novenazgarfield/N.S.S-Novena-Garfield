@@ -15,7 +15,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovineInsight: '牛识别系统',
             chronicle: '实验记录仪',
-            genomeJigsaw: '基因拼图',
+            genomeNebula: '基因星云',
             molecularSimulation: '分子模拟',
             settings: '设置'
         },
@@ -28,7 +28,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovine: '牛识别系统',
             chronicle: '实验记录仪',
-            genome: '基因拼图',
+            genome: '基因星云',
             molecular: '分子模拟',
             settings: '设置',
             projectinfo: 'N.S.S - Novena Garfield'
@@ -263,7 +263,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovineInsight: 'Bovine Insight',
             chronicle: 'Chronicle',
-            genomeJigsaw: 'Genome Jigsaw',
+            genomeNebula: 'Genome Nebula',
             molecularSimulation: 'Molecular Simulation',
             settings: 'Settings'
         },
@@ -275,7 +275,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovine: 'Bovine Insight',
             chronicle: 'Chronicle',
-            genome: 'Genome Jigsaw',
+            genome: 'Genome Nebula',
             molecular: 'Molecular Simulation',
             settings: 'Settings',
             projectinfo: 'N.S.S - Novena Garfield'
@@ -505,7 +505,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovineInsight: '牛認識システム',
             chronicle: 'クロニクル',
-            genomeJigsaw: 'ゲノムジグソー',
+            genomeNebula: 'ゲノム星雲',
             molecularSimulation: '分子シミュレーション',
             settings: '設定'
         },
@@ -517,7 +517,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovine: '牛認識システム',
             chronicle: 'クロニクル',
-            genome: 'ゲノムジグソー',
+            genome: 'ゲノム星雲',
             molecular: '分子シミュレーション',
             settings: '設定',
             projectinfo: 'N.S.S - Novena Garfield'

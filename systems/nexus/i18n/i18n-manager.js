@@ -171,7 +171,7 @@ class I18nManager {
                 '长离': lang.nav.changlee,
                 '牛只识别': lang.nav.bovineInsight,
                 '记录器': lang.nav.chronicle,
-                '基因组拼图': lang.nav.genomeJigsaw,
+                '基因组星云': lang.nav.genomeNebula,
                 '分子模拟': lang.nav.molecularSimulation,
                 '设置': lang.nav.settings
             };

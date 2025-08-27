@@ -35,7 +35,7 @@ Research Workstation
 ├── 🐄 BovineInsight牛只识别    # DINOv2 + GLM-4V + 传统CV算法
 ├── 🐱 Changlee桌面宠物         # 混合AI架构 + Electron + React
 ├── 📊 Chronicle实验记录器      # 无头微服务 + AI分析引擎
-├── 🧬 Genome Jigsaw测序分析    # 自动化细菌基因组分析流水线
+├── 🧬 Genome Nebula测序分析    # 自动化细菌基因组分析流水线
 ├── 🧬 Molecular Simulation     # 分子动力学模拟工具箱
 ├── 🔧 API管理系统             # 统一配置管理 + 安全存储
 └── 🛠️ 工具集                  # 部署工具 + 测试工具 + 文档
@@ -300,7 +300,7 @@ chronicle/
 - **一键自动化**: 单个脚本完成从原始数据到最终结果的全流程分析
 - **标准化工具链**: FastQC + fastp + SPAdes + Prokka + Roary + MAFFT + IQ-TREE + ABricate
 - **智能报告生成**: 自动生成详细的分析报告和统计信息
-- **多样本支持**: 批量处理多个菌株的测序数据## 🧬 Genome Jigsaw
+- **多样本支持**: 批量处理多个菌株的测序数据## 🧬 Genome Nebula
 
 #### 🌟 核心特性
 -
@@ -315,9 +315,9 @@ chronicle/
 
 #### 📁 核心模块
 ```
-genome-jigsaw/
+genome-nebula/
 ├── environment.yml                 # Conda环境配置
-├── run_genome_jigsaw.sh           # 主执行脚本 ⭐
+├── run_genome_nebula.sh           # 主执行脚本 ⭐
 ├── config/default.yaml            # 默认配置参数
 ├── scripts/setup.py               # 环境初始化
 └── docs/USAGE.md                  # 详细使用指南
@@ -456,18 +456,18 @@ python start_api_manager.py start
 # Web管理界面: http://localhost:5000
 ```
 
-#### 5. 运行Genome Jigsaw测序分析
+#### 5. 运行Genome Nebula测序分析
 ```bash
-cd systems/genome-jigsaw
+cd systems/genome-nebula
 
 # 创建conda环境
 conda env create -f environment.yml
-conda activate genome-jigsaw
+conda activate genome-nebula
 
 # 运行完整分析流水线
-./run_genome_jigsaw.sh /path/to/your/fastq/files
+./run_genome_nebula.sh /path/to/your/fastq/files
 
-# 查看结果: results/GENOME_JIGSAW_REPORT.txt
+# 查看结果: results/GENOME_NEBULA_REPORT.txt
 ```
 
 #### 6. 使用Molecular Simulation Toolkit
@@ -497,8 +497,8 @@ pip install -r requirements.txt
 pip install -r systems/Changlee/requirements_local_ai.txt
 pip install -r systems/bovine-insight/requirements.txt
 
-# 安装生物信息学工具依赖（Genome Jigsaw）
-conda env create -f systems/genome-jigsaw/environment.yml
+# 安装生物信息学工具依赖（Genome Nebula）
+conda env create -f systems/genome-nebula/environment.yml
 
 # 安装分子模拟工具依赖（需要GROMACS）
 # 请参考GROMACS官方安装指南
@@ -527,7 +527,7 @@ npm install
 - **📚 文献调研**: RAG系统快速检索和总结文献
 - **📊 实验记录**: Chronicle自动记录实验过程
 - **🐄 数据分析**: BovineInsight提供专业级分析报告
-- **🧬 基因组学研究**: Genome Jigsaw自动化测序数据分析
+- **🧬 基因组学研究**: Genome Nebula自动化测序数据分析
 - **⚗️ 分子模拟**: Molecular Simulation Toolkit标准化MD模拟
 - **✍️ 学术写作**: AI辅助生成论文级文本描述
 - **🛠️ 设备维护**: 远程重启故障设备，提高实验效率
@@ -546,7 +546,7 @@ npm install
 - **📱 移动运维**: 运维人员通过手机随时管理服务器开关机 ⭐
 - **🔧 系统集成**: 统一管理多个业务系统的部署和运行 ⭐
 - **🐄 畜牧业**: BovineInsight自动化牛只管理
-- **🧬 生物技术**: Genome Jigsaw细菌基因组分析
+- **🧬 生物技术**: Genome Nebula细菌基因组分析
 - **💊 制药工业**: Molecular Simulation药物-靶点模拟
 - **🤖 智能客服**: RAG系统提供专业问答
 - **📊 数据分析**: 多模态AI融合分析
@@ -566,7 +566,7 @@ research-workstation/
 │   ├── 🐄 bovine-insight/        # 牛只识别分析
 │   ├── 🐱 Changlee/              # 桌面宠物
 │   ├── 📊 chronicle/             # 实验记录器
-│   ├── 🧬 genome-jigsaw/         # 基因组测序分析
+│   ├── 🧬 genome-nebula/         # 基因组测序分析
 │   └── 🧬 molecular-simulation-toolkit/ # 分子动力学模拟
 ├── 📂 api_management/             # API管理系统
 ├── 📂 tools/                     # 开发工具
@@ -599,7 +599,7 @@ cd ../chronicle
 npm install
 
 # 5. 设置生物信息学环境
-cd ../genome-jigsaw
+cd ../genome-nebula
 conda env create -f environment.yml
 
 # 6. 检查GROMACS安装（用于分子模拟）
@@ -625,8 +625,8 @@ python test_basic.py
 cd systems/Changlee
 node test_chronicle_integration.js
 
-# 测试Genome Jigsaw
-cd systems/genome-jigsaw
+# 测试Genome Nebula
+cd systems/genome-nebula
 ./scripts/test_pipeline.sh --test-env
 
 # 测试Molecular Simulation Toolkit
@@ -645,7 +645,7 @@ cd systems/molecular-simulation-toolkit
 | **Changlee** | Gemma 2 + Gemini + DeepSeek | 2B-236B | 混合智能对话 | 本地+云端 |
 | **RAG系统** | DeepSeek + E5 | 236B+560M | 智能问答检索 | 云端API |
 | **Chronicle** | LLM集成 | 可配置 | 智能分析摘要 | 云端API |
-| **Genome Jigsaw** | 生物信息学工具链 | - | 基因组分析流水线 | 本地计算 |
+| **Genome Nebula** | 生物信息学工具链 | - | 基因组分析流水线 | 本地计算 |
 | **Molecular Simulation** | GROMACS + 分析工具 | - | 分子动力学模拟 | 本地计算 |
 
 ### 🏗️ 架构特点
