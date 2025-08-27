@@ -1,261 +1,203 @@
-# 🚀 Research Workstation 快速开始指南
+# 🚀 RAG系统快速启动指南
 
-> **版本**: v2.0.0 | **更新时间**: 2025年8月20日
+## 📋 系统概述
 
-欢迎使用Research Workstation！本指南将帮助您在5分钟内启动并运行整个系统。
+这是一个增强的RAG (Retrieval-Augmented Generation) 智能问答系统，具有完整的连接诊断和错误处理功能。
 
----
+## ⚡ 快速启动
 
-## 📋 环境要求
-
-### 🖥️ 系统要求
-- **操作系统**: Windows 10+, macOS 10.15+, Ubuntu 18.04+
-- **内存**: 8GB+ (推荐16GB+)
-- **存储**: 10GB+ 可用空间
-- **网络**: 稳定的互联网连接 (用于模型下载)
-
-### 🛠️ 软件依赖
-- **Python**: 3.8+ (推荐3.10+)
-- **Node.js**: 16+ (推荐18+)
-- **Git**: 最新版本
-
----
-
-## ⚡ 一键启动 (推荐)
-
-### 1. 克隆项目
+### 1. 启动RAG服务器
 ```bash
-git clone https://github.com/novenazgarfield/research-workstation.git
-cd research-workstation
+cd /workspace/N.S.S-Novena-Garfield
+python simple_rag_api.py
 ```
 
-### 2. 启动完整系统
+### 2. 启动前端服务器
 ```bash
-# 启动Changlee + 本地AI + Chronicle集成系统
-cd systems/Changlee
-node start_with_local_ai.js
+python3 -m http.server 52943 --bind 0.0.0.0
 ```
 
-### 3. 访问服务
-- **Changlee主服务**: http://localhost:3001
-- **本地AI服务**: http://localhost:8001  
-- **Chronicle服务**: http://localhost:3000
+### 3. 访问系统
+打开浏览器访问: `http://localhost:52943/systems/nexus/nexus-dashboard-restored.html`
 
----
+## 🔍 系统状态检查
 
-## 🎯 分系统启动
-
-### 🤖 RAG智能问答系统
+### 自动检查工具
 ```bash
-cd systems/rag-system
-pip install -r requirements.txt
-python run.py
-
-# 访问: http://localhost:8501
+python check_rag_status.py
 ```
 
-### 🐄 BovineInsight牛只识别
+### 手动检查
 ```bash
-cd systems/bovine-insight
-pip install -r requirements.txt
-python src/main.py
+# 检查RAG服务器
+curl http://localhost:5000/api/health
 
-# 支持DINOv2特征提取和GLM-4V文本分析
+# 检查前端服务器
+curl http://localhost:52943
 ```
 
-### 🔧 API管理系统
-```bash
-cd api_management
-python start_api_manager.py start
+## 🎯 主要功能
 
-# Web管理界面: http://localhost:5000
-```
+### ✅ 连接状态监控
+- **实时状态栏**: 页面顶部显示连接状态
+- **状态指示器**: 🔄 连接中 | ✅ 已连接 | ❌ 连接失败
+- **详细信息**: 鼠标悬停查看详细状态信息
 
----
+### 🔧 智能错误处理
+- **自动诊断**: 识别不同类型的连接错误
+- **具体建议**: 根据错误类型提供解决方案
+- **一键重连**: 功能菜单中的重新连接按钮
 
-## 🔧 详细安装步骤
+### 📊 系统监控
+- **健康检查**: 定期检查系统状态
+- **性能监控**: 显示响应时间和成功率
+- **历史记录**: 跟踪聊天记录和文档数量
 
-### 步骤1: 环境准备
-```bash
-# 1. 创建Python虚拟环境
-python -m venv venv
-
-# 2. 激活虚拟环境
-# Windows:
-venv\Scripts\activate
-# Linux/Mac:
-source venv/bin/activate
-
-# 3. 升级pip
-pip install --upgrade pip
-```
-
-### 步骤2: 安装Python依赖
-```bash
-# 安装基础依赖
-pip install -r requirements.txt
-
-# 安装AI模型依赖 (可选，用于本地AI功能)
-pip install -r systems/Changlee/requirements_local_ai.txt
-pip install -r systems/bovine-insight/requirements.txt
-```
-
-### 步骤3: 安装Node.js依赖
-```bash
-# Changlee桌面宠物
-cd systems/Changlee
-npm install
-
-# Chronicle实验记录器
-cd ../chronicle
-npm install
-```
-
-### 步骤4: 配置API密钥 (可选但推荐)
-```bash
-# 配置Changlee混合AI服务
-export GEMINI_API_KEY="your_gemini_api_key"        # Google Gemini (推荐)
-export DEEPSEEK_API_KEY="your_deepseek_api_key"    # DeepSeek (备选)
-export OPENAI_API_KEY="your_openai_api_key"        # OpenAI (可选)
-
-# 配置RAG系统
-export DEEPSEEK_API_KEY="your_deepseek_api_key"    # 用于RAG智能问答
-
-# 配置BovineInsight系统
-export GLM_API_KEY="your_glm_api_key"              # 智谱GLM-4V
-
-# 配置AI服务偏好
-export PREFERRED_AI_SERVICE="auto"                 # auto, local, gemini, deepseek
-export HYBRID_AI_ENABLED="true"                    # 启用混合AI
-export LOCAL_AI_ENABLED="true"                     # 启用本地AI
-```
-
----
-
-## 🎮 使用示例
-
-### 🤖 RAG智能问答
-1. 上传文档 (PDF、Word、TXT等)
-2. 等待文档处理完成
-3. 开始智能问答对话
-4. 查看聊天历史和文档引用
-
-### 🐱 Changlee学习助手
-1. 启动桌面宠物应用
-2. 选择AI服务类型 (本地AI/Gemini/DeepSeek)
-3. 与长离AI进行个性化学习对话
-4. 使用学习胶囊功能记忆单词
-5. 在魔法沙滩进行拼写练习
-6. 查看学习进度和AI服务状态
-
-### 🐄 BovineInsight分析
-1. 上传牛只图像
-2. 选择分析模式 (身份识别/体况评分)
-3. 查看AI分析结果
-4. 导出专家级分析报告
-
-### 📊 Chronicle记录
-1. 启动实验记录会话
-2. 进行科研工作
-3. 停止记录会话
-4. 查看AI生成的实验报告
-
----
-
-## 🔍 故障排除
+## 🛠️ 故障排除
 
 ### 常见问题
 
-#### Q1: Python依赖安装失败
+#### 问题1: "❌ 连接RAG系统失败"
+**解决方案**:
+1. 检查RAG服务器是否运行: `ps aux | grep simple_rag_api`
+2. 重启RAG服务器: `python simple_rag_api.py`
+3. 使用重新连接功能: 点击 ⚡ → 🔄 重新连接
+
+#### 问题2: 页面无法加载
+**解决方案**:
+1. 检查前端服务器: `curl http://localhost:52943`
+2. 重启前端服务器: `python3 -m http.server 52943 --bind 0.0.0.0`
+3. 清除浏览器缓存: Ctrl+F5
+
+#### 问题3: 功能异常
+**解决方案**:
+1. 打开开发者工具 (F12) 查看错误
+2. 运行状态检查: `python check_rag_status.py`
+3. 查看详细指南: `RAG_CONNECTION_GUIDE.md`
+
+### 诊断工具
+
+#### 1. 状态检查脚本
 ```bash
-# 解决方案: 使用国内镜像源
-pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple/
+python check_rag_status.py
+```
+- 检查所有系统组件
+- 提供详细的诊断信息
+- 给出具体的修复建议
+
+#### 2. 连接诊断脚本
+```bash
+python diagnose_connection.py
+```
+- 测试所有API端点
+- 验证CORS配置
+- 检查网络连接
+
+#### 3. 系统状态页面
+访问: `http://localhost:52943/system_status.html`
+- 实时系统监控
+- 可视化状态显示
+- 交互式诊断工具
+
+## 📈 系统监控
+
+### 状态指标
+- **连接状态**: 实时显示RAG系统连接状态
+- **响应时间**: 监控API响应性能
+- **成功率**: 跟踪请求成功率
+- **资源使用**: 显示内存和存储使用情况
+
+### 日志监控
+```bash
+# 查看RAG服务器日志
+tail -f rag_server.log
+
+# 查看HTTP服务器日志
+tail -f http_server.log
 ```
 
-#### Q2: Node.js依赖安装失败
+## 🔒 安全注意事项
+
+### API密钥管理
+- 确保OpenAI API密钥安全存储
+- 不要在日志中暴露敏感信息
+- 定期轮换API密钥
+
+### 网络安全
+- 仅在可信网络环境中运行
+- 考虑使用HTTPS (生产环境)
+- 限制API访问权限
+
+## 📚 进阶功能
+
+### 文档上传
+- 支持多种格式: PDF, DOCX, TXT, MD等
+- 自动文本提取和向量化
+- 智能文档检索
+
+### 记忆管理
+- 永久记忆: 长期保存重要信息
+- 临时记忆: 会话级别的上下文
+- 智能记忆检索
+
+### 多轮对话
+- 上下文理解
+- 对话历史管理
+- 智能回复生成
+
+## 🎉 成功验证
+
+当系统正常工作时，您应该看到:
+
+1. **状态栏显示**: ✅ RAG系统已就绪 (X条历史, Y个文档)
+2. **欢迎消息**: 🎉 RAG系统已就绪
+3. **功能正常**: 可以发送消息并收到AI回复
+4. **文件上传**: 可以上传文档并进行问答
+
+## 📞 获取帮助
+
+### 查看日志
 ```bash
-# 解决方案: 使用淘宝镜像
-npm install --registry https://registry.npmmirror.com
+# 系统状态
+python check_rag_status.py
+
+# 详细诊断
+python diagnose_connection.py
+
+# 服务器日志
+tail -20 rag_server.log
 ```
 
-#### Q3: AI模型加载失败
+### 重置系统
 ```bash
-# 解决方案: 检查网络连接，模型会自动下载
-# 或手动下载模型到指定目录
+# 停止所有服务
+pkill -f simple_rag_api
+pkill -f "python.*server"
+
+# 清除缓存 (可选)
+rm -f chat_history.json
+
+# 重新启动
+python simple_rag_api.py &
+python3 -m http.server 52943 --bind 0.0.0.0 &
 ```
 
-#### Q4: 端口被占用
-```bash
-# 解决方案: 修改配置文件中的端口号
-# 或停止占用端口的进程
-```
+## 📋 检查清单
 
-### 🆘 获取帮助
-- **GitHub Issues**: [问题反馈](https://github.com/novenazgarfield/research-workstation/issues)
-- **文档中心**: 查看详细技术文档
-- **社区讨论**: [GitHub Discussions](https://github.com/novenazgarfield/research-workstation/discussions)
+启动前请确认:
+- [ ] Python环境已配置
+- [ ] 依赖包已安装 (`pip install -r requirements.txt`)
+- [ ] OpenAI API密钥已设置
+- [ ] 端口5000和52943未被占用
+- [ ] 防火墙允许本地连接
+
+运行时检查:
+- [ ] RAG服务器正在运行
+- [ ] 前端服务器可访问
+- [ ] 状态栏显示绿色 ✅
+- [ ] 可以发送和接收消息
+- [ ] 文件上传功能正常
 
 ---
 
-## 🎯 下一步
-
-### 🌟 推荐功能
-1. **尝试本地AI对话**: 体验隐私保护的智能对话
-2. **上传文档进行问答**: 测试RAG系统的智能检索
-3. **使用BovineInsight分析**: 体验博士级AI分析能力
-4. **记录学习过程**: 使用Chronicle跟踪学习进度
-
-### 📚 深入学习
-- 阅读 [项目架构文档](../PROJECT_ARCHITECTURE.md)
-- 查看 [更新日志](../../CHANGELOG.md)
-- 了解 [项目状态](../../PROJECT_STATUS.md)
-
-### 🤝 参与贡献
-- Fork项目并提交改进
-- 报告bug和提出建议
-- 分享使用经验和最佳实践
-
----
-
-## 📊 性能优化建议
-
-### 🚀 提升性能
-```bash
-# 1. 使用GPU加速 (如果有NVIDIA GPU)
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-
-# 2. 启用模型量化 (减少内存使用)
-export USE_QUANTIZATION=true
-
-# 3. 调整并发设置
-export MAX_WORKERS=4
-```
-
-### 💾 节省内存
-```bash
-# 1. 使用较小的AI模型
-export MODEL_SIZE=small
-
-# 2. 启用内存优化
-export MEMORY_OPTIMIZATION=true
-
-# 3. 定期清理缓存
-python -c "import torch; torch.cuda.empty_cache()"
-```
-
----
-
-## 🎉 恭喜！
-
-您已经成功启动了Research Workstation！现在可以：
-
-- ✅ 使用RAG系统进行智能问答
-- ✅ 与Changlee AI进行学习对话  
-- ✅ 体验BovineInsight的专业分析
-- ✅ 记录和分析实验过程
-
-**享受AI驱动的智能科研体验吧！** 🚀✨
-
----
-
-*如果您觉得这个项目有用，请给我们一个⭐Star！*
+**💡 提示**: 如果遇到任何问题，请先运行 `python check_rag_status.py` 进行自动诊断，然后查看 `RAG_CONNECTION_GUIDE.md` 获取详细的解决方案。
