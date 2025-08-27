@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>翻译测试</title>
+</head>
+<body>
+    <h1>翻译系统测试</h1>
+    
+    <div>
+        <h2>AI相关翻译测试:</h2>
+        <p data-i18n="settings.ai">settings.ai</p>
+        <p data-i18n="settings.aiConfig">settings.aiConfig</p>
+        <p data-i18n="settings.manageAI">settings.manageAI</p>
+        <p data-i18n="settings.aiStatus">settings.aiStatus</p>
+        <p data-i18n="settings.aiOffline">settings.aiOffline</p>
+    </div>
+    
+    <div>
+        <button onclick="testTranslation()">测试翻译</button>
+        <button onclick="switchToEnglish()">切换到英文</button>
+        <button onclick="switchToChinese()">切换到中文</button>
+    </div>
+    
+    <div id="debug"></div>
+
+    <!-- 加载语言文件和翻译系统 -->
+    <script src="i18n/languages.js"></script>
+    <script src="i18n/i18n-manager.js"></script>
+    
+    <script>
+        let i18n;
+        
+        function testTranslation() {
+            const debug = document.getElementById('debug');
+            debug.innerHTML = `
+                <h3>调试信息:</h3>
+                <p>LANGUAGES存在: ${typeof LANGUAGES !== 'undefined'}</p>
+                <p>i18n存在: ${typeof i18n !== 'undefined'}</p>
+                <p>当前语言: ${i18n ? i18n.getCurrentLanguage() : 'N/A'}</p>
+                <p>settings.ai翻译: ${i18n ? i18n.t('settings.ai') : 'N/A'}</p>
+                <p>settings.aiConfig翻译: ${i18n ? i18n.t('settings.aiConfig') : 'N/A'}</p>
+                <p>settings.aiOffline翻译: ${i18n ? i18n.t('settings.aiOffline') : 'N/A'}</p>
+            `;
+        }
+        
+        function switchToEnglish() {
+            if (i18n) {
+                i18n.switchLanguage('en-US');
+            }
+        }
+        
+        function switchToChinese() {
+            if (i18n) {
+                i18n.switchLanguage('zh-CN');
+            }
+        }
+        
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('初始化翻译系统...');
+            i18n = initI18n();
+            console.log('翻译系统初始化完成:', i18n);
+            testTranslation();
+        });
+    </script>
+</body>
+</html>

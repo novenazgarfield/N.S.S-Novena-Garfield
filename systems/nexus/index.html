@@ -3128,8 +3128,8 @@
     </div>
 
     <!-- 🌐 引入语言包和国际化管理器 -->
-    <script src="i18n/languages.js"></script>
-    <script src="i18n/i18n-manager.js"></script>
+    <script src="i18n/languages.js?v=2.0.1"></script>
+    <script src="i18n/i18n-manager.js?v=2.0.1"></script>
     
     <script>
         let currentPage = 'dashboard';
@@ -4499,6 +4499,10 @@
                 if (i18n) {
                     console.log('🌐 国际化系统初始化成功');
                     console.log('🌐 当前语言:', i18n.getCurrentLanguage());
+                    console.log('🌐 测试AI翻译键:');
+                    console.log('  - settings.ai:', i18n.t('settings.ai'));
+                    console.log('  - settings.aiConfig:', i18n.t('settings.aiConfig'));
+                    console.log('  - settings.aiOffline:', i18n.t('settings.aiOffline'));
                     
                     // 更新语言切换器显示
                     updateLanguageSwitcher();
