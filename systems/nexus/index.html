@@ -4833,6 +4833,14 @@
             // 初始化国际化系统
             initializeI18n();
             
+            // 延迟刷新翻译以确保新的AI翻译键生效
+            setTimeout(() => {
+                if (window.i18n) {
+                    window.i18n.applyLanguage(window.i18n.getCurrentLanguage());
+                    console.log('🌐 AI翻译键已刷新');
+                }
+            }, 1000);
+            
             // 初始化移动端菜单
             initializeMobileMenu();
             
