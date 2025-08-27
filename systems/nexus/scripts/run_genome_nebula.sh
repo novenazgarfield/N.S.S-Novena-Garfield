@@ -1,10 +1,10 @@
 #!/bin/bash
 """
-基因组拼图分析流水线
+基因组星云分析流水线
 NEXUS远程指挥中心 - 示例脚本
 """
 
-echo "🧬 启动基因组拼图分析流水线..."
+echo "🧬 启动基因组星云分析流水线..."
 echo "📁 检查输入文件..."
 sleep 2
 
@@ -23,5 +23,5 @@ done
 echo "📊 生成分析报告..."
 sleep 2
 
-echo "✅ 基因组拼图分析完成！"
+echo "✅ 基因组星云分析完成！"
 echo "📄 结果已保存到: /results/genome_jigsaw_$(date +%Y%m%d_%H%M%S)"

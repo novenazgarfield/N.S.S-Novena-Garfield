@@ -66,7 +66,7 @@ nexus/
 
 | 命令名称 | 功能描述 | 脚本文件 | 状态 |
 |---------|---------|---------|------|
-| `genome_jigsaw` | 基因组拼图分析流水线 | `run_genome_jigsaw.sh` | ✅ 已实现 |
+| `genome_jigsaw` | 基因组星云分析流水线 | `run_genome_jigsaw.sh` | ✅ 已实现 |
 | `gromacs_simulation` | GROMACS分子动力学模拟 | `run_gromacs.sh` | ✅ 已实现 |
 | `protein_folding` | 蛋白质折叠预测 | `run_alphafold.sh` | ✅ 已配置 |
 | `system_status` | 系统状态检查 | `get_system_status.sh` | ✅ 已实现 |

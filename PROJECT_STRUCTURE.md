@@ -29,7 +29,7 @@ N.S.S-Novena-Garfield/
 │   ├── Changlee/                  # Changlee系统
 │   ├── bovine-insight/            # 牛类洞察系统
 │   ├── chronicle/                 # 编年史系统
-│   ├── genome-jigsaw/             # 基因拼图系统
+│   ├── genome-nebula/             # 基因星云系统
 │   └── molecular-simulation-toolkit/ # 分子模拟工具包
 │
 ├── 📚 docs/                        # 文档目录

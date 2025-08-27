@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Page Switch</title>
+</head>
+<body>
+    <h1>Debug Page Switch Test</h1>
+    <button onclick="testMolecularPage()">Test Molecular Page</button>
+    <button onclick="testGenomePage()">Test Genome Page</button>
+    
+    <div id="result"></div>
+    
+    <script>
+        function testMolecularPage() {
+            fetch('https://those-ball-detroit-tolerance.trycloudflare.com/')
+                .then(response => response.text())
+                .then(html => {
+                    // 检查molecular-page是否存在
+                    const hasMolecularPage = html.includes('id="molecular-page"');
+                    const hasGenomePage = html.includes('id="genome-page"');
+                    const hasShowPageFunction = html.includes('function showPage');
+                    
+                    document.getElementById('result').innerHTML = `
+                        <h3>Page Structure Check:</h3>
+                        <p>Has molecular-page: ${hasMolecularPage}</p>
+                        <p>Has genome-page: ${hasGenomePage}</p>
+                        <p>Has showPage function: ${hasShowPageFunction}</p>
+                        <p>Page loaded successfully: ${html.length > 0}</p>
+                    `;
+                })
+                .catch(error => {
+                    document.getElementById('result').innerHTML = `Error: ${error}`;
+                });
+        }
+        
+        function testGenomePage() {
+            // 测试基因页面
+            console.log('Testing genome page...');
+        }
+    </script>
+</body>
+</html>

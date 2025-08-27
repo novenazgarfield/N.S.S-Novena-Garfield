@@ -32,7 +32,7 @@ class NexusWebSocketServer:
         self.command_whitelist = {
             "genome_jigsaw": {
                 "script": "./scripts/run_genome_jigsaw.sh",
-                "description": "基因组拼图分析流水线"
+                "description": "基因组星云分析流水线"
             },
             "gromacs_simulation": {
                 "script": "./scripts/run_gromacs.sh", 

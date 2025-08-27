@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分子模拟 - 第一颗3D原子</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 300px;
+            z-index: 100;
+        }
+
+        #info-panel h2 {
+            margin: 0 0 15px 0;
+            color: #4CAF50;
+            font-size: 1.5em;
+        }
+
+        #info-panel p {
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 200;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #4CAF50;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .control-button {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+        }
+
+        #atom-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+            z-index: 100;
+        }
+
+        .atom-count {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .atom-list {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 12px;
+        }
+
+        .atom-item {
+            padding: 2px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="canvas-container"></div>
+        
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>正在加载分子数据...</p>
+        </div>
+
+        <div id="info-panel">
+            <h2>🧬 分子模拟</h2>
+            <p><strong>目标:</strong> 第一颗3D原子</p>
+            <p><strong>技术:</strong> Three.js + PDBLoader</p>
+            <p><strong>数据源:</strong> 咖啡因分子 (CFF)</p>
+            <p><strong>操作:</strong></p>
+            <ul style="font-size: 12px; margin: 10px 0; padding-left: 20px;">
+                <li>鼠标拖拽: 旋转视角</li>
+                <li>滚轮: 缩放</li>
+                <li>右键拖拽: 平移</li>
+            </ul>
+        </div>
+
+        <div id="atom-info">
+            <div class="atom-count">原子数量: 0</div>
+            <div class="atom-list" id="atom-list"></div>
+        </div>
+
+        <div id="controls">
+            <button class="control-button" onclick="resetCamera()">🎯 重置视角</button>
+            <button class="control-button" onclick="toggleWireframe()">🔲 线框模式</button>
+            <button class="control-button" onclick="toggleLabels()">🏷️ 显示标签</button>
+        </div>
+    </div>
+
+    <!-- Three.js 核心库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+    
+    <!-- PDB加载器 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/loaders/PDBLoader.js"></script>
+    
+    <!-- 轨道控制器 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let atomGroup, labelGroup;
+        let atoms = [];
+        let wireframeMode = false;
+        let labelsVisible = false;
+
+        // 原子颜色映射 (CPK颜色方案)
+        const atomColors = {
+            'H': 0xFFFFFF,  // 氢 - 白色
+            'C': 0x909090,  // 碳 - 灰色
+            'N': 0x3050F8,  // 氮 - 蓝色
+            'O': 0xFF0D0D,  // 氧 - 红色
+            'F': 0x90E050,  // 氟 - 绿色
+            'P': 0xFF8000,  // 磷 - 橙色
+            'S': 0xFFFF30,  // 硫 - 黄色
+            'CL': 0x1FF01F, // 氯 - 绿色
+            'BR': 0xA62929, // 溴 - 棕色
+            'I': 0x940094,  // 碘 - 紫色
+            'default': 0xFF1493 // 默认 - 深粉色
+        };
+
+        // 原子半径映射 (范德华半径，单位：埃)
+        const atomRadii = {
+            'H': 0.3,
+            'C': 0.4,
+            'N': 0.35,
+            'O': 0.32,
+            'F': 0.3,
+            'P': 0.5,
+            'S': 0.45,
+            'CL': 0.45,
+            'BR': 0.5,
+            'I': 0.55,
+            'default': 0.4
+        };
+
+        // 初始化场景
+        function initScene() {
+            console.log('🚀 初始化分子模拟场景...');
+
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000011);
+
+            // 创建摄像机
+            camera = new THREE.PerspectiveCamera(
+                75, 
+                window.innerWidth / window.innerHeight, 
+                0.1, 
+                1000
+            );
+            camera.position.set(10, 10, 10);
+
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ 
+                antialias: true,
+                alpha: true 
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // 创建轨道控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = true;
+            controls.enablePan = true;
+
+            // 添加灯光
+            setupLighting();
+
+            // 创建原子和标签组
+            atomGroup = new THREE.Group();
+            labelGroup = new THREE.Group();
+            scene.add(atomGroup);
+            scene.add(labelGroup);
+
+            console.log('✅ 场景初始化完成');
+        }
+
+        // 设置灯光
+        function setupLighting() {
+            // 环境光
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            scene.add(ambientLight);
+
+            // 方向光
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 10, 5);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 2048;
+            directionalLight.shadow.mapSize.height = 2048;
+            scene.add(directionalLight);
+
+            // 点光源
+            const pointLight = new THREE.PointLight(0x4CAF50, 0.5, 50);
+            pointLight.position.set(-10, -10, -10);
+            scene.add(pointLight);
+
+            // 另一个点光源
+            const pointLight2 = new THREE.PointLight(0xFF6B6B, 0.3, 30);
+            pointLight2.position.set(5, -5, 10);
+            scene.add(pointLight2);
+        }
+
+        // 加载PDB文件
+        function loadPDBFile() {
+            console.log('📁 开始加载PDB文件...');
+
+            const loader = new THREE.PDBLoader();
+            
+            // 咖啡因分子的PDB文件URL
+            const pdbUrl = 'https://files.rcsb.org/ligands/view/CFF_ideal.pdb';
+            
+            loader.load(
+                pdbUrl,
+                // 加载成功回调
+                function(pdb) {
+                    console.log('✅ PDB文件加载成功:', pdb);
+                    processPDBData(pdb);
+                    hideLoading();
+                },
+                // 加载进度回调
+                function(progress) {
+                    console.log('📊 加载进度:', (progress.loaded / progress.total * 100).toFixed(1) + '%');
+                },
+                // 加载错误回调
+                function(error) {
+                    console.error('❌ PDB文件加载失败:', error);
+                    
+                    // 如果网络加载失败，使用备用的模拟数据
+                    console.log('🔄 使用备用模拟数据...');
+                    createMockMolecule();
+                    hideLoading();
+                }
+            );
+        }
+
+        // 处理PDB数据
+        function processPDBData(pdb) {
+            console.log('🧬 处理PDB数据...');
+            
+            atoms = [];
+            const atomData = pdb.atoms;
+            
+            console.log(`📊 发现 ${atomData.length} 个原子`);
+
+            // 遍历所有原子
+            atomData.forEach((atom, index) => {
+                const element = atom.element.toUpperCase();
+                const position = new THREE.Vector3(atom.x, atom.y, atom.z);
+                
+                // 创建原子球体
+                createAtom(element, position, index);
+                
+                // 保存原子信息
+                atoms.push({
+                    element: element,
+                    position: position,
+                    index: index,
+                    x: atom.x,
+                    y: atom.y,
+                    z: atom.z
+                });
+            });
+
+            // 更新原子信息显示
+            updateAtomInfo();
+            
+            // 调整摄像机位置以适应分子大小
+            fitCameraToMolecule();
+            
+            console.log('✅ 原子渲染完成');
+        }
+
+        // 创建单个原子
+        function createAtom(element, position, index) {
+            // 获取原子颜色和半径
+            const color = atomColors[element] || atomColors.default;
+            const radius = (atomRadii[element] || atomRadii.default) * 0.5; // 缩放因子
+
+            // 创建球体几何
+            const geometry = new THREE.SphereGeometry(radius, 16, 16);
+            
+            // 创建材质
+            const material = new THREE.MeshPhongMaterial({
+                color: color,
+                shininess: 100,
+                transparent: true,
+                opacity: 0.9
+            });
+
+            // 创建网格
+            const atomMesh = new THREE.Mesh(geometry, material);
+            atomMesh.position.copy(position);
+            atomMesh.castShadow = true;
+            atomMesh.receiveShadow = true;
+            
+            // 添加用户数据
+            atomMesh.userData = {
+                element: element,
+                index: index,
+                originalMaterial: material
+            };
+
+            // 添加到原子组
+            atomGroup.add(atomMesh);
+
+            // 创建原子标签 (初始隐藏)
+            createAtomLabel(element, position, index);
+        }
+
+        // 创建原子标签
+        function createAtomLabel(element, position, index) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 128;
+            canvas.height = 64;
+
+            // 绘制标签
+            context.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            
+            context.fillStyle = 'white';
+            context.font = '16px Arial';
+            context.textAlign = 'center';
+            context.fillText(element, canvas.width / 2, 25);
+            context.fillText(`#${index}`, canvas.width / 2, 45);
+
+            // 创建纹理和材质
+            const texture = new THREE.CanvasTexture(canvas);
+            const material = new THREE.SpriteMaterial({ 
+                map: texture,
+                transparent: true,
+                opacity: 0
+            });
+
+            // 创建精灵
+            const sprite = new THREE.Sprite(material);
+            sprite.position.copy(position);
+            sprite.position.y += 1; // 稍微向上偏移
+            sprite.scale.set(2, 1, 1);
+
+            labelGroup.add(sprite);
+        }
+
+        // 创建模拟分子数据 (备用方案)
+        function createMockMolecule() {
+            console.log('🔬 创建模拟咖啡因分子...');
+            
+            atoms = [];
+            
+            // 模拟咖啡因分子的原子数据
+            const mockAtoms = [
+                { element: 'C', x: 0, y: 0, z: 0 },
+                { element: 'C', x: 1.4, y: 0, z: 0 },
+                { element: 'C', x: 2.1, y: 1.2, z: 0 },
+                { element: 'N', x: 1.4, y: 2.4, z: 0 },
+                { element: 'C', x: 0, y: 2.4, z: 0 },
+                { element: 'N', x: -0.7, y: 1.2, z: 0 },
+                { element: 'O', x: 3.3, y: 1.2, z: 0 },
+                { element: 'H', x: -0.5, y: -0.9, z: 0 },
+                { element: 'H', x: 1.9, y: -0.9, z: 0 },
+                { element: 'H', x: 1.9, y: 3.3, z: 0 },
+                { element: 'H', x: -0.5, y: 3.3, z: 0 },
+                { element: 'C', x: -2.1, y: 1.2, z: 0 },
+                { element: 'H', x: -2.6, y: 0.3, z: 0 },
+                { element: 'H', x: -2.6, y: 2.1, z: 0 },
+                { element: 'H', x: -2.1, y: 1.2, z: 0.9 }
+            ];
+
+            mockAtoms.forEach((atom, index) => {
+                const position = new THREE.Vector3(atom.x, atom.y, atom.z);
+                createAtom(atom.element, position, index);
+                
+                atoms.push({
+                    element: atom.element,
+                    position: position,
+                    index: index,
+                    x: atom.x,
+                    y: atom.y,
+                    z: atom.z
+                });
+            });
+
+            updateAtomInfo();
+            fitCameraToMolecule();
+            
+            console.log('✅ 模拟分子创建完成');
+        }
+
+        // 更新原子信息显示
+        function updateAtomInfo() {
+            const atomCount = document.querySelector('.atom-count');
+            const atomList = document.getElementById('atom-list');
+            
+            atomCount.textContent = `原子数量: ${atoms.length}`;
+            
+            // 统计各种元素
+            const elementCount = {};
+            atoms.forEach(atom => {
+                elementCount[atom.element] = (elementCount[atom.element] || 0) + 1;
+            });
+            
+            // 显示元素统计
+            atomList.innerHTML = '';
+            Object.entries(elementCount).forEach(([element, count]) => {
+                const div = document.createElement('div');
+                div.className = 'atom-item';
+                div.innerHTML = `<span style="color: #${atomColors[element].toString(16).padStart(6, '0')}">${element}</span>: ${count}个`;
+                atomList.appendChild(div);
+            });
+        }
+
+        // 调整摄像机以适应分子
+        function fitCameraToMolecule() {
+            if (atoms.length === 0) return;
+
+            // 计算分子的边界框
+            const box = new THREE.Box3();
+            atomGroup.children.forEach(atom => {
+                box.expandByObject(atom);
+            });
+
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+
+            // 设置摄像机位置
+            const distance = maxDim * 3;
+            camera.position.set(distance, distance, distance);
+            camera.lookAt(center);
+            
+            // 设置控制器目标
+            controls.target.copy(center);
+            controls.update();
+        }
+
+        // 隐藏加载界面
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 500);
+        }
+
+        // 重置摄像机
+        function resetCamera() {
+            fitCameraToMolecule();
+        }
+
+        // 切换线框模式
+        function toggleWireframe() {
+            wireframeMode = !wireframeMode;
+            
+            atomGroup.children.forEach(atom => {
+                atom.material.wireframe = wireframeMode;
+            });
+            
+            console.log(`🔲 线框模式: ${wireframeMode ? '开启' : '关闭'}`);
+        }
+
+        // 切换标签显示
+        function toggleLabels() {
+            labelsVisible = !labelsVisible;
+            
+            labelGroup.children.forEach(label => {
+                label.material.opacity = labelsVisible ? 0.8 : 0;
+            });
+            
+            console.log(`🏷️ 标签显示: ${labelsVisible ? '开启' : '关闭'}`);
+        }
+
+        // 渲染循环
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 更新控制器
+            controls.update();
+            
+            // 渲染场景
+            renderer.render(scene, camera);
+        }
+
+        // 窗口大小调整
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // 初始化应用
+        function init() {
+            console.log('🧬 分子模拟系统启动...');
+            
+            initScene();
+            loadPDBFile();
+            animate();
+            
+            // 添加事件监听器
+            window.addEventListener('resize', onWindowResize, false);
+            
+            console.log('✅ 分子模拟系统初始化完成');
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

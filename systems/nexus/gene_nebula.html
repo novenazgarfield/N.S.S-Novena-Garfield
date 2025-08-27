@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基因星云 - 第一片基因星云</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0033 50%, #330066 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            color: white;
+        }
+
+        #container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 300px;
+            z-index: 100;
+        }
+
+        #info-panel h2 {
+            margin: 0 0 15px 0;
+            color: #9C27B0;
+            font-size: 1.5em;
+        }
+
+        #info-panel p {
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        #gene-stats {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            min-width: 250px;
+            z-index: 100;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        .stat-value {
+            color: #9C27B0;
+            font-weight: bold;
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
+
+        .control-button {
+            background: linear-gradient(45deg, #9C27B0, #7B1FA2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .control-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(156, 39, 176, 0.3);
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 200;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #9C27B0;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #gene-info {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            max-width: 300px;
+            z-index: 100;
+            display: none;
+        }
+
+        .gene-detail {
+            margin: 5px 0;
+            font-size: 12px;
+        }
+
+        .importance-bar {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 5px 0;
+        }
+
+        .importance-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #9C27B0, #E91E63);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="canvas-container"></div>
+        
+        <div id="loading">
+            <div class="spinner"></div>
+            <p>正在生成基因星云...</p>
+        </div>
+
+        <div id="info-panel">
+            <h2>🧬 基因星云</h2>
+            <p><strong>目标:</strong> 第一片基因星云</p>
+            <p><strong>技术:</strong> Three.js + 3D点云</p>
+            <p><strong>数据:</strong> 虚拟基因数据集</p>
+            <p><strong>操作:</strong></p>
+            <ul style="font-size: 12px; margin: 10px 0; padding-left: 20px;">
+                <li>鼠标拖拽: 旋转星云</li>
+                <li>滚轮: 缩放</li>
+                <li>右键拖拽: 平移</li>
+                <li>点击基因: 查看详情</li>
+            </ul>
+        </div>
+
+        <div id="gene-stats">
+            <h3 style="margin: 0 0 15px 0; color: #9C27B0;">📊 基因统计</h3>
+            <div class="stat-item">
+                <span>总基因数:</span>
+                <span class="stat-value" id="total-genes">0</span>
+            </div>
+            <div class="stat-item">
+                <span>高重要性 (>0.8):</span>
+                <span class="stat-value" id="high-importance">0</span>
+            </div>
+            <div class="stat-item">
+                <span>中重要性 (0.5-0.8):</span>
+                <span class="stat-value" id="medium-importance">0</span>
+            </div>
+            <div class="stat-item">
+                <span>低重要性 (<0.5):</span>
+                <span class="stat-value" id="low-importance">0</span>
+            </div>
+            <div class="stat-item">
+                <span>平均重要性:</span>
+                <span class="stat-value" id="avg-importance">0.00</span>
+            </div>
+        </div>
+
+        <div id="controls">
+            <button class="control-button" onclick="resetCamera()">🎯 重置视角</button>
+            <button class="control-button" onclick="toggleAnimation()">🌟 动画效果</button>
+            <button class="control-button" onclick="colorByImportance()">🎨 重要性着色</button>
+            <button class="control-button" onclick="regenerateGenes()">🔄 重新生成</button>
+        </div>
+
+        <div id="gene-info">
+            <h4 style="margin: 0 0 10px 0; color: #9C27B0;">基因详情</h4>
+            <div class="gene-detail"><strong>名称:</strong> <span id="gene-name">-</span></div>
+            <div class="gene-detail"><strong>坐标:</strong> <span id="gene-coords">-</span></div>
+            <div class="gene-detail"><strong>重要性:</strong> <span id="gene-importance">-</span></div>
+            <div class="importance-bar">
+                <div class="importance-fill" id="importance-fill"></div>
+            </div>
+            <div class="gene-detail"><strong>功能:</strong> <span id="gene-function">-</span></div>
+        </div>
+    </div>
+
+    <!-- Three.js 核心库 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+    
+    <!-- 轨道控制器 -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/examples/js/controls/OrbitControls.js"></script>
+
+    <script>
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let geneGroup, labelGroup;
+        let genes = [];
+        let genePoints = [];
+        let animationEnabled = true;
+        let raycaster, mouse;
+        let selectedGene = null;
+
+        // 基因功能类别
+        const geneFunctions = [
+            '蛋白质合成', '细胞分裂', '免疫调节', '新陈代谢', 
+            '神经传导', '激素调节', 'DNA修复', '细胞凋亡',
+            '生长发育', '能量代谢', '信号传导', '转录调节'
+        ];
+
+        // 初始化场景
+        function initScene() {
+            console.log('🚀 初始化基因星云场景...');
+
+            // 创建场景
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000011);
+
+            // 创建摄像机
+            camera = new THREE.PerspectiveCamera(
+                75, 
+                window.innerWidth / window.innerHeight, 
+                0.1, 
+                1000
+            );
+            camera.position.set(50, 50, 50);
+
+            // 创建渲染器
+            renderer = new THREE.WebGLRenderer({ 
+                antialias: true,
+                alpha: true 
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // 创建轨道控制器
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = true;
+            controls.enablePan = true;
+
+            // 初始化射线投射器和鼠标
+            raycaster = new THREE.Raycaster();
+            mouse = new THREE.Vector2();
+
+            // 添加灯光
+            setupLighting();
+
+            // 创建基因组
+            geneGroup = new THREE.Group();
+            labelGroup = new THREE.Group();
+            scene.add(geneGroup);
+            scene.add(labelGroup);
+
+            // 添加鼠标事件监听器
+            renderer.domElement.addEventListener('click', onMouseClick, false);
+
+            console.log('✅ 场景初始化完成');
+        }
+
+        // 设置灯光
+        function setupLighting() {
+            // 环境光
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+            scene.add(ambientLight);
+
+            // 方向光
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
+            directionalLight.position.set(50, 50, 25);
+            scene.add(directionalLight);
+
+            // 点光源 - 紫色
+            const pointLight1 = new THREE.PointLight(0x9C27B0, 0.8, 100);
+            pointLight1.position.set(25, 25, 25);
+            scene.add(pointLight1);
+
+            // 点光源 - 粉色
+            const pointLight2 = new THREE.PointLight(0xE91E63, 0.6, 80);
+            pointLight2.position.set(-25, -25, 25);
+            scene.add(pointLight2);
+
+            // 点光源 - 蓝色
+            const pointLight3 = new THREE.PointLight(0x3F51B5, 0.4, 60);
+            pointLight3.position.set(0, 50, -25);
+            scene.add(pointLight3);
+        }
+
+        // 生成虚拟基因数据
+        function generateGeneData() {
+            console.log('🧬 生成虚拟基因数据...');
+            
+            genes = [];
+            const geneCount = 500; // 生成500个基因点
+
+            for (let i = 0; i < geneCount; i++) {
+                const gene = {
+                    gene_name: `GENE_${String.fromCharCode(65 + Math.floor(i / 26))}${(i % 26) + 1}`,
+                    x: (Math.random() - 0.5) * 100,
+                    y: (Math.random() - 0.5) * 100,
+                    z: (Math.random() - 0.5) * 100,
+                    importance: Math.random(),
+                    function: geneFunctions[Math.floor(Math.random() * geneFunctions.length)],
+                    cluster: Math.floor(Math.random() * 5) // 5个基因簇
+                };
+
+                genes.push(gene);
+            }
+
+            console.log(`✅ 生成了 ${genes.length} 个基因点`);
+            return genes;
+        }
+
+        // 创建基因星云
+        function createGeneCloud() {
+            console.log('🌌 创建基因星云...');
+
+            // 清除现有的基因点
+            geneGroup.clear();
+            genePoints = [];
+
+            genes.forEach((gene, index) => {
+                createGenePoint(gene, index);
+            });
+
+            // 更新统计信息
+            updateGeneStats();
+            
+            // 调整摄像机位置
+            fitCameraToCloud();
+
+            console.log('✅ 基因星云创建完成');
+        }
+
+        // 创建单个基因点
+        function createGenePoint(gene, index) {
+            // 根据重要性确定大小和颜色
+            const size = 0.2 + gene.importance * 0.8; // 0.2 到 1.0
+            const color = getImportanceColor(gene.importance);
+
+            // 创建球体几何
+            const geometry = new THREE.SphereGeometry(size, 8, 8);
+            
+            // 创建材质
+            const material = new THREE.MeshPhongMaterial({
+                color: color,
+                transparent: true,
+                opacity: 0.8,
+                emissive: color,
+                emissiveIntensity: 0.2
+            });
+
+            // 创建网格
+            const geneMesh = new THREE.Mesh(geometry, material);
+            geneMesh.position.set(gene.x, gene.y, gene.z);
+            
+            // 添加用户数据
+            geneMesh.userData = {
+                gene: gene,
+                index: index,
+                originalColor: color,
+                originalSize: size
+            };
+
+            // 添加到基因组
+            geneGroup.add(geneMesh);
+            genePoints.push(geneMesh);
+
+            // 添加发光效果
+            if (gene.importance > 0.8) {
+                addGlowEffect(geneMesh, color);
+            }
+        }
+
+        // 根据重要性获取颜色
+        function getImportanceColor(importance) {
+            if (importance > 0.8) {
+                return new THREE.Color(0xFF1744); // 高重要性 - 红色
+            } else if (importance > 0.5) {
+                return new THREE.Color(0x9C27B0); // 中重要性 - 紫色
+            } else {
+                return new THREE.Color(0x3F51B5); // 低重要性 - 蓝色
+            }
+        }
+
+        // 添加发光效果
+        function addGlowEffect(mesh, color) {
+            const glowGeometry = new THREE.SphereGeometry(mesh.userData.originalSize * 1.5, 8, 8);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: color,
+                transparent: true,
+                opacity: 0.1,
+                side: THREE.BackSide
+            });
+
+            const glowMesh = new THREE.Mesh(glowGeometry, glowMaterial);
+            glowMesh.position.copy(mesh.position);
+            geneGroup.add(glowMesh);
+        }
+
+        // 更新基因统计信息
+        function updateGeneStats() {
+            const totalGenes = genes.length;
+            let highImportance = 0;
+            let mediumImportance = 0;
+            let lowImportance = 0;
+            let totalImportanceSum = 0;
+
+            genes.forEach(gene => {
+                totalImportanceSum += gene.importance;
+                
+                if (gene.importance > 0.8) {
+                    highImportance++;
+                } else if (gene.importance > 0.5) {
+                    mediumImportance++;
+                } else {
+                    lowImportance++;
+                }
+            });
+
+            const avgImportance = totalImportanceSum / totalGenes;
+
+            // 更新显示
+            document.getElementById('total-genes').textContent = totalGenes;
+            document.getElementById('high-importance').textContent = highImportance;
+            document.getElementById('medium-importance').textContent = mediumImportance;
+            document.getElementById('low-importance').textContent = lowImportance;
+            document.getElementById('avg-importance').textContent = avgImportance.toFixed(2);
+        }
+
+        // 调整摄像机以适应基因云
+        function fitCameraToCloud() {
+            if (genes.length === 0) return;
+
+            // 计算基因云的边界框
+            const box = new THREE.Box3();
+            geneGroup.children.forEach(gene => {
+                box.expandByObject(gene);
+            });
+
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+
+            // 设置摄像机位置
+            const distance = maxDim * 1.5;
+            camera.position.set(distance, distance, distance);
+            camera.lookAt(center);
+            
+            // 设置控制器目标
+            controls.target.copy(center);
+            controls.update();
+        }
+
+        // 鼠标点击事件
+        function onMouseClick(event) {
+            // 计算鼠标位置
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // 更新射线投射器
+            raycaster.setFromCamera(mouse, camera);
+
+            // 检测与基因点的交集
+            const intersects = raycaster.intersectObjects(genePoints);
+
+            if (intersects.length > 0) {
+                const clickedGene = intersects[0].object;
+                selectGene(clickedGene);
+            } else {
+                deselectGene();
+            }
+        }
+
+        // 选择基因
+        function selectGene(geneMesh) {
+            // 取消之前的选择
+            if (selectedGene) {
+                selectedGene.material.emissiveIntensity = 0.2;
+                selectedGene.scale.setScalar(1);
+            }
+
+            // 选择新基因
+            selectedGene = geneMesh;
+            selectedGene.material.emissiveIntensity = 0.5;
+            selectedGene.scale.setScalar(1.5);
+
+            // 显示基因信息
+            showGeneInfo(selectedGene.userData.gene);
+        }
+
+        // 取消选择基因
+        function deselectGene() {
+            if (selectedGene) {
+                selectedGene.material.emissiveIntensity = 0.2;
+                selectedGene.scale.setScalar(1);
+                selectedGene = null;
+            }
+
+            // 隐藏基因信息
+            document.getElementById('gene-info').style.display = 'none';
+        }
+
+        // 显示基因信息
+        function showGeneInfo(gene) {
+            document.getElementById('gene-name').textContent = gene.gene_name;
+            document.getElementById('gene-coords').textContent = 
+                `(${gene.x.toFixed(1)}, ${gene.y.toFixed(1)}, ${gene.z.toFixed(1)})`;
+            document.getElementById('gene-importance').textContent = gene.importance.toFixed(3);
+            document.getElementById('gene-function').textContent = gene.function;
+            
+            // 更新重要性条
+            const importanceFill = document.getElementById('importance-fill');
+            importanceFill.style.width = (gene.importance * 100) + '%';
+
+            // 显示信息面板
+            document.getElementById('gene-info').style.display = 'block';
+        }
+
+        // 隐藏加载界面
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 500);
+        }
+
+        // 重置摄像机
+        function resetCamera() {
+            fitCameraToCloud();
+        }
+
+        // 切换动画效果
+        function toggleAnimation() {
+            animationEnabled = !animationEnabled;
+            console.log(`🌟 动画效果: ${animationEnabled ? '开启' : '关闭'}`);
+        }
+
+        // 按重要性着色
+        function colorByImportance() {
+            genePoints.forEach(geneMesh => {
+                const importance = geneMesh.userData.gene.importance;
+                const newColor = getImportanceColor(importance);
+                geneMesh.material.color.copy(newColor);
+                geneMesh.material.emissive.copy(newColor);
+            });
+            
+            console.log('🎨 已按重要性重新着色');
+        }
+
+        // 重新生成基因
+        function regenerateGenes() {
+            console.log('🔄 重新生成基因数据...');
+            generateGeneData();
+            createGeneCloud();
+        }
+
+        // 动画循环
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // 更新控制器
+            controls.update();
+
+            // 动画效果
+            if (animationEnabled) {
+                const time = Date.now() * 0.001;
+                
+                // 基因点的轻微浮动
+                genePoints.forEach((geneMesh, index) => {
+                    const gene = geneMesh.userData.gene;
+                    const offset = Math.sin(time + index * 0.1) * 0.5;
+                    geneMesh.position.y = gene.y + offset;
+                    
+                    // 高重要性基因的脉冲效果
+                    if (gene.importance > 0.8) {
+                        const pulse = 1 + Math.sin(time * 3 + index) * 0.1;
+                        geneMesh.scale.setScalar(pulse);
+                    }
+                });
+            }
+            
+            // 渲染场景
+            renderer.render(scene, camera);
+        }
+
+        // 窗口大小调整
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        // 初始化应用
+        function init() {
+            console.log('🧬 基因星云系统启动...');
+            
+            initScene();
+            
+            // 模拟加载时间
+            setTimeout(() => {
+                generateGeneData();
+                createGeneCloud();
+                hideLoading();
+            }, 1000);
+            
+            animate();
+            
+            // 添加事件监听器
+            window.addEventListener('resize', onWindowResize, false);
+            
+            console.log('✅ 基因星云系统初始化完成');
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>
