@@ -140,20 +140,40 @@ def chat():
 @app.route('/api/upload', methods=['POST'])
 def upload_document():
     """文档上传接口"""
-    if 'file' not in request.files:
-        return jsonify({"error": "No file provided"}), 400
+    # 支持单文件和多文件上传
+    if 'files' in request.files:
+        files = request.files.getlist('files')
+    elif 'file' in request.files:
+        files = [request.files['file']]
+    else:
+        return jsonify({"success": False, "error": "没有上传文件"}), 400
     
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({"error": "No file selected"}), 400
+    if not files or all(f.filename == '' for f in files):
+        return jsonify({"success": False, "error": "没有选择文件"}), 400
     
-    # 模拟文档处理
+    # 处理多个文件
+    processed_files = []
+    total_size = 0
+    
+    for file in files:
+        if file.filename:
+            file_content = file.read()
+            file_size = len(file_content)
+            total_size += file_size
+            
+            processed_files.append({
+                "filename": file.filename,
+                "size": file_size,
+                "status": "processed"
+            })
+    
+    # 返回成功响应
     return jsonify({
-        "message": "Document uploaded successfully",
-        "filename": file.filename,
-        "size": len(file.read()),
-        "status": "processed",
-        "note": "This is a simulation. In production, the document would be processed and indexed."
+        "success": True,
+        "message": f"成功上传 {len(processed_files)} 个文件",
+        "files": processed_files,
+        "total_size": total_size,
+        "note": "这是演示模式。在生产环境中，文档将被处理和索引。"
     })
 
 @app.route('/api/clear', methods=['POST'])
@@ -168,11 +188,11 @@ if __name__ == '__main__':
     print("🚀 启动简化版动态RAG API服务器...")
     print("=" * 60)
     print("🔋 服务: Dynamic RAG System (Simplified)")
-    print("🌐 地址: http://0.0.0.0:60010")
+    print("🌐 地址: http://0.0.0.0:5000")
     print("📡 API端点:")
     print("  - GET  /api/health           - 健康检查")
     print("  - POST /api/chat             - 聊天接口 (动态AI)")
-    print("  - POST /api/upload           - 文档上传")
+    print("  - POST /api/upload           - 文档上传 (支持多文件)")
     print("  - POST /api/clear            - 清除上下文")
     print("  - GET  /api/config/current   - 获取当前AI配置")
     print("=" * 60)
@@ -180,4 +200,4 @@ if __name__ == '__main__':
     print(f"🔑 备用配置: {FALLBACK_CONFIG['provider']}/{FALLBACK_CONFIG['model_name']}")
     print("=" * 60)
     
-    app.run(host='0.0.0.0', port=60010, debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=False)
