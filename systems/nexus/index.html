@@ -1415,27 +1415,7 @@
             box-sizing: border-box;
         }
 
-        .simulation-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border-color);
-        }
 
-        .simulation-title h2 {
-            margin: 0 0 8px 0;
-            color: var(--text-primary);
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .simulation-title p {
-            margin: 0;
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
 
         .simulation-controls {
             display: flex;
@@ -1542,12 +1522,23 @@
             margin: 0 0 12px 0;
             color: var(--text-primary);
             font-size: 20px;
+            line-height: 1.3;
         }
 
         .canvas-placeholder p {
             margin: 0 0 20px 0;
             font-size: 14px;
             opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        /* 日语特殊行高设置 */
+        [lang="ja-JP"] .canvas-placeholder h3 {
+            line-height: 1.3;
+        }
+
+        [lang="ja-JP"] .canvas-placeholder p {
+            line-height: 1.4;
         }
 
         .canvas-controls {
@@ -1694,11 +1685,7 @@
         }
 
         @media (max-width: 768px) {
-            .simulation-header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 15px;
-            }
+
             
             .simulation-controls {
                 justify-content: center;
@@ -3489,17 +3476,12 @@
             <!-- 分子模拟页面 -->
             <div id="molecular-page" class="content" style="display: none;">
                 <div class="simulation-container">
-                    <div class="simulation-header">
-                        <div class="simulation-title">
-                            <h2>🧬 分子模拟系统</h2>
-                        </div>
-                    </div>
-                    
+
                     <div class="simulation-content">
                         <div id="molecular-canvas-container" class="canvas-container">
                             <div class="canvas-placeholder">
                                 <div class="placeholder-icon">🧪</div>
-                                <h3>分子模拟系统</h3>
+                                <h3>分子模拟</h3>
                                 <p>选择版本并点击启动按钮开始可视化</p>
                                 
                                 <div class="canvas-controls">
@@ -3558,17 +3540,12 @@
             <!-- Genome 星云页面 -->
             <div id="genome-page" class="content" style="display: none;">
                 <div class="simulation-container">
-                    <div class="simulation-header">
-                        <div class="simulation-title">
-                            <h2>🧬 Genome 星云系统</h2>
-                        </div>
-                    </div>
-                    
+
                     <div class="simulation-content">
                         <div id="genome-canvas-container" class="canvas-container">
                             <div class="canvas-placeholder">
                                 <div class="placeholder-icon">🌌</div>
-                                <h3>Genome 星云系统</h3>
+                                <h3>Genome 星云</h3>
                                 <p>选择版本并点击启动按钮开始可视化</p>
                                 
                                 <div class="canvas-controls">
@@ -5657,6 +5634,16 @@
                 if (window.i18n) {
                     window.i18n.applyLanguage(window.i18n.getCurrentLanguage());
                     console.log('🌐 AI翻译键已刷新');
+                    
+                    // 强制刷新侧边栏翻译
+                    document.querySelectorAll('.nav-item-text[data-i18n]').forEach(element => {
+                        const key = element.getAttribute('data-i18n');
+                        const text = window.i18n.t(key);
+                        if (text && text !== key) {
+                            element.textContent = text;
+                        }
+                    });
+                    console.log('🌐 侧边栏翻译已强制刷新');
                 }
             }, 1000);
             
@@ -5810,7 +5797,7 @@
                 container.innerHTML = `
                     <div class="canvas-placeholder">
                         <div class="placeholder-icon">🧪</div>
-                        <h3>分子模拟系统</h3>
+                        <h3>分子模拟</h3>
                         <p>启动失败，请重试</p>
                         
                         <div class="canvas-controls">
@@ -5861,7 +5848,7 @@
             container.innerHTML = `
                 <div class="canvas-placeholder">
                     <div class="placeholder-icon">🧪</div>
-                    <h3>分子模拟系统</h3>
+                    <h3>分子模拟</h3>
                     <p>选择版本并点击启动按钮开始可视化</p>
                     
                     <div class="canvas-controls">
@@ -5963,7 +5950,7 @@
                 container.innerHTML = `
                     <div class="canvas-placeholder">
                         <div class="placeholder-icon">🌌</div>
-                        <h3>Genome 星云系统</h3>
+                        <h3>Genome 星云</h3>
                         <p>启动失败，请重试</p>
                         
                         <div class="canvas-controls">
@@ -6014,7 +6001,7 @@
             container.innerHTML = `
                 <div class="canvas-placeholder">
                     <div class="placeholder-icon">🌌</div>
-                    <h3>Genome 星云系统</h3>
+                    <h3>Genome 星云</h3>
                     <p>选择版本并点击启动按钮开始可视化</p>
                     
                     <div class="canvas-controls">
