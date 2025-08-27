@@ -15,7 +15,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovineInsight: '牛识别系统',
             chronicle: '实验记录仪',
-            genomeNebula: '基因星云',
+            genomeNebula: 'Genome 星云',
             molecularSimulation: '分子模拟',
             settings: '设置'
         },
@@ -263,7 +263,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovineInsight: 'Bovine Insight',
             chronicle: 'Chronicle',
-            genomeJigsaw: 'Genome Jigsaw',
+            genomeNebula: 'Genome Nebula',
             molecularSimulation: 'Molecular Simulation',
             settings: 'Settings'
         },
@@ -505,7 +505,7 @@ const LANGUAGES = {
             nexus: 'NEXUS',
             bovineInsight: '牛認識システム',
             chronicle: 'クロニクル',
-            genomeJigsaw: 'ゲノムジグソー',
+            genomeNebula: 'ゲノム星雲',
             molecularSimulation: '分子シミュレーション',
             settings: '設定'
         },

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>基因星云 - 第一片基因星云</title>
+    <title>Genome 星云 - 第一片Genome 星云</title>
     <style>
         body {
             margin: 0;
@@ -172,12 +172,12 @@
         
         <div id="loading">
             <div class="spinner"></div>
-            <p>正在生成基因星云...</p>
+            <p>正在生成Genome 星云...</p>
         </div>
 
         <div id="info-panel">
-            <h2>🧬 基因星云</h2>
-            <p><strong>目标:</strong> 第一片基因星云</p>
+            <h2>🧬 Genome 星云</h2>
+            <p><strong>目标:</strong> 第一片Genome 星云</p>
             <p><strong>技术:</strong> Three.js + 3D点云</p>
             <p><strong>数据:</strong> 虚拟基因数据集</p>
             <p><strong>操作:</strong></p>
@@ -257,7 +257,7 @@
 
         // 初始化场景
         function initScene() {
-            console.log('🚀 初始化基因星云场景...');
+            console.log('🚀 初始化Genome 星云场景...');
 
             // 创建场景
             scene = new THREE.Scene();
@@ -360,9 +360,9 @@
             return genes;
         }
 
-        // 创建基因星云
+        // 创建Genome 星云
         function createGeneCloud() {
-            console.log('🌌 创建基因星云...');
+            console.log('🌌 创建Genome 星云...');
 
             // 清除现有的基因点
             geneGroup.clear();
@@ -378,7 +378,7 @@
             // 调整摄像机位置
             fitCameraToCloud();
 
-            console.log('✅ 基因星云创建完成');
+            console.log('✅ Genome 星云创建完成');
         }
 
         // 创建单个基因点
@@ -643,7 +643,7 @@
 
         // 初始化应用
         function init() {
-            console.log('🧬 基因星云系统启动...');
+            console.log('🧬 Genome 星云系统启动...');
             
             initScene();
             
@@ -659,7 +659,7 @@
             // 添加事件监听器
             window.addEventListener('resize', onWindowResize, false);
             
-            console.log('✅ 基因星云系统初始化完成');
+            console.log('✅ Genome 星云系统初始化完成');
         }
 
         // 页面加载完成后初始化

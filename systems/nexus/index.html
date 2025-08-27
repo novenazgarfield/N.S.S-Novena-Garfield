@@ -3149,7 +3149,7 @@
                 
                 <button class="nav-item" onclick="showPage('genome')">
                     <div class="nav-item-icon">🧬</div>
-                    <div class="nav-item-text" data-i18n="nav.genomeNebula">基因星云</div>
+                    <div class="nav-item-text" data-i18n="nav.genomeNebula">Genome 星云</div>
                     <div class="status-indicator online"></div>
                 </button>
                 
@@ -3555,12 +3555,12 @@
                 </div>
             </div>
 
-            <!-- 基因星云页面 -->
+            <!-- Genome 星云页面 -->
             <div id="genome-page" class="content" style="display: none;">
                 <div class="simulation-container">
                     <div class="simulation-header">
                         <div class="simulation-title">
-                            <h2>🧬 基因星云系统</h2>
+                            <h2>🧬 Genome 星云系统</h2>
                         </div>
                     </div>
                     
@@ -3568,17 +3568,17 @@
                         <div id="genome-canvas-container" class="canvas-container">
                             <div class="canvas-placeholder">
                                 <div class="placeholder-icon">🌌</div>
-                                <h3>基因星云系统</h3>
+                                <h3>Genome 星云系统</h3>
                                 <p>选择版本并点击启动按钮开始可视化</p>
                                 
                                 <div class="canvas-controls">
                                     <button id="genome-start-btn" class="control-btn start-btn">
                                         <span class="btn-icon">▶️</span>
-                                        <span class="btn-text">启动星云</span>
+                                        <span class="btn-text">启动 Genome 星云</span>
                                     </button>
                                     <button id="genome-stop-btn" class="control-btn stop-btn" style="display: none;">
                                         <span class="btn-icon">⏹️</span>
-                                        <span class="btn-text">停止星云</span>
+                                        <span class="btn-text">停止 Genome 星云</span>
                                     </button>
                                     
                                     <div class="version-selector">
@@ -3597,7 +3597,7 @@
                         
                         <div class="simulation-info">
                             <div class="info-panel">
-                                <h4>📊 星云状态</h4>
+                                <h4>📊 Genome 星云状态</h4>
                                 <div class="status-item">
                                     <span>状态:</span>
                                     <span id="genome-status" class="status-value">未启动</span>
@@ -3671,7 +3671,7 @@
                                     <p>专业的实验数据记录和管理系统，确保研究过程的完整性和可追溯性。</p>
                                 </div>
                                 <div class="component-card">
-                                    <h3>🧬 基因星云 (Genome Nebula)</h3>
+                                    <h3>🧬 Genome 星云 (Genome Nebula)</h3>
                                     <p>基因组学分析工具，提供序列分析、比对和可视化功能。</p>
                                 </div>
                                 <div class="component-card">
@@ -3996,7 +3996,7 @@
                 // 更新页面标题
                 updatePageTitle();
             } else if (pageId === 'genome') {
-                // 基因星云页面 - 显示内嵌页面
+                // Genome 星云页面 - 显示内嵌页面
                 document.getElementById('genome-page').style.display = 'block';
                 currentPage = 'genome'; // 更新当前页面状态
                 
@@ -5742,7 +5742,7 @@
                 radio.addEventListener('change', () => updateMolecularVersionDisplay());
             });
             
-            // 基因星云控制
+            // Genome 星云控制
             const genomeStartBtn = document.getElementById('genome-start-btn');
             const genomeStopBtn = document.getElementById('genome-stop-btn');
             const genomeVersionRadios = document.querySelectorAll('input[name="genome-version"]');
@@ -5914,9 +5914,9 @@
             displayElement.textContent = selectedVersion === 'lite' ? '轻量版' : '完整版';
         }
 
-        // 基因星云控制函数
+        // Genome 星云控制函数
         function startGenomeSimulation() {
-            console.log('🚀 启动基因星云...');
+            console.log('🚀 启动Genome 星云...');
             
             const container = document.getElementById('genome-canvas-container');
             const statusElement = document.getElementById('genome-status');
@@ -5944,7 +5944,7 @@
                 stopButton.style.top = '10px';
                 stopButton.style.right = '10px';
                 stopButton.style.zIndex = '1000';
-                stopButton.innerHTML = '<span class="btn-icon">⏹️</span><span class="btn-text">停止星云</span>';
+                stopButton.innerHTML = '<span class="btn-icon">⏹️</span><span class="btn-text">停止 Genome 星云</span>';
                 stopButton.addEventListener('click', stopGenomeSimulation);
                 container.appendChild(stopButton);
                 
@@ -5953,9 +5953,9 @@
                 statusElement.style.color = '#4CAF50';
                 document.getElementById('genome-count').textContent = isLite ? '100' : '500';
                 
-                console.log('✅ 基因星云启动成功');
+                console.log('✅ Genome 星云启动成功');
             } catch (error) {
-                console.error('❌ 基因星云启动失败:', error);
+                console.error('❌ Genome 星云启动失败:', error);
                 statusElement.textContent = '启动失败';
                 statusElement.style.color = '#f44336';
                 
@@ -5963,13 +5963,13 @@
                 container.innerHTML = `
                     <div class="canvas-placeholder">
                         <div class="placeholder-icon">🌌</div>
-                        <h3>基因星云系统</h3>
+                        <h3>Genome 星云系统</h3>
                         <p>启动失败，请重试</p>
                         
                         <div class="canvas-controls">
                             <button id="genome-start-btn" class="control-btn start-btn">
                                 <span class="btn-icon">▶️</span>
-                                <span class="btn-text">启动星云</span>
+                                <span class="btn-text">启动 Genome 星云</span>
                             </button>
                             
                             <div class="version-selector">
@@ -5997,7 +5997,7 @@
         }
 
         function stopGenomeSimulation() {
-            console.log('⏹️ 停止基因星云...');
+            console.log('⏹️ 停止Genome 星云...');
             
             const container = document.getElementById('genome-canvas-container');
             const startBtn = document.getElementById('genome-start-btn');
@@ -6014,17 +6014,17 @@
             container.innerHTML = `
                 <div class="canvas-placeholder">
                     <div class="placeholder-icon">🌌</div>
-                    <h3>基因星云系统</h3>
+                    <h3>Genome 星云系统</h3>
                     <p>选择版本并点击启动按钮开始可视化</p>
                     
                     <div class="canvas-controls">
                         <button id="genome-start-btn" class="control-btn start-btn">
                             <span class="btn-icon">▶️</span>
-                            <span class="btn-text">启动星云</span>
+                            <span class="btn-text">启动 Genome 星云</span>
                         </button>
                         <button id="genome-stop-btn" class="control-btn stop-btn" style="display: none;">
                             <span class="btn-icon">⏹️</span>
-                            <span class="btn-text">停止星云</span>
+                            <span class="btn-text">停止 Genome 星云</span>
                         </button>
                         
                         <div class="version-selector">
@@ -6058,7 +6058,7 @@
             statusElement.style.color = '#6c757d';
             document.getElementById('genome-count').textContent = '0';
             
-            console.log('✅ 基因星云已停止');
+            console.log('✅ Genome 星云已停止');
         }
 
         function updateGenomeVersionDisplay() {
@@ -6287,9 +6287,9 @@
             };
         }
 
-        // 创建简化的基因星云演示
+        // 创建简化的Genome 星云演示
         function createSimpleGenomeDemo(container, isLite) {
-            console.log('🌌 创建简化基因星云演示...');
+            console.log('🌌 创建简化Genome 星云演示...');
             
             const canvas = document.createElement('canvas');
             canvas.width = container.clientWidth;
@@ -6397,7 +6397,7 @@
                 ctx.fillStyle = '#fff';
                 ctx.font = '16px Arial';
                 ctx.textAlign = 'center';
-                ctx.fillText('基因表达星云', canvas.width / 2, 30);
+                ctx.fillText('Genome 表达星云', canvas.width / 2, 30);
                 
                 ctx.font = '12px Arial';
                 ctx.textAlign = 'left';
@@ -6433,9 +6433,9 @@
             };
         }
 
-        // 创建基因星云场景（Three.js版本，备用）
+        // 创建Genome 星云场景（Three.js版本，备用）
         function createGenomeScene(container, isLite) {
-            console.log('🌌 创建基因星云场景...');
+            console.log('🌌 创建Genome 星云场景...');
             
             const scene = new THREE.Scene();
             scene.background = new THREE.Color(0x000011);
