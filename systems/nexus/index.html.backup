@@ -5193,7 +5193,6 @@
                 console.log('🌐 initI18n函数存在:', typeof initI18n === 'function');
                 
                 i18n = initI18n();
-                window.i18n = i18n; // 确保全局可访问
                 if (i18n) {
                     console.log('🌐 国际化系统初始化成功');
                     console.log('🌐 当前语言:', i18n.getCurrentLanguage());
@@ -5687,36 +5686,24 @@
                     translationKey: 'cards.molecularSimulation.buttons.stop'
                 });
                 
-                // 添加按钮到DOM
+                // 创建带有i18n属性的按钮内容
+                stopButton.innerHTML = `
+                    <span class="btn-icon">⏹️</span>
+                    <span class="btn-text" data-i18n="cards.molecularSimulation.buttons.stop">停止观测</span>
+                `;
+                
+                // 如果i18n已加载，立即应用翻译
+                if (window.i18n && window.i18n.updateElement) {
+                    const textSpan = stopButton.querySelector('.btn-text');
+                    if (textSpan) {
+                        window.i18n.updateElement(textSpan);
+                        console.log('🔍 Applied i18n to stop button:', textSpan.textContent);
+                    }
+                }
                 stopButton.addEventListener('click', stopMolecularSimulation);
                 container.appendChild(stopButton);
                 
-                // 获取正确的翻译文本
-                let stopText = '停止观测'; // 默认中文
-                if (window.i18n) {
-                    console.log('🔍 i18n object:', window.i18n);
-                    console.log('🔍 Current language:', window.i18n.currentLanguage);
-                    console.log('🔍 Available translations:', Object.keys(window.i18n.translations));
-                    
-                    // 测试翻译
-                    const testKey = 'cards.molecularSimulation.buttons.stop';
-                    stopText = window.i18n.t(testKey);
-                    console.log('🔍 Translation key:', testKey);
-                    console.log('🔍 Stop button translation:', stopText);
-                    
-                    // 直接访问翻译数据
-                    const currentLang = window.i18n.currentLanguage;
-                    const directTranslation = window.i18n.translations[currentLang]?.cards?.molecularSimulation?.buttons?.stop;
-                    console.log('🔍 Direct translation access:', directTranslation);
-                } else {
-                    console.log('❌ window.i18n not available');
-                }
-                
-                // 创建按钮内容
-                stopButton.innerHTML = `
-                    <span class="btn-icon">⏹️</span>
-                    <span class="btn-text" data-i18n="cards.molecularSimulation.buttons.stop">${stopText}</span>
-                `;
+                console.log('✅ Kinetic Scope观测启动成功');
             } catch (error) {
                 console.error('❌ Kinetic Scope观测启动失败:', error);
                 
