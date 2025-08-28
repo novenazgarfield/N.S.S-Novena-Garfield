@@ -5786,10 +5786,25 @@
                     window.i18n.updateElements();
                 }
                 
-                // 更新页面标题
+                // 更新页面标题 - 使用多语言系统
                 const titleElement = document.querySelector('.page-title');
-                if (titleElement) {
-                    titleElement.textContent = '動力学観測器';
+                if (titleElement && window.i18n && window.LANGUAGES) {
+                    try {
+                        const currentLang = window.i18n.getCurrentLanguage();
+                        const translations = window.LANGUAGES[currentLang];
+                        if (translations && translations.titles && translations.titles.molecular) {
+                            titleElement.textContent = translations.titles.molecular;
+                        } else {
+                            titleElement.textContent = '动力学观测仪';
+                        }
+                    } catch (error) {
+                        console.warn('⚠️ 更新页面标题失败:', error);
+                        titleElement.textContent = '动力学观测仪';
+                    }
+                } else {
+                    if (titleElement) {
+                        titleElement.textContent = '动力学观测仪';
+                    }
                 }
             } catch (error) {
                 console.error('❌ Kinetic Scope观测启动失败:', error);
@@ -5902,6 +5917,22 @@
                     const text = window.i18n.t(key);
                     element.textContent = text;
                 });
+                
+                // 恢复页面标题到仪表板
+                const titleElement = document.querySelector('.page-title');
+                if (titleElement && window.i18n && window.LANGUAGES) {
+                    try {
+                        const currentLang = window.i18n.getCurrentLanguage();
+                        const translations = window.LANGUAGES[currentLang];
+                        if (translations && translations.titles && translations.titles.dashboard) {
+                            titleElement.textContent = translations.titles.dashboard;
+                        }
+                    } catch (error) {
+                        console.warn('⚠️ 恢复分子模拟页面标题失败:', error);
+                        // 使用默认标题
+                        titleElement.textContent = '仪表板';
+                    }
+                }
             }
             
             // 重新绑定事件监听器
@@ -5978,10 +6009,25 @@
                 
                 console.log('✅ 基因星云启动成功');
                 
-                // 更新页面标题
+                // 更新页面标题 - 使用多语言系统
                 const titleElement = document.querySelector('.page-title');
-                if (titleElement) {
-                    titleElement.textContent = '基因星云';
+                if (titleElement && window.i18n && window.LANGUAGES) {
+                    try {
+                        const currentLang = window.i18n.getCurrentLanguage();
+                        const translations = window.LANGUAGES[currentLang];
+                        if (translations && translations.titles && translations.titles.genome) {
+                            titleElement.textContent = translations.titles.genome;
+                        } else {
+                            titleElement.textContent = '基因星云';
+                        }
+                    } catch (error) {
+                        console.warn('⚠️ 更新基因星云页面标题失败:', error);
+                        titleElement.textContent = '基因星云';
+                    }
+                } else {
+                    if (titleElement) {
+                        titleElement.textContent = '基因星云';
+                    }
                 }
             } catch (error) {
                 console.error('❌ 基因星云启动失败:', error);
@@ -6103,6 +6149,22 @@
             // 更新重新生成内容的多语言文本
             if (window.i18n) {
                 window.i18n.updateElements();
+                
+                // 恢复页面标题到仪表板
+                const titleElement = document.querySelector('.page-title');
+                if (titleElement && window.i18n && window.LANGUAGES) {
+                    try {
+                        const currentLang = window.i18n.getCurrentLanguage();
+                        const translations = window.LANGUAGES[currentLang];
+                        if (translations && translations.titles && translations.titles.dashboard) {
+                            titleElement.textContent = translations.titles.dashboard;
+                        }
+                    } catch (error) {
+                        console.warn('⚠️ 恢复基因星云页面标题失败:', error);
+                        // 使用默认标题
+                        titleElement.textContent = '仪表板';
+                    }
+                }
             }
             
             console.log('✅ 基因星云已停止');

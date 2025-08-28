@@ -833,4 +833,9 @@ function getBrowserLanguage() {
 // 导出语言包
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { LANGUAGES, DEFAULT_LANGUAGE, getBrowserLanguage };
+} else {
+    // 浏览器环境下暴露到全局作用域
+    window.LANGUAGES = LANGUAGES;
+    window.DEFAULT_LANGUAGE = DEFAULT_LANGUAGE;
+    window.getBrowserLanguage = getBrowserLanguage;
 }
