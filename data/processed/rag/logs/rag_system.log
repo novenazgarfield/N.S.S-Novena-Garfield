@@ -1,3 +1,0 @@
-2025-08-14 10:00:04,979 - rag_system - INFO - 数据库初始化成功: /workspace/data/processed/rag/database/chat_logs.db
-2025-08-14 10:00:04,998 - rag_system - INFO - 加载临时记忆成功: test_task, 4 条
-2025-08-14 10:00:33,768 - rag_system - INFO - 数据库初始化成功: /workspace/data/processed/rag/database/chat_logs.db

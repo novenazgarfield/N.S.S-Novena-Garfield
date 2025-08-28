@@ -1,0 +1,325 @@
+version: '3.8'
+
+# 🐳 N.S.S-Novena-Garfield Docker Compose 配置
+# 统一管理所有系统服务的容器化部署
+
+networks:
+  nss-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  nss-data:
+    driver: local
+  nss-logs:
+    driver: local
+  nss-models:
+    driver: local
+
+services:
+  # ==========================================
+  # 🎯 API管理服务
+  # ==========================================
+  api-manager:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: nss-api-manager
+    ports:
+      - "${API_MANAGER_PORT:-8000}:8000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - API_PORT=8000
+      - CORS_ENABLED=${CORS_ENABLED:-true}
+      - RATE_LIMIT_ENABLED=${RATE_LIMIT_ENABLED:-true}
+    volumes:
+      - ./api:/app
+      - nss-logs:/app/logs
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.10
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==========================================
+  # 🧠 RAG智能系统
+  # ==========================================
+  rag-system:
+    build:
+      context: ./systems/rag-system
+      dockerfile: Dockerfile
+    container_name: nss-rag-system
+    ports:
+      - "${RAG_PORT:-8501}:8501"
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+    volumes:
+      - ./systems/rag-system:/app
+      - nss-models:/app/models
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.11
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ==========================================
+  # 🎵 Changlee音乐播放器
+  # ==========================================
+  changlee-web:
+    build:
+      context: ./systems/Changlee
+      dockerfile: Dockerfile.web
+    container_name: nss-changlee-web
+    ports:
+      - "${CHANGLEE_WEB_PORT:-8082}:8082"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - WEB_PORT=8082
+      - BACKEND_URL=http://changlee-backend:8083
+      - AI_SERVICE_URL=${AI_SERVICE_URL:-http://api-manager:8000}
+    volumes:
+      - ./systems/Changlee:/app
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.12
+    restart: unless-stopped
+    depends_on:
+      - changlee-backend
+      - api-manager
+
+  changlee-backend:
+    build:
+      context: ./systems/Changlee
+      dockerfile: Dockerfile.backend
+    container_name: nss-changlee-backend
+    ports:
+      - "${CHANGLEE_BACKEND_PORT:-8083}:8083"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - BACKEND_PORT=8083
+      - AI_SERVICE_URL=${AI_SERVICE_URL:-http://api-manager:8000}
+    volumes:
+      - ./systems/Changlee:/app
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.13
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+
+  # ==========================================
+  # ⏰ Chronicle时间管理
+  # ==========================================
+  chronicle:
+    build:
+      context: ./systems/chronicle
+      dockerfile: Dockerfile
+    container_name: nss-chronicle
+    ports:
+      - "${CHRONICLE_PORT:-3000}:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3000
+      - API_URL=http://api-manager:8000
+    volumes:
+      - ./systems/chronicle:/app
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.14
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+
+  # ==========================================
+  # 🔗 Nexus集成管理
+  # ==========================================
+  nexus:
+    build:
+      context: ./systems/nexus
+      dockerfile: Dockerfile
+    container_name: nss-nexus
+    ports:
+      - "${NEXUS_PORT:-8080}:8080"
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=8080
+      - API_URL=http://api-manager:8000
+    volumes:
+      - ./systems/nexus:/app
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.15
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+
+  # ==========================================
+  # 🐄 Bovine洞察系统
+  # ==========================================
+  bovine-insight:
+    build:
+      context: ./systems/bovine-insight
+      dockerfile: Dockerfile
+    container_name: nss-bovine-insight
+    ports:
+      - "${BOVINE_PORT:-8084}:8084"
+    environment:
+      - PYTHON_ENV=${NODE_ENV:-production}
+      - PORT=8084
+      - API_URL=http://api-manager:8000
+    volumes:
+      - ./systems/bovine-insight:/app
+      - nss-models:/app/models
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.16
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+
+  # ==========================================
+  # 🧬 Genome基因分析
+  # ==========================================
+  genome-nebula:
+    build:
+      context: ./systems/genome-nebula
+      dockerfile: Dockerfile
+    container_name: nss-genome-nebula
+    ports:
+      - "${GENOME_PORT:-8085}:8085"
+    environment:
+      - PYTHON_ENV=${NODE_ENV:-production}
+      - PORT=8085
+      - API_URL=http://api-manager:8000
+    volumes:
+      - ./systems/genome-nebula:/app
+      - nss-models:/app/models
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.17
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+
+  # ==========================================
+  # ⚛️ Kinetic分子动力学
+  # ==========================================
+  kinetic-scope:
+    build:
+      context: ./systems/kinetic-scope
+      dockerfile: Dockerfile
+    container_name: nss-kinetic-scope
+    ports:
+      - "${KINETIC_PORT:-8086}:8086"
+    environment:
+      - PYTHON_ENV=${NODE_ENV:-production}
+      - PORT=8086
+      - API_URL=http://api-manager:8000
+    volumes:
+      - ./systems/kinetic-scope:/app
+      - nss-models:/app/models
+      - nss-data:/app/data
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.18
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+
+  # ==========================================
+  # 📊 监控和日志服务
+  # ==========================================
+  monitoring:
+    image: prom/prometheus:latest
+    container_name: nss-monitoring
+    ports:
+      - "${MONITORING_PORT:-9090}:9090"
+    volumes:
+      - ./management/config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - nss-data:/prometheus
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.20
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+
+  # ==========================================
+  # 🗄️ 数据库服务
+  # ==========================================
+  database:
+    image: postgres:15-alpine
+    container_name: nss-database
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${DB_NAME:-nss_db}
+      - POSTGRES_USER=${DB_USER:-nss_user}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-nss_password}
+    volumes:
+      - nss-data:/var/lib/postgresql/data
+      - ./management/config/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.21
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-nss_user}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # ==========================================
+  # 🌐 反向代理 (Nginx)
+  # ==========================================
+  nginx:
+    image: nginx:alpine
+    container_name: nss-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./management/config/nginx.conf:/etc/nginx/nginx.conf
+      - ./management/config/ssl:/etc/nginx/ssl
+      - nss-logs:/var/log/nginx
+    networks:
+      nss-network:
+        ipv4_address: 172.20.0.22
+    restart: unless-stopped
+    depends_on:
+      - api-manager
+      - rag-system
+      - changlee-web
+      - chronicle
+      - nexus
+      - bovine-insight
+      - genome-nebula
+      - kinetic-scope

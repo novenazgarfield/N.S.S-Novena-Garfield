@@ -1,0 +1,37 @@
+# 🐳 Changlee音乐播放器 - Web前端 Dockerfile
+FROM node:18-alpine
+
+LABEL maintainer="N.S.S-Novena-Garfield Team"
+LABEL description="Changlee音乐播放器 - Web前端"
+
+# 设置工作目录
+WORKDIR /app
+
+# 安装系统依赖
+RUN apk add --no-cache curl
+
+# 复制package文件
+COPY package*.json ./
+
+# 安装Node.js依赖
+RUN npm ci --only=production
+
+# 复制应用代码
+COPY . .
+
+# 创建必要目录
+RUN mkdir -p data logs
+
+# 设置环境变量
+ENV NODE_ENV=production
+ENV WEB_PORT=8082
+
+# 暴露端口
+EXPOSE 8082
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8082/health || exit 1
+
+# 启动命令
+CMD ["node", "easy_start.js", "--web-only"]
