@@ -1,0 +1,70 @@
+/**
+ * NEXUS 系统 - 基础样式
+ * 保持原有的字体、布局和基础样式
+ */
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    height: calc(var(--real-vh, 1vh) * 100); /* 使用动态视窗高度 */
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.app-container {
+    display: flex;
+    height: calc(var(--real-vh, 1vh) * 100);
+    width: 100vw;
+    max-width: 100vw;
+    overflow: hidden;
+}
+
+/* 通用按钮样式 */
+button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* 通用输入框样式 */
+input, select, textarea {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    transition: all 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}

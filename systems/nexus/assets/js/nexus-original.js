@@ -152,8 +152,11 @@
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
             });
-            if (event && event.target) {
-                event.target.classList.add('active');
+            
+            // 根据pageId找到对应的导航项并激活
+            const targetNavItem = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+            if (targetNavItem) {
+                targetNavItem.classList.add('active');
             }
             
             // 隐藏连接状态框（只在RAG页面显示）

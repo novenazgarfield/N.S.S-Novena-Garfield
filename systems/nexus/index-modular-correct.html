@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="api-url" content="https://shall-namespace-msgid-yamaha.trycloudflare.com">
+    <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Cache buster: 20250828-modular -->
+    
+    <!-- 模块化CSS文件 -->
+    <link rel="stylesheet" href="assets/css/nexus-variables.css">
+    <link rel="stylesheet" href="assets/css/nexus-base.css">
+    <link rel="stylesheet" href="assets/css/nexus-sidebar.css">
+    <link rel="stylesheet" href="assets/css/nexus-main.css">
+    <link rel="stylesheet" href="assets/css/nexus-components.css">
+    <link rel="stylesheet" href="assets/css/nexus-mobile.css">
+</head>
+<body>
+    <!-- 保持原有的完整HTML结构 -->
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🧠</div>
+                    <div class="logo-text">NEXUS</div>
+                </div>
+                <div class="logo-subtitle">Command Center</div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" onclick="showPage('dashboard')">
+                    <div class="nav-item-icon">📊</div>
+                    <div class="nav-item-text" data-i18n="nav.dashboard">仪表板</div>
+                    <div class="status-indicator online"></div>
+                </button>
+
+                <button class="nav-item" onclick="showPage('rag-system')">
+                    <div class="nav-item-icon">🧠</div>
+                    <div class="nav-item-text" data-i18n="nav.ragSystem">RAG系统</div>
+                    <div class="status-indicator online"></div>
+                </button>
+
+                <button class="nav-item" onclick="showPage('changlee')">
+                    <div class="nav-item-icon">🐱</div>
+                    <div class="nav-item-text" data-i18n="nav.changlee">长利</div>
+                    <div class="status-indicator online"></div>
+                </button>
+
+                <button class="nav-item" onclick="showPage('nexus')">
+                    <div class="nav-item-icon">⚡</div>
+                    <div class="nav-item-text" data-i18n="nav.nexus">NEXUS</div>
+                    <div class="status-indicator online"></div>
+                </button>
+
+                <button class="nav-item" onclick="showPage('bovine')">
+                    <div class="nav-item-icon">🐄</div>
+                    <div class="nav-item-text" data-i18n="nav.bovineInsight">牛认识系统</div>
+                    <div class="status-indicator offline"></div>
+                </button>
+
+                <button class="nav-item" onclick="showPage('chronicle')">
+                    <div class="nav-item-icon">📚</div>
+                    <div class="nav-item-text" data-i18n="nav.chronicle">实验记录仪</div>
+                    <div class="status-indicator offline"></div>
+                </button>
+
+                <button class="nav-item" onclick="showPage('genome')">
+                    <div class="nav-item-icon">🧬</div>
+                    <div class="nav-item-text" data-i18n="nav.genomeNebula">基因星云</div>
+                    <div class="status-indicator online"></div>
+                </button>
+
+                <button class="nav-item" onclick="showPage('molecular')">
+                    <div class="nav-item-icon">⚗️</div>
+                    <div class="nav-item-text" data-i18n="nav.kineticScope">动力学范围</div>
+                    <div class="status-indicator online"></div>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="nav-item" onclick="showPage('settings')">
+                    <div class="nav-item-icon">⚙️</div>
+                    <div class="nav-item-text" data-i18n="nav.settings">设置</div>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 顶部导航栏 -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="back-btn" onclick="handleBackButton()">←</button>
+                    <h1 class="page-title" data-i18n="titles.dashboard">仪表板</h1>
+                </div>
+                <div class="header-right">
+                    <select id="languageSelect" class="language-select">
+                        <option value="zh">CN 简体中文</option>
+                        <option value="en">EN English</option>
+                    </select>
+                    <button class="header-btn" onclick="toggleTheme()">🌙</button>
+                    <button class="header-btn">⚙️</button>
+                    <button class="header-btn">🔔</button>
+                    <button class="header-btn">👤</button>
+                </div>
+            </header>
+
+            <!-- 页面内容将通过JavaScript动态加载 -->
+            <div id="page-content" class="page-content">
+                <!-- Dashboard 内容 -->
+                <div id="dashboard-content" class="content">
+                    <!-- 这里会加载仪表板内容 -->
+                </div>
+
+                <!-- RAG 聊天界面 -->
+                <div id="rag-chat" class="content" style="display: none;">
+                    <!-- 这里会加载RAG聊天界面 -->
+                </div>
+
+                <!-- 设置页面 -->
+                <div id="settings-page" class="content" style="display: none;">
+                    <!-- 这里会加载设置页面 -->
+                </div>
+
+                <!-- 其他页面内容... -->
+            </div>
+        </main>
+    </div>
+
+    <!-- 移动端覆盖层 -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+
+    <!-- 模块化JavaScript文件 -->
+    <script src="i18n/languages.js?v=2.0.2"></script>
+    <script src="assets/js/nexus-core.js"></script>
+    <script src="assets/js/nexus-ui.js"></script>
+    <script src="assets/js/nexus-rag.js"></script>
+    <script src="assets/js/nexus-mobile.js"></script>
+    <script src="assets/js/nexus-init.js"></script>
+</body>
+</html>

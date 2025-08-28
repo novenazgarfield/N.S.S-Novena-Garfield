@@ -1,0 +1,115 @@
+# RAG系统统一配置文件
+# 支持环境变量覆盖，格式: ${ENV_VAR:default_value}
+
+# 系统基础配置
+system:
+  name: "RAG System"
+  version: "2.0.0"
+  debug: ${DEBUG:true}
+  log_level: ${LOG_LEVEL:INFO}
+  
+# 模型配置
+models:
+  embedding:
+    model_path: ${EMBEDDING_MODEL_PATH:all-MiniLM-L6-v2}
+    device: ${EMBEDDING_DEVICE:auto}
+  
+  llm:
+    model_path: ${LLM_MODEL_PATH:null}
+    n_ctx: ${LLM_N_CTX:4096}
+    max_tokens: ${LLM_MAX_TOKENS:196}
+    auto_gpu_layers: ${AUTO_GPU_LAYERS:true}
+
+# 存储配置
+storage:
+  base_dir: ${BASE_DIR:./}
+  data_dir: ${DATA_DIR:../../data}
+  shared_dir: ${SHARED_DIR:../../shared}
+  
+  # 子目录配置
+  directories:
+    raw_data: "raw/rag"
+    processed_data: "processed/rag"
+    models_data: "models/rag"
+    results_data: "results/rag"
+    memory: "processed/rag/memory"
+    database: "processed/rag/database"
+    library: "raw/rag/library"
+    logs: "processed/rag/logs"
+
+# 文档处理配置
+document:
+  supported_extensions:
+    - .pdf
+    - .docx
+    - .pptx
+    - .xlsx
+    - .xls
+    - .csv
+    - .txt
+    - .py
+    - .md
+    - .html
+  
+  chunking:
+    chunk_size: ${CHUNK_SIZE:300}
+    chunk_overlap: ${CHUNK_OVERLAP:50}
+  
+  retrieval:
+    max_retrieved_chunks: ${MAX_RETRIEVED_CHUNKS:15}
+    max_similar_history: ${MAX_SIMILAR_HISTORY:3}
+
+# 界面配置
+interfaces:
+  web:
+    title: "📚 本地多文献RAG问答系统"
+    icon: "📚"
+    layout: "wide"
+    port: ${WEB_PORT:8501}
+    host: ${WEB_HOST:localhost}
+  
+  desktop:
+    title: "RAG Desktop"
+    width: ${DESKTOP_WIDTH:1200}
+    height: ${DESKTOP_HEIGHT:800}
+  
+  mobile:
+    title: "RAG Mobile"
+    responsive: true
+  
+  api:
+    host: ${API_HOST:0.0.0.0}
+    port: ${API_PORT:8000}
+    cors_origins: ${CORS_ORIGINS:["*"]}
+
+# 数据库配置
+database:
+  chat_db: "chat_logs.db"
+  vector_db: "vector_store"
+  session_timeout: ${SESSION_TIMEOUT:3600}
+
+# 内存管理配置
+memory:
+  permanent_memory_size: ${PERMANENT_MEMORY_SIZE:1000}
+  temporary_memory_size: ${TEMPORARY_MEMORY_SIZE:100}
+  cleanup_interval: ${CLEANUP_INTERVAL:3600}
+
+# 安全配置
+security:
+  api_key_required: ${API_KEY_REQUIRED:false}
+  rate_limit: ${RATE_LIMIT:100}
+  max_file_size: ${MAX_FILE_SIZE:10485760}  # 10MB
+
+# 性能配置
+performance:
+  max_concurrent_requests: ${MAX_CONCURRENT_REQUESTS:10}
+  cache_size: ${CACHE_SIZE:1000}
+  batch_size: ${BATCH_SIZE:32}
+
+# 日志配置
+logging:
+  level: ${LOG_LEVEL:INFO}
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "rag_system.log"
+  max_size: ${LOG_MAX_SIZE:10485760}  # 10MB
+  backup_count: ${LOG_BACKUP_COUNT:5}
