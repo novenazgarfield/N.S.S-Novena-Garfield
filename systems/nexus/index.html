@@ -3095,7 +3095,7 @@
                 
                 <button class="nav-item" onclick="showPage('molecular')">
                     <div class="nav-item-icon">🔬</div>
-                    <div class="nav-item-text" data-i18n="nav.molecularSimulation">Kinetic Scope</div>
+                    <div class="nav-item-text" data-i18n="nav.molecularSimulation">动力学观测仪</div>
                     <div class="status-indicator online"></div>
                 </button>
             </nav>
@@ -3474,27 +3474,27 @@
                         <div id="genome-canvas-container" class="canvas-container">
                             <div class="canvas-placeholder">
                                 <div class="placeholder-icon">🌌</div>
-                                <h3>基因星云</h3>
-                                <p>选择版本并点击启动按钮开始可视化</p>
+                                <h3 data-i18n="cards.genomeNebula.title">基因星云</h3>
+                                <p data-i18n="cards.genomeNebula.subtitle">选择版本并点击启动按钮开始可视化</p>
                                 
                                 <div class="canvas-controls">
                                     <button id="genome-start-btn" class="control-btn start-btn">
                                         <span class="btn-icon">▶️</span>
-                                        <span class="btn-text">启动 基因星云</span>
+                                        <span class="btn-text" data-i18n="cards.genomeNebula.buttons.launch">启动星云</span>
                                     </button>
                                     <button id="genome-stop-btn" class="control-btn stop-btn" style="display: none;">
                                         <span class="btn-icon">⏹️</span>
-                                        <span class="btn-text">停止 基因星云</span>
+                                        <span class="btn-text" data-i18n="cards.genomeNebula.buttons.stop">停止星云</span>
                                     </button>
                                     
                                     <div class="version-selector">
                                         <label>
                                             <input type="radio" name="genome-version" value="lite" checked>
-                                            <span>轻量版</span>
+                                            <span data-i18n="cards.genomeNebula.versions.lite">轻量版</span>
                                         </label>
                                         <label>
                                             <input type="radio" name="genome-version" value="full">
-                                            <span>完整版</span>
+                                            <span data-i18n="cards.genomeNebula.versions.full">完整版</span>
                                         </label>
                                     </div>
                                 </div>
@@ -5859,9 +5859,14 @@
                 stopButton.style.top = '10px';
                 stopButton.style.right = '10px';
                 stopButton.style.zIndex = '1000';
-                stopButton.innerHTML = '<span class="btn-icon">⏹️</span><span class="btn-text">停止 基因星云</span>';
+                stopButton.innerHTML = '<span class="btn-icon">⏹️</span><span class="btn-text" data-i18n="cards.genomeNebula.buttons.stop">停止星云</span>';
                 stopButton.addEventListener('click', stopGenomeSimulation);
                 container.appendChild(stopButton);
+                
+                // 更新新创建按钮的多语言文本
+                if (window.i18n) {
+                    window.i18n.updateElement(stopButton);
+                }
                 
                 console.log('✅ 基因星云启动成功');
             } catch (error) {
@@ -5871,28 +5876,33 @@
                 container.innerHTML = `
                     <div class="canvas-placeholder">
                         <div class="placeholder-icon">🌌</div>
-                        <h3>基因星云</h3>
-                        <p>启动失败，请重试</p>
+                        <h3 data-i18n="cards.genomeNebula.title">基因星云</h3>
+                        <p data-i18n="cards.genomeNebula.error">启动失败，请重试</p>
                         
                         <div class="canvas-controls">
                             <button id="genome-start-btn" class="control-btn start-btn">
                                 <span class="btn-icon">▶️</span>
-                                <span class="btn-text">启动 基因星云</span>
+                                <span class="btn-text" data-i18n="cards.genomeNebula.buttons.launch">启动星云</span>
                             </button>
                             
                             <div class="version-selector">
                                 <label>
                                     <input type="radio" name="genome-version" value="lite" checked>
-                                    <span>轻量版</span>
+                                    <span data-i18n="cards.genomeNebula.versions.lite">轻量版</span>
                                 </label>
                                 <label>
                                     <input type="radio" name="genome-version" value="full">
-                                    <span>完整版</span>
+                                    <span data-i18n="cards.genomeNebula.versions.full">完整版</span>
                                 </label>
                             </div>
                         </div>
                     </div>
                 `;
+                
+                // 更新恢复内容的多语言文本
+                if (window.i18n) {
+                    window.i18n.updatePage();
+                }
                 
                 // 重新绑定事件
                 setTimeout(() => {
@@ -5927,21 +5937,21 @@
                     <div class="canvas-controls">
                         <button id="genome-start-btn" class="control-btn start-btn">
                             <span class="btn-icon">▶️</span>
-                            <span class="btn-text">启动 基因星云</span>
+                            <span class="btn-text" data-i18n="cards.genomeNebula.buttons.launch">启动星云</span>
                         </button>
                         <button id="genome-stop-btn" class="control-btn stop-btn" style="display: none;">
                             <span class="btn-icon">⏹️</span>
-                            <span class="btn-text">停止 基因星云</span>
+                            <span class="btn-text" data-i18n="cards.genomeNebula.buttons.stop">停止星云</span>
                         </button>
                         
                         <div class="version-selector">
                             <label>
                                 <input type="radio" name="genome-version" value="lite" checked>
-                                <span>轻量版</span>
+                                <span data-i18n="cards.genomeNebula.versions.lite">轻量版</span>
                             </label>
                             <label>
                                 <input type="radio" name="genome-version" value="full">
-                                <span>完整版</span>
+                                <span data-i18n="cards.genomeNebula.versions.full">完整版</span>
                             </label>
                         </div>
                     </div>
@@ -5959,6 +5969,11 @@
                     newStopBtn.addEventListener('click', stopGenomeSimulation);
                 }
             }, 100);
+            
+            // 更新重新生成内容的多语言文本
+            if (window.i18n) {
+                window.i18n.updatePage();
+            }
             
             console.log('✅ 基因星云已停止');
         }

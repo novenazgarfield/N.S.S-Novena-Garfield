@@ -116,7 +116,7 @@ const LANGUAGES = {
             },
             molecularSimulation: {
                 title: 'Kinetic Scope',
-                subtitle: '动力学观测仪 - 选择版本并点击启动观测',
+                subtitle: '选择版本并点击启动观测',
                 features: [
                     '蛋白质折叠观测',
                     '药物分子对接分析',
@@ -126,6 +126,25 @@ const LANGUAGES = {
                     launch: '启动观测',
                     stop: '停止观测',
                     results: '📈 结果分析'
+                },
+                versions: {
+                    lite: '轻量版',
+                    full: '完整版'
+                }
+            },
+            genomeNebula: {
+                title: '基因星云',
+                subtitle: '选择版本并点击启动按钮开始可视化',
+                error: '启动失败，请重试',
+                features: [
+                    '基因组数据可视化',
+                    '3D星云渲染',
+                    '交互式基因探索'
+                ],
+                buttons: {
+                    launch: '启动星云',
+                    stop: '停止星云',
+                    results: '📊 数据分析'
                 },
                 versions: {
                     lite: '轻量版',
@@ -367,7 +386,7 @@ const LANGUAGES = {
             },
             molecularSimulation: {
                 title: 'Kinetic Scope',
-                subtitle: 'Kinetic Observation Instrument - Select version and click to start observation',
+                subtitle: 'Select version and click to start observation',
                 features: [
                     'Protein folding observation',
                     'Drug molecular docking analysis',
@@ -377,6 +396,25 @@ const LANGUAGES = {
                     launch: 'Start Observation',
                     stop: 'Stop Observation',
                     results: '📈 Result Analysis'
+                },
+                versions: {
+                    lite: 'Lite Version',
+                    full: 'Full Version'
+                }
+            },
+            genomeNebula: {
+                title: 'Genome Nebula',
+                subtitle: 'Select version and click launch button to start visualization',
+                error: 'Launch failed, please try again',
+                features: [
+                    'Genomic data visualization',
+                    '3D nebula rendering',
+                    'Interactive gene exploration'
+                ],
+                buttons: {
+                    launch: 'Launch Nebula',
+                    stop: 'Stop Nebula',
+                    results: '📊 Data Analysis'
                 },
                 versions: {
                     lite: 'Lite Version',
@@ -516,7 +554,7 @@ const LANGUAGES = {
             bovineInsight: '牛認識システム',
             chronicle: 'クロニクル',
             genomeNebula: 'ゲノム星雲',
-            molecularSimulation: '動力学観測装置',
+            molecularSimulation: 'Kinetic Scope',
             settings: '設定'
         },
         
@@ -614,7 +652,7 @@ const LANGUAGES = {
             },
             molecularSimulation: {
                 title: 'Kinetic Scope',
-                subtitle: '動力学観測装置 - バージョンを選択して観測開始をクリック',
+                subtitle: 'バージョンを選択して観測開始をクリック',
                 features: [
                     'タンパク質フォールディング観測',
                     '薬物分子ドッキング分析',
@@ -624,6 +662,25 @@ const LANGUAGES = {
                     launch: '観測開始',
                     stop: '観測停止',
                     results: '📈 結果分析'
+                },
+                versions: {
+                    lite: 'ライト版',
+                    full: 'フル版'
+                }
+            },
+            genomeNebula: {
+                title: 'ゲノム星雲',
+                subtitle: 'バージョンを選択して起動ボタンをクリックして可視化開始',
+                error: '起動失敗、再試行してください',
+                features: [
+                    'ゲノムデータ可視化',
+                    '3D星雲レンダリング',
+                    'インタラクティブ遺伝子探索'
+                ],
+                buttons: {
+                    launch: '星雲起動',
+                    stop: '星雲停止',
+                    results: '📊 データ分析'
                 },
                 versions: {
                     lite: 'ライト版',
