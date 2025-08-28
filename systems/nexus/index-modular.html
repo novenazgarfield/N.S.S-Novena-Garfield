@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="api-url" content="https://shall-namespace-msgid-yamaha.trycloudflare.com">
+    <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <!-- Cache buster: 20250828-120000 -->
+    
+    <!-- 模块化CSS -->
+    <link rel="stylesheet" href="assets/css/variables.css">
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    
+    <!-- 外部依赖 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
+</head>
+<body>
+    <!-- 移动端菜单按钮 -->
+    <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- 移动端遮罩层 -->
+    <div class="mobile-overlay" id="mobileOverlay"></div>
+
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🧠</div>
+                    <div class="logo-text">
+                        <div class="logo-title">NEXUS</div>
+                        <div class="logo-subtitle">Research Workstation</div>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <div class="nav-section-title" data-i18n="nav.main">主要功能</div>
+                    <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text" data-i18n="nav.dashboard">仪表板</span>
+                    </a>
+                    <a href="#rag-chat" class="nav-item" data-page="rag-chat">
+                        <span class="nav-icon">🤖</span>
+                        <span class="nav-text" data-i18n="nav.ragChat">RAG 智能问答</span>
+                    </a>
+                    <a href="#file-manager" class="nav-item" data-page="file-manager">
+                        <span class="nav-icon">📁</span>
+                        <span class="nav-text" data-i18n="nav.fileManager">文件管理</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title" data-i18n="nav.systems">系统集成</div>
+                    <a href="#changlee" class="nav-item" data-page="changlee">
+                        <span class="nav-icon">🎵</span>
+                        <span class="nav-text" data-i18n="nav.changlee">Changlee 系统</span>
+                    </a>
+                    <a href="#chronicle" class="nav-item" data-page="chronicle">
+                        <span class="nav-icon">📚</span>
+                        <span class="nav-text" data-i18n="nav.chronicle">Chronicle 记录</span>
+                    </a>
+                    <a href="#genome-nebula" class="nav-item" data-page="genome-nebula">
+                        <span class="nav-icon">🧬</span>
+                        <span class="nav-text" data-i18n="nav.genomeNebula">基因星云</span>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-section-title" data-i18n="nav.tools">工具</div>
+                    <a href="#settings" class="nav-item" data-page="settings">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text" data-i18n="nav.settings">设置</span>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="theme-toggle" id="themeToggle">🌙</button>
+                <button class="lang-toggle" id="langToggle">🌐</button>
+            </div>
+        </div>
+
+        <!-- 主内容区域 -->
+        <main class="main-content">
+            <!-- 仪表板页面 -->
+            <div class="page" id="dashboard-page" data-page="dashboard">
+                <div class="page-header">
+                    <h1 class="page-title" data-i18n="dashboard.title">仪表板</h1>
+                    <p class="page-subtitle" data-i18n="dashboard.subtitle">系统概览和快速访问</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 data-i18n="dashboard.systemStatus">系统状态</h3>
+                            <span class="status-indicator online">●</span>
+                        </div>
+                        <div class="card-content">
+                            <div class="status-item">
+                                <span data-i18n="dashboard.ragSystem">RAG 系统</span>
+                                <span class="status-badge online" data-i18n="status.online">在线</span>
+                            </div>
+                            <div class="status-item">
+                                <span data-i18n="dashboard.changlee">Changlee</span>
+                                <span class="status-badge offline" data-i18n="status.offline">离线</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <h3 data-i18n="dashboard.quickActions">快速操作</h3>
+                        </div>
+                        <div class="card-content">
+                            <button class="action-btn" onclick="nexusApp.setPage('rag-chat')">
+                                <span class="action-icon">🤖</span>
+                                <span data-i18n="dashboard.startChat">开始对话</span>
+                            </button>
+                            <button class="action-btn" onclick="nexusApp.setPage('file-manager')">
+                                <span class="action-icon">📁</span>
+                                <span data-i18n="dashboard.manageFiles">管理文件</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RAG聊天页面 -->
+            <div class="page" id="rag-chat-page" data-page="rag-chat" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title" data-i18n="ragChat.title">RAG 智能问答</h1>
+                    <div class="page-actions">
+                        <button class="btn-secondary" id="clearChatBtn" data-i18n="ragChat.clearChat">清空对话</button>
+                    </div>
+                </div>
+
+                <div class="chat-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <!-- 聊天消息将在这里动态生成 -->
+                    </div>
+                    
+                    <div class="chat-input-container">
+                        <textarea 
+                            id="chatInput" 
+                            class="chat-input" 
+                            placeholder="输入您的问题..." 
+                            data-i18n-placeholder="ragChat.inputPlaceholder"
+                            rows="1"></textarea>
+                        <button id="sendButton" class="send-button">
+                            <span class="send-icon">📤</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置页面 -->
+            <div class="page" id="settings-page" data-page="settings" style="display: none;">
+                <div class="page-header">
+                    <h1 class="page-title" data-i18n="settings.title">设置</h1>
+                </div>
+
+                <div class="settings-container">
+                    <div class="settings-section">
+                        <h3 data-i18n="settings.apiConfig">API 配置</h3>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings.apiUrl">API 地址</label>
+                            <input type="text" class="form-input" id="apiUrlInput" 
+                                   placeholder="http://localhost:8501" 
+                                   data-i18n-placeholder="settings.apiUrlPlaceholder">
+                        </div>
+                        <button class="btn-primary" id="saveApiBtn" data-i18n="settings.saveApi">保存配置</button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3 data-i18n="settings.appearance">外观设置</h3>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings.theme">主题</label>
+                            <select class="form-input" id="themeSelect">
+                                <option value="dark" data-i18n="settings.darkTheme">深色</option>
+                                <option value="light" data-i18n="settings.lightTheme">浅色</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" data-i18n="settings.language">语言</label>
+                            <select class="form-input" id="languageSelect">
+                                <option value="zh-CN">中文</option>
+                                <option value="en-US">English</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 连接状态悬浮框 -->
+    <div class="connection-status" id="connectionStatus">
+        <div class="status-header">
+            <div class="status-title">🔧 系统状态</div>
+            <button class="status-close" onclick="hideConnectionStatus()">✕</button>
+        </div>
+        <div class="status-content" id="statusIndicator">
+            <span class="status-dot">🔄</span>
+            <span class="status-text">正在连接RAG系统...</span>
+        </div>
+        <div class="status-details" id="statusDetails"></div>
+    </div>
+
+    <!-- 模块化JavaScript -->
+    <script src="i18n/languages.js?v=2.0.2"></script>
+    <script src="i18n/i18n-manager.js?v=2.0.2"></script>
+    <script src="assets/js/core/app.js"></script>
+    <script src="assets/js/components/chat.js"></script>
+    
+    <script>
+        // 页面路由管理
+        function initPageRouter() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetPage = item.getAttribute('data-page');
+                    showPage(targetPage);
+                    
+                    // 更新导航状态
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    item.classList.add('active');
+                });
+            });
+            
+            function showPage(pageId) {
+                pages.forEach(page => {
+                    page.style.display = page.getAttribute('data-page') === pageId ? 'block' : 'none';
+                });
+                
+                // 更新URL hash
+                window.location.hash = pageId;
+            }
+            
+            // 初始化页面显示
+            const initialPage = window.location.hash.slice(1) || 'dashboard';
+            showPage(initialPage);
+            
+            // 更新对应的导航项
+            const activeNav = document.querySelector(`[data-page="${initialPage}"]`);
+            if (activeNav) {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                activeNav.classList.add('active');
+            }
+        }
+        
+        // 设置页面功能
+        function initSettings() {
+            const themeSelect = document.getElementById('themeSelect');
+            const languageSelect = document.getElementById('languageSelect');
+            const apiUrlInput = document.getElementById('apiUrlInput');
+            const saveApiBtn = document.getElementById('saveApiBtn');
+            
+            // 加载保存的设置
+            if (themeSelect) {
+                themeSelect.value = localStorage.getItem('nexus_theme') || 'dark';
+                themeSelect.addEventListener('change', (e) => {
+                    nexusApp.setTheme(e.target.value);
+                });
+            }
+            
+            if (languageSelect && window.nexusApp.i18n) {
+                languageSelect.value = window.nexusApp.i18n.currentLanguage;
+                languageSelect.addEventListener('change', (e) => {
+                    window.nexusApp.i18n.setLanguage(e.target.value);
+                });
+            }
+            
+            if (apiUrlInput) {
+                apiUrlInput.value = localStorage.getItem('nexus_api_url') || '';
+            }
+            
+            if (saveApiBtn) {
+                saveApiBtn.addEventListener('click', () => {
+                    const apiUrl = apiUrlInput.value.trim();
+                    if (apiUrl) {
+                        localStorage.setItem('nexus_api_url', apiUrl);
+                        if (window.chatComponent) {
+                            window.chatComponent.setApiUrl(apiUrl);
+                        }
+                        alert('API配置已保存');
+                    }
+                });
+            }
+        }
+        
+        // 主题切换
+        function initThemeToggle() {
+            const themeToggle = document.getElementById('themeToggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    nexusApp.toggleTheme();
+                });
+            }
+        }
+        
+        // 隐藏连接状态
+        function hideConnectionStatus() {
+            const status = document.getElementById('connectionStatus');
+            if (status) {
+                status.style.display = 'none';
+            }
+        }
+        
+        // 初始化所有功能
+        document.addEventListener('DOMContentLoaded', () => {
+            initPageRouter();
+            initSettings();
+            initThemeToggle();
+        });
+    </script>
+</body>
+</html>

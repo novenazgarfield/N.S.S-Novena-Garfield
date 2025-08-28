@@ -1,0 +1,200 @@
+/**
+ * NEXUS 系统 - 侧边栏样式
+ * 保持原有的侧边栏设计和导航样式
+ */
+
+/* 侧边栏 */
+.sidebar {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    background: var(--bg-secondary);
+    border-right: none;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.2s, border-color 0.2s;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: relative;
+}
+
+.sidebar::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--border-color);
+    transition: background-color 0.2s;
+    z-index: 10;
+    display: block;
+}
+
+.sidebar::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 80px; /* 恢复到原来的位置 */
+    width: 100vw; /* 延伸到屏幕右边 */
+    height: 1px;
+    background: var(--border-color);
+    transition: background-color 0.2s;
+    z-index: 10;
+    display: block;
+}
+
+/* 终极覆盖规则 - 确保在所有情况下侧边栏宽度都是280px */
+.sidebar,
+.sidebar[style],
+html .sidebar,
+body .sidebar,
+* .sidebar {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    flex-shrink: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border-color);
+    transition: border-color 0.2s;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--accent-blue);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.logo-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-left: 44px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100% !important; /* 强制固定宽度 */
+    max-width: 100% !important; /* 防止内容撑大导航项 */
+    text-align: left;
+    min-height: 48px; /* 使用min-height而不是固定height，适应不同语言文字 */
+    box-sizing: border-box !important; /* 确保padding包含在高度内 */
+    overflow: hidden !important; /* 强制隐藏溢出内容 */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.nav-item:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.nav-item.active {
+    background: var(--accent-blue);
+    color: white;
+    border-left: 3px solid var(--accent-blue);
+    padding-left: 17px; /* 调整左边距以保持对齐 */
+}
+
+.nav-item-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-item-text {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.3; /* 优化行高适应CJK文字 */
+    white-space: nowrap !important; /* 防止文本换行 */
+    overflow: hidden !important; /* 隐藏溢出文本 */
+    text-overflow: ellipsis !important; /* 长文本显示省略号 */
+    min-width: 0 !important; /* 允许flex项目收缩 */
+    max-width: 140px !important; /* 更小的文本宽度限制 */
+    width: 140px !important; /* 固定更小的文本区域宽度 */
+    font-weight: 500; /* 统一字体粗细 */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+/* 统一中英日文字体配置 */
+[lang="ja-JP"] .nav-item-text,
+[lang="en-US"] .nav-item-text,
+[lang="zh-CN"] .nav-item-text {
+    font-weight: 500; /* 统一字体粗细 */
+    line-height: 1.3; /* 统一行高 */
+    letter-spacing: normal; /* 统一字符间距 */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+[lang="ja-JP"] .nav-item,
+[lang="en-US"] .nav-item,
+[lang="zh-CN"] .nav-item {
+    /* 统一导航项样式 */
+}
+
+[lang="ja-JP"] .page-title,
+[lang="en-US"] .page-title,
+[lang="zh-CN"] .page-title {
+    font-weight: 500; /* 统一标题字体粗细 */
+    line-height: 1.3;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Noto Sans CJK SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status-offline);
+    margin-left: auto;
+    margin-right: 4px;
+}
+
+.status-indicator.online {
+    background: var(--status-online);
+}
+
+.sidebar-footer {
+    padding: 20px;
+    padding-bottom: 14px; /* 微调回到中间值，寻找完美对齐点 */
+    transition: border-color 0.2s;
+    /* 确保设置按钮与输入框底部对齐 */
+    margin-top: auto;
+}
