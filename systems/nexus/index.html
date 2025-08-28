@@ -6,12 +6,12 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="api-url" content="https://shall-namespace-msgid-yamaha.trycloudflare.com">
+    <meta name="api-url" content="https://voltage-sense-olive-photographic.trycloudflare.com">
     <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <!-- Cache buster: 20250826-112000 -->
+    <!-- Cache buster: 20250828-154300 -->
     <style>
         * {
             margin: 0;
@@ -362,13 +362,15 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             height: 100%; /* 占满header高度 */
+            flex-shrink: 0; /* 防止被压缩 */
+            margin-right: 8px; /* 确保右侧有足够空间 */
         }
 
         .header-btn {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border: none;
             background: var(--bg-card);
             color: var(--text-secondary);
@@ -378,6 +380,8 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            flex-shrink: 0;
+            font-size: 16px;
         }
 
         .header-btn:hover {
@@ -670,8 +674,8 @@
         }
 
         .theme-toggle-btn {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             border: none;
             background: var(--bg-card);
             color: var(--text-secondary);
@@ -682,6 +686,7 @@
             justify-content: center;
             transition: all 0.2s;
             font-size: 16px;
+            flex-shrink: 0;
         }
 
         .theme-toggle-btn:hover {
@@ -1000,23 +1005,20 @@
         /* 连接状态悬浮框样式 */
         .connection-status {
             position: fixed;
-            top: 80px;
+            top: 70px;
             right: 20px;
             z-index: 1000;
-            min-width: 280px;
-            max-width: 320px;
-            background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 16px;
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.08),
-                0 8px 16px rgba(0, 0, 0, 0.04),
-                inset 0 1px 0 rgba(255, 255, 255, 0.6);
+            min-width: 180px;
+            max-width: 220px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             font-size: 0.85em;
             transform: translateX(100%);
             opacity: 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease-out;
             pointer-events: none;
             overflow: hidden;
         }
@@ -1027,82 +1029,27 @@
             pointer-events: auto;
         }
 
-        .status-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px 12px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(248, 250, 252, 0.6));
-        }
-
-        .status-title {
-            font-weight: 600;
-            color: #1a202c;
-            font-size: 0.9em;
+        .connection-status .status-content {
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .status-close {
-            background: rgba(0, 0, 0, 0.04);
-            border: none;
-            color: #64748b;
-            cursor: pointer;
-            padding: 6px 8px;
-            border-radius: 8px;
-            font-size: 0.9em;
-            font-weight: 500;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 24px;
-            height: 24px;
-        }
-
-        .status-close:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #dc2626;
-            transform: scale(1.05);
-        }
-
-        .connection-status .status-content {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            padding: 16px 20px;
+            padding: 12px 16px;
         }
 
         .status-dot {
-            font-size: 1.3em;
-            animation: pulse 2s infinite;
+            font-size: 16px;
             flex-shrink: 0;
-            margin-top: 1px;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .status-text {
             color: #374151;
             font-weight: 500;
-            line-height: 1.5;
+            font-size: 14px;
+            line-height: 1.2;
             flex: 1;
-            word-break: break-word;
         }
 
-        .status-details {
-            padding: 12px 20px 16px;
-            font-size: 0.8em;
-            color: #6b7280;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-word;
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
-            background: linear-gradient(135deg, rgba(248, 250, 252, 0.8), rgba(241, 245, 249, 0.6));
-            border-radius: 0 0 16px 16px;
-            font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
-        }
+
 
         /* 状态动画 */
         @keyframes pulse {
@@ -1112,145 +1059,64 @@
 
         /* 不同状态的样式 */
         .connection-status.connected {
-            background: linear-gradient(145deg, rgba(236, 253, 245, 0.98), rgba(209, 250, 229, 0.95));
+            background: rgba(236, 253, 245, 0.95);
             border-color: rgba(16, 185, 129, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(16, 185, 129, 0.08),
-                0 8px 16px rgba(16, 185, 129, 0.04),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
-        }
-
-        .connection-status.connected .status-header {
-            background: linear-gradient(135deg, rgba(236, 253, 245, 0.9), rgba(220, 252, 231, 0.7));
         }
 
         .connection-status.connected .status-text {
             color: #065f46;
         }
 
-        .connection-status.connected .status-details {
-            color: #047857;
-            background: linear-gradient(135deg, rgba(220, 252, 231, 0.8), rgba(209, 250, 229, 0.6));
-        }
-
         .connection-status.error {
-            background: linear-gradient(145deg, rgba(254, 242, 242, 0.98), rgba(252, 231, 243, 0.95));
+            background: rgba(254, 242, 242, 0.95);
             border-color: rgba(239, 68, 68, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(239, 68, 68, 0.08),
-                0 8px 16px rgba(239, 68, 68, 0.04),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
-        }
-
-        .connection-status.error .status-header {
-            background: linear-gradient(135deg, rgba(254, 242, 242, 0.9), rgba(252, 231, 243, 0.7));
         }
 
         .connection-status.error .status-text {
             color: #991b1b;
         }
 
-        .connection-status.error .status-details {
-            color: #b91c1c;
-            background: linear-gradient(135deg, rgba(252, 231, 243, 0.8), rgba(254, 226, 226, 0.6));
-        }
-
         .connection-status.warning {
-            background: linear-gradient(145deg, rgba(255, 251, 235, 0.98), rgba(254, 243, 199, 0.95));
+            background: rgba(255, 251, 235, 0.95);
             border-color: rgba(245, 158, 11, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(245, 158, 11, 0.08),
-                0 8px 16px rgba(245, 158, 11, 0.04),
-                inset 0 1px 0 rgba(255, 255, 255, 0.8);
-        }
-
-        .connection-status.warning .status-header {
-            background: linear-gradient(135deg, rgba(255, 251, 235, 0.9), rgba(254, 243, 199, 0.7));
         }
 
         .connection-status.warning .status-text {
             color: #92400e;
         }
 
-        .connection-status.warning .status-details {
-            color: #a16207;
-            background: linear-gradient(135deg, rgba(254, 243, 199, 0.8), rgba(253, 230, 138, 0.6));
-        }
-
         /* 暗色主题适配 */
         [data-theme="dark"] .connection-status {
-            background: linear-gradient(145deg, rgba(31, 41, 55, 0.98), rgba(17, 24, 39, 0.95));
+            background: rgba(31, 41, 55, 0.95);
             border-color: rgba(75, 85, 99, 0.3);
-            box-shadow: 
-                0 20px 40px rgba(0, 0, 0, 0.3),
-                0 8px 16px rgba(0, 0, 0, 0.2),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        [data-theme="dark"] .connection-status .status-header {
-            background: linear-gradient(135deg, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.7));
-            border-bottom-color: rgba(75, 85, 99, 0.2);
-        }
-
-        [data-theme="dark"] .connection-status .status-title {
-            color: #f9fafb;
-        }
-
-        [data-theme="dark"] .connection-status .status-close {
-            background: rgba(255, 255, 255, 0.1);
-            color: #9ca3af;
-        }
-
-        [data-theme="dark"] .connection-status .status-close:hover {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
         }
 
         [data-theme="dark"] .connection-status .status-text {
             color: #e5e7eb;
         }
 
-        [data-theme="dark"] .connection-status .status-details {
-            color: #9ca3af;
-            background: linear-gradient(135deg, rgba(17, 24, 39, 0.8), rgba(31, 41, 55, 0.6));
-            border-top-color: rgba(75, 85, 99, 0.2);
-        }
-
         [data-theme="dark"] .connection-status.connected {
-            background: linear-gradient(145deg, rgba(6, 78, 59, 0.98), rgba(4, 120, 87, 0.95));
+            background: rgba(6, 78, 59, 0.95);
             border-color: rgba(16, 185, 129, 0.4);
         }
 
-        [data-theme="dark"] .connection-status.connected .status-header {
-            background: linear-gradient(135deg, rgba(6, 78, 59, 0.9), rgba(4, 120, 87, 0.7));
-        }
-
         [data-theme="dark"] .connection-status.error {
-            background: linear-gradient(145deg, rgba(127, 29, 29, 0.98), rgba(153, 27, 27, 0.95));
+            background: rgba(127, 29, 29, 0.95);
             border-color: rgba(239, 68, 68, 0.4);
         }
 
-        [data-theme="dark"] .connection-status.error .status-header {
-            background: linear-gradient(135deg, rgba(127, 29, 29, 0.9), rgba(153, 27, 27, 0.7));
-        }
-
         [data-theme="dark"] .connection-status.warning {
-            background: linear-gradient(145deg, rgba(146, 64, 14, 0.98), rgba(161, 98, 7, 0.95));
+            background: rgba(146, 64, 14, 0.95);
             border-color: rgba(245, 158, 11, 0.4);
-        }
-
-        [data-theme="dark"] .connection-status.warning .status-header {
-            background: linear-gradient(135deg, rgba(146, 64, 14, 0.9), rgba(161, 98, 7, 0.7));
         }
 
         /* 移动端适配 */
         @media (max-width: 768px) {
             .connection-status {
-                top: 70px;
-                right: 10px;
-                left: 10px;
-                min-width: auto;
-                max-width: none;
+                top: 65px;
+                right: 15px;
+                min-width: 160px;
+                max-width: 200px;
             }
         }
 
@@ -2161,15 +2027,18 @@
             border: 1px solid var(--border-color);
             color: var(--text-primary);
             cursor: pointer;
-            padding: 6px 10px;
+            padding: 6px 12px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             display: flex;
             align-items: center;
             gap: 6px;
             transition: all 0.2s;
-            min-width: 80px;
+            min-width: 100px;
             height: 32px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            overflow: hidden;
         }
 
         .language-btn:hover {
@@ -2432,22 +2301,47 @@
                 border-radius: 8px;
             }
             
-            /* 语言切换器移动端 */
+            /* Header右侧移动端优化 */
+            .header-right {
+                gap: 4px;
+                margin-right: 4px;
+            }
+            
+            .header-btn, .theme-toggle-btn {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+            }
+            
+            /* 语言切换器移动端 - 与其他header按钮保持一致 */
             .language-switcher {
-                top: 16px;
-                right: 16px;
-                padding: 6px;
+                /* 移除独立定位，让它与header-right中的其他按钮对齐 */
             }
             
             .language-btn {
                 padding: 4px 8px;
-                font-size: 12px;
-                min-width: 60px;
+                font-size: 11px;
+                min-width: 80px;
                 height: 28px;
+                justify-content: center;
+                align-items: center;
+                flex-shrink: 0;
+                gap: 3px;
+                display: flex;
+                box-sizing: border-box;
             }
             
             .language-name {
-                display: none; /* 移动端只显示国旗 */
+                display: block; /* 移动端也显示语言名称 */
+                font-size: 10px;
+                font-weight: 500;
+                line-height: 1;
+            }
+            
+            .language-flag {
+                font-size: 12px;
+                flex-shrink: 0;
+                line-height: 1;
             }
             
             /* RAG聊天界面移动端 */
@@ -2506,6 +2400,9 @@
                 height: var(--touch-target-size);
                 font-size: 14px;
                 border-radius: 12px;
+                writing-mode: horizontal-tb;
+                text-orientation: mixed;
+                white-space: nowrap;
             }
             
             /* 设置页面移动端 */
@@ -3065,7 +2962,7 @@
                 
                 <button class="nav-item" onclick="showPage('changlee')">
                     <div class="nav-item-icon">🐱</div>
-                    <div class="nav-item-text" data-i18n="nav.changlee">长利</div>
+                    <div class="nav-item-text" data-i18n="nav.changlee">长离</div>
                     <div class="status-indicator online"></div>
                 </button>
                 
@@ -3077,13 +2974,13 @@
                 
                 <button class="nav-item" onclick="showPage('bovine')">
                     <div class="nav-item-icon">🐄</div>
-                    <div class="nav-item-text" data-i18n="nav.bovineInsight">牛认识系统</div>
+                    <div class="nav-item-text" data-i18n="nav.bovineInsight">牛识别系统</div>
                     <div class="status-indicator offline"></div>
                 </button>
                 
                 <button class="nav-item" onclick="showPage('chronicle')">
                     <div class="nav-item-icon">📝</div>
-                    <div class="nav-item-text" data-i18n="nav.chronicle">编年史</div>
+                    <div class="nav-item-text" data-i18n="nav.chronicle">实验记录仪</div>
                     <div class="status-indicator offline"></div>
                 </button>
                 
@@ -4567,17 +4464,13 @@
                         return apiUrlMeta.content;
                     }
                     // 回退到默认地址
-                    return 'https://shall-namespace-msgid-yamaha.trycloudflare.com';
+                    return 'https://voltage-sense-olive-photographic.trycloudflare.com';
                 }
-                // 本地开发环境
-                return 'http://localhost:5000';
+                // 本地开发环境 - 使用HTTPS隧道避免混合内容问题
+                return 'https://voltage-sense-olive-photographic.trycloudflare.com';
             })(),
             fallbackURLs: [
-                'https://scanner-hs-family-momentum.trycloudflare.com', // 新RAG隧道
-                'https://hull-projected-cattle-proc.trycloudflare.com', // 备用RAG隧道
-                'http://localhost:5000',
-                'http://127.0.0.1:5000',
-                `${window.location.protocol}//${window.location.hostname}:5000`
+                'https://voltage-sense-olive-photographic.trycloudflare.com' // Cloudflare隧道
             ],
             endpoints: {
                 health: '/api/health',
@@ -4630,7 +4523,6 @@
             const statusBar = document.getElementById('connectionStatus');
             const statusDot = statusBar.querySelector('.status-dot');
             const statusText = statusBar.querySelector('.status-text');
-            const statusDetails = document.getElementById('statusDetails');
             
             // 清除所有状态类
             statusBar.className = 'connection-status show';
@@ -4639,56 +4531,73 @@
                 case 'connecting':
                     statusBar.classList.add('warning');
                     statusDot.textContent = '🔄';
+                    statusText.textContent = '正在连接';
                     showConnectionStatus();
                     break;
                 case 'connected':
                     statusBar.classList.add('connected');
                     statusDot.textContent = '✅';
+                    statusText.textContent = '已连接';
                     showConnectionStatus();
-                    // 成功连接后3秒自动隐藏
-                    autoHideConnectionStatus(3000);
+                    // 成功连接后2秒自动隐藏
+                    autoHideConnectionStatus(2000);
                     break;
                 case 'error':
                     statusBar.classList.add('error');
                     statusDot.textContent = '❌';
+                    statusText.textContent = '连接失败';
                     showConnectionStatus();
-                    // 错误状态不自动隐藏，需要用户手动关闭
+                    // 错误状态3秒后自动隐藏
+                    autoHideConnectionStatus(3000);
                     break;
                 case 'warning':
                     statusBar.classList.add('warning');
                     statusDot.textContent = '⚠️';
+                    statusText.textContent = '连接异常';
                     showConnectionStatus();
+                    autoHideConnectionStatus(3000);
                     break;
             }
-            
-            statusText.textContent = message;
-            statusDetails.textContent = details;
         }
 
         // 尝试连接到指定URL
         async function tryConnectToURL(baseURL) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
+            const fullURL = `${baseURL}${RAG_CONFIG.endpoints.health}`;
+            
+            console.log(`🌐 尝试连接: ${fullURL}`);
             
             try {
-                const response = await fetch(`${baseURL}${RAG_CONFIG.endpoints.health}`, {
+                const response = await fetch(fullURL, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
+                        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+                        'Accept': 'application/json, text/plain, */*',
+                        'Accept-Language': 'en-US,en;q=0.9',
+                        'Cache-Control': 'no-cache',
+                        'Pragma': 'no-cache'
                     },
+                    mode: 'cors',
+                    cache: 'no-cache',
                     signal: controller.signal
                 });
                 
                 clearTimeout(timeoutId);
+                console.log(`📡 响应状态: ${response.status} ${response.statusText}`);
                 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log(`✅ 响应数据:`, data);
                     return { success: true, data, baseURL };
                 } else {
+                    console.log(`❌ HTTP错误: ${response.status} ${response.statusText}`);
                     return { success: false, error: `HTTP ${response.status}: ${response.statusText}`, baseURL };
                 }
             } catch (error) {
                 clearTimeout(timeoutId);
+                console.log(`💥 连接异常: ${error.message}`);
                 return { success: false, error: error.message, baseURL };
             }
         }
@@ -4713,6 +4622,7 @@
                 );
                 
                 const result = await tryConnectToURL(currentURL);
+                console.log(`📊 连接结果 ${currentURL}:`, result);
                 
                 if (result.success) {
                     console.log('✅ RAG系统连接成功:', result.data);
@@ -4749,22 +4659,13 @@
             console.error('❌ 所有RAG服务器地址都无法连接');
             
             updateConnectionStatus('error', 'RAG系统连接失败', 
-                `已尝试 ${urlsToTry.length} 个服务器地址\n\n🔧 快速解决方案:\n1. 运行: python start_rag_tunnel.py\n2. 等待隧道URL显示\n3. 刷新页面或点击重新连接\n\n点击 ✕ 关闭此提示`
+                `已尝试 ${urlsToTry.length} 个服务器地址`
             );
             
             let errorMessage = '⚠️ <strong>RAG系统连接异常</strong><br>';
             errorMessage += '错误类型: 网络连接失败<br>';
             errorMessage += `错误详情: 无法连接到任何RAG服务器<br>`;
             errorMessage += `尝试的地址: ${urlsToTry.join(', ')}<br>`;
-            errorMessage += `当前页面: ${window.location.href}<br>`;
-            errorMessage += '<br>🚀 <strong>快速解决方案:</strong><br>';
-            errorMessage += '1. 在终端运行: <code>python start_rag_tunnel.py</code><br>';
-            errorMessage += '2. 等待显示隧道URL<br>';
-            errorMessage += '3. 刷新页面或点击功能菜单中的"重新连接"<br>';
-            errorMessage += '<br>🔧 <strong>其他解决方案:</strong><br>';
-            errorMessage += '• 本地访问: <a href="http://localhost:52943/systems/nexus/nexus-dashboard-restored.html" target="_blank">http://localhost:52943</a><br>';
-            errorMessage += '• 手动启动隧道: <code>cloudflared tunnel --url http://localhost:5000</code><br>';
-            errorMessage += '• 查看详细指南: TUNNEL_ACCESS_GUIDE.md<br>';
             errorMessage += '<br>💡 您仍可以使用其他功能，但AI对话功能暂时不可用。';
             
             addMessage(errorMessage, 'assistant');
@@ -7142,15 +7043,10 @@
 
     <!-- 连接状态悬浮框 -->
     <div class="connection-status" id="connectionStatus">
-        <div class="status-header">
-            <div class="status-title">🔧 系统状态</div>
-            <button class="status-close" onclick="hideConnectionStatus()">✕</button>
-        </div>
         <div class="status-content" id="statusIndicator">
             <span class="status-dot">🔄</span>
-            <span class="status-text">正在连接RAG系统...</span>
+            <span class="status-text">正在连接</span>
         </div>
-        <div class="status-details" id="statusDetails"></div>
     </div>
 
 </body>

@@ -6,7 +6,7 @@ from pathlib import Path
 
 # 基础路径配置
 BASE_DIR = Path(__file__).parent
-DATA_DIR = BASE_DIR.parent.parent / "data"
+DATA_DIR = BASE_DIR.parent.parent / "management" / "data"
 SHARED_DIR = BASE_DIR.parent.parent / "shared"
 
 # 模型路径配置
@@ -28,7 +28,7 @@ class ModelConfig:
 class StorageConfig:
     # 基础目录
     BASE_DIR = Path(__file__).parent
-    DATA_DIR = BASE_DIR.parent.parent / "data"
+    DATA_DIR = BASE_DIR.parent.parent / "management" / "data"
     SHARED_DIR = BASE_DIR.parent.parent / "shared"
     
     # 数据目录
