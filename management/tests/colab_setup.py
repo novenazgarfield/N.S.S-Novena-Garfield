@@ -1,13 +1,29 @@
-# Google Colab 运行脚本
-# 在 Colab 中运行此代码块
+"""
+Google Colab 运行脚本
+在 Colab 中运行此代码块
 
-# 安装依赖
-!pip install streamlit pyngrok
+注意：此文件包含Jupyter/Colab魔法命令，不能直接用Python运行
+"""
 
-# 下载便携版本
-!wget https://raw.githubusercontent.com/novenazgarfield/research-workstation/main/rag_portable.py
+import subprocess
+import sys
 
-# 设置 ngrok (需要注册账号获取token)
+def setup_colab_environment():
+    """设置Colab环境"""
+    
+    # 安装依赖
+    subprocess.run([sys.executable, "-m", "pip", "install", "streamlit", "pyngrok"])
+    
+    # 下载便携版本
+    subprocess.run(["wget", "https://raw.githubusercontent.com/novenazgarfield/research-workstation/main/rag_portable.py"])
+    
+    print("Colab环境设置完成")
+    print("请在Colab中使用以下魔法命令:")
+    print("!pip install streamlit pyngrok")
+    print("!wget https://raw.githubusercontent.com/novenazgarfield/research-workstation/main/rag_portable.py")
+
+if __name__ == "__main__":
+    setup_colab_environment()
 from pyngrok import ngrok
 import threading
 import subprocess
