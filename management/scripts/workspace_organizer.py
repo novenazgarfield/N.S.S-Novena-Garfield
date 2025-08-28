@@ -30,17 +30,17 @@ def create_organized_structure():
     
     # 创建主要的整理目录
     organized_dirs = {
-        "workspace_management": "工作区管理",
-        "workspace_management/temp": "临时文件",
-        "workspace_management/archive": "归档文件", 
-        "workspace_management/tools": "工具集合",
-        "workspace_management/logs": "日志文件",
-        "workspace_management/screenshots": "截图文件",
-        "workspace_management/data": "数据文件",
-        "workspace_management/tests": "测试文件",
-        "workspace_management/scripts": "脚本文件",
-        "workspace_management/docs": "文档文件",
-        "workspace_management/config": "配置文件"
+        "management": "项目管理",
+        "management/temp": "临时文件",
+        "management/archive": "归档文件", 
+        "management/tools": "工具集合",
+        "management/logs": "日志文件",
+        "management/screenshots": "截图文件",
+        "management/data": "数据文件",
+        "management/tests": "测试文件",
+        "management/scripts": "脚本文件",
+        "management/docs": "文档文件",
+        "management/config": "配置文件"
     }
     
     for dir_path, description in organized_dirs.items():
@@ -55,7 +55,7 @@ def move_temp_files():
     print("🗂️ 整理临时文件...")
     
     workspace = Path("/workspace")
-    temp_target = workspace / "workspace_management" / "temp"
+    temp_target = workspace / "management" / "temp"
     
     # 移动temp目录
     temp_dir = workspace / "temp"
@@ -95,7 +95,7 @@ def move_tools():
     
     workspace = Path("/workspace")
     tools_source = workspace / "tools"
-    tools_target = workspace / "workspace_management" / "tools"
+    tools_target = workspace / "management" / "tools"
     
     if tools_source.exists():
         for item in tools_source.iterdir():
@@ -118,7 +118,7 @@ def move_screenshots():
     
     workspace = Path("/workspace")
     screenshots_source = workspace / ".browser_screenshots"
-    screenshots_target = workspace / "workspace_management" / "screenshots"
+    screenshots_target = workspace / "management" / "screenshots"
     
     if screenshots_source.exists():
         for item in screenshots_source.iterdir():
@@ -141,7 +141,7 @@ def move_archive():
     
     workspace = Path("/workspace")
     archive_source = workspace / "archive"
-    archive_target = workspace / "workspace_management" / "archive"
+    archive_target = workspace / "management" / "archive"
     
     if archive_source.exists():
         for item in archive_source.iterdir():
@@ -164,7 +164,7 @@ def move_data():
     
     workspace = Path("/workspace")
     data_source = workspace / "data"
-    data_target = workspace / "workspace_management" / "data"
+    data_target = workspace / "management" / "data"
     
     if data_source.exists():
         for item in data_source.iterdir():
@@ -187,7 +187,7 @@ def move_logs():
     
     workspace = Path("/workspace")
     logs_source = workspace / "logs"
-    logs_target = workspace / "workspace_management" / "logs"
+    logs_target = workspace / "management" / "logs"
     
     if logs_source.exists():
         for item in logs_source.iterdir():
@@ -210,7 +210,7 @@ def move_tests():
     
     workspace = Path("/workspace")
     tests_source = workspace / "tests"
-    tests_target = workspace / "workspace_management" / "tests"
+    tests_target = workspace / "management" / "tests"
     
     if tests_source.exists():
         for item in tests_source.iterdir():
@@ -233,7 +233,7 @@ def move_scripts():
     
     workspace = Path("/workspace")
     scripts_source = workspace / "scripts"
-    scripts_target = workspace / "workspace_management" / "scripts"
+    scripts_target = workspace / "management" / "scripts"
     
     if scripts_source.exists():
         for item in scripts_source.iterdir():
@@ -255,7 +255,7 @@ def consolidate_docs():
     print("📚 整合文档目录...")
     
     workspace = Path("/workspace")
-    docs_target = workspace / "workspace_management" / "docs"
+    docs_target = workspace / "management" / "docs"
     
     # 移动docs目录
     docs_source = workspace / "docs"
@@ -294,7 +294,7 @@ def move_config_files():
     print("⚙️ 整理配置文件...")
     
     workspace = Path("/workspace")
-    config_target = workspace / "workspace_management" / "config"
+    config_target = workspace / "management" / "config"
     
     # 移动隐藏的配置文件
     config_files = [
@@ -321,7 +321,7 @@ def organize_root_docs():
     print("📄 整理根目录文档...")
     
     workspace = Path("/workspace")
-    docs_target = workspace / "workspace_management" / "docs" / "root_docs"
+    docs_target = workspace / "management" / "docs" / "root_docs"
     docs_target.mkdir(exist_ok=True)
     
     # 需要移动的文档文件（保留核心文件）
@@ -351,7 +351,7 @@ def create_workspace_index():
     print("📋 创建工作区索引...")
     
     workspace = Path("/workspace")
-    index_file = workspace / "workspace_management" / "WORKSPACE_INDEX.md"
+    index_file = workspace / "management" / "WORKSPACE_INDEX.md"
     
     content = f"""# 🗂️ N.S.S-Novena-Garfield 工作区管理索引
 
@@ -365,7 +365,7 @@ def create_workspace_index():
 /workspace/
 ├── systems/                    # 核心系统目录 (8个系统)
 ├── api_management/             # API管理系统
-├── workspace_management/       # 工作区管理 (整理后)
+├── management/       # 工作区管理 (整理后)
 ├── cleanup_and_import.py       # 项目管理脚本
 ├── workspace_organizer.py      # 工作区整理脚本
 ├── FINAL_OPTIMIZATION_COMPLETE.md
@@ -377,9 +377,9 @@ def create_workspace_index():
 └── CNAME
 ```
 
-### 🗂️ 工作区管理目录 (workspace_management/)
+### 🗂️ 工作区管理目录 (management/)
 ```
-workspace_management/
+management/
 ├── temp/                       # 临时文件 (原temp/ + temp-files/)
 ├── archive/                    # 归档文件 (原archive/)
 ├── tools/                      # 工具集合 (原tools/)
@@ -396,16 +396,16 @@ workspace_management/
 ## 🎯 整理目标
 
 ### ✅ 已完成
-- [x] 临时文件整理 (temp/ + temp-files/ → workspace_management/temp/)
-- [x] 工具目录整理 (tools/ → workspace_management/tools/)
-- [x] 截图文件整理 (.browser_screenshots/ → workspace_management/screenshots/)
-- [x] 归档文件整理 (archive/ → workspace_management/archive/)
-- [x] 数据目录整理 (data/ → workspace_management/data/)
-- [x] 日志目录整理 (logs/ → workspace_management/logs/)
-- [x] 测试目录整理 (tests/ → workspace_management/tests/)
-- [x] 脚本目录整理 (scripts/ → workspace_management/scripts/)
-- [x] 文档目录整合 (docs/ + documentation/ → workspace_management/docs/)
-- [x] 配置文件整理 (.browser_config + .vscode → workspace_management/config/)
+- [x] 临时文件整理 (temp/ + temp-files/ → management/temp/)
+- [x] 工具目录整理 (tools/ → management/tools/)
+- [x] 截图文件整理 (.browser_screenshots/ → management/screenshots/)
+- [x] 归档文件整理 (archive/ → management/archive/)
+- [x] 数据目录整理 (data/ → management/data/)
+- [x] 日志目录整理 (logs/ → management/logs/)
+- [x] 测试目录整理 (tests/ → management/tests/)
+- [x] 脚本目录整理 (scripts/ → management/scripts/)
+- [x] 文档目录整合 (docs/ + documentation/ → management/docs/)
+- [x] 配置文件整理 (.browser_config + .vscode → management/config/)
 - [x] 根目录文档整理
 
 ## 📊 整理统计
@@ -435,16 +435,16 @@ python workspace_organizer.py organize
 ### 工作区管理
 ```bash
 # 查看临时文件
-ls workspace_management/temp/
+ls management/temp/
 
 # 查看工具
-ls workspace_management/tools/
+ls management/tools/
 
 # 查看文档
-ls workspace_management/docs/
+ls management/docs/
 
 # 查看日志
-ls workspace_management/logs/
+ls management/logs/
 ```
 
 ## 🛠️ 维护建议
@@ -479,7 +479,7 @@ def show_organization_status():
     workspace = Path("/workspace")
     
     # 检查主要目录
-    main_dirs = ["systems", "api_management", "workspace_management"]
+    main_dirs = ["systems", "api_management", "management"]
     for dir_name in main_dirs:
         dir_path = workspace / dir_name
         if dir_path.exists():
@@ -490,9 +490,9 @@ def show_organization_status():
             print(f"   ❌ {dir_name}/ (不存在)")
     
     # 检查整理后的子目录
-    if (workspace / "workspace_management").exists():
-        print("\n   📂 workspace_management/ 子目录:")
-        mgmt_dir = workspace / "workspace_management"
+    if (workspace / "management").exists():
+        print("\n   📂 management/ 子目录:")
+        mgmt_dir = workspace / "management"
         for subdir in sorted(mgmt_dir.iterdir()):
             if subdir.is_dir():
                 items = len(list(subdir.iterdir()))
