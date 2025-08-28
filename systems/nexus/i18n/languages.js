@@ -115,8 +115,9 @@ const LANGUAGES = {
                 }
             },
             molecularSimulation: {
-                title: 'Kinetic Scope',
+                title: '动力学观测仪',
                 subtitle: '选择版本并点击启动观测',
+                error: '启动失败，请重试',
                 features: [
                     '蛋白质折叠观测',
                     '药物分子对接分析',
@@ -387,6 +388,7 @@ const LANGUAGES = {
             molecularSimulation: {
                 title: 'Kinetic Scope',
                 subtitle: 'Select version and click to start observation',
+                error: 'Launch failed, please try again',
                 features: [
                     'Protein folding observation',
                     'Drug molecular docking analysis',
@@ -554,7 +556,7 @@ const LANGUAGES = {
             bovineInsight: '牛認識システム',
             chronicle: 'クロニクル',
             genomeNebula: 'ゲノム星雲',
-            molecularSimulation: 'Kinetic Scope',
+            molecularSimulation: '動力学観測器',
             settings: '設定'
         },
         
@@ -566,7 +568,7 @@ const LANGUAGES = {
             bovine: '牛認識システム',
             chronicle: 'クロニクル',
             genome: 'ゲノム星雲',
-            molecular: '動力学観測装置',
+            molecular: '動力学観測器',
             settings: '設定',
             projectinfo: 'N.S.S - Novena Garfield'
         },
@@ -651,8 +653,9 @@ const LANGUAGES = {
                 }
             },
             molecularSimulation: {
-                title: 'Kinetic Scope',
+                title: '動力学観測器',
                 subtitle: 'バージョンを選択して観測開始をクリック',
+                error: '起動失敗、再試行してください',
                 features: [
                     'タンパク質フォールディング観測',
                     '薬物分子ドッキング分析',
