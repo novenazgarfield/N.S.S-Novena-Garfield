@@ -3889,16 +3889,18 @@
                 document.getElementById('empty-page').style.display = 'flex';
             }
             
-            // 更新页面标题
-            const titleElement = document.querySelector('.page-title');
-            if (titleElement) {
-                const titleKey = `titles.${pageId.replace('-', '')}`;
-                titleElement.setAttribute('data-i18n', titleKey);
-                if (i18n) {
-                    titleElement.textContent = i18n.t(titleKey, pageTitles[pageId] || 'Dashboard');
+            // 更新页面标题 (只对没有特定处理的页面)
+            if (pageId !== 'molecular' && pageId !== 'genome' && pageId !== 'settings' && pageId !== 'project-info') {
+                const titleElement = document.querySelector('.page-title');
+                if (titleElement) {
+                    const titleKey = `titles.${pageId.replace('-', '')}`;
+                    titleElement.setAttribute('data-i18n', titleKey);
+                    if (i18n) {
+                        titleElement.textContent = i18n.t(titleKey, pageTitles[pageId] || 'Dashboard');
+                    }
                 }
+                currentPage = pageId;
             }
-            currentPage = pageId;
         }
 
         function showRAGChat() {

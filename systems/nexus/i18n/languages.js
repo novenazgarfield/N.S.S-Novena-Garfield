@@ -16,7 +16,7 @@ const LANGUAGES = {
             bovineInsight: '牛识别系统',
             chronicle: '实验记录仪',
             genomeNebula: '基因星云',
-            molecularSimulation: 'Kinetic Scope',
+            molecularSimulation: '动力学观测仪',
             settings: '设置'
         },
         
@@ -29,7 +29,7 @@ const LANGUAGES = {
             bovine: '牛识别系统',
             chronicle: '实验记录仪',
             genome: '基因星云',
-            molecular: 'Kinetic Scope',
+            molecular: '动力学观测仪',
             settings: '设置',
             projectinfo: 'N.S.S - Novena Garfield'
         },
@@ -516,7 +516,7 @@ const LANGUAGES = {
             bovineInsight: '牛認識システム',
             chronicle: 'クロニクル',
             genomeNebula: 'ゲノム星雲',
-            molecularSimulation: 'Kinetic Scope',
+            molecularSimulation: '動力学観測装置',
             settings: '設定'
         },
         
@@ -528,7 +528,7 @@ const LANGUAGES = {
             bovine: '牛認識システム',
             chronicle: 'クロニクル',
             genome: 'ゲノム星雲',
-            molecular: 'Kinetic Scope',
+            molecular: '動力学観測装置',
             settings: '設定',
             projectinfo: 'N.S.S - Novena Garfield'
         },
