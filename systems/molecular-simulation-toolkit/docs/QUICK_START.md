@@ -1,4 +1,4 @@
-# 🚀 Molecular Simulation Toolkit 快速开始指南
+# 🚀 Kinetic Scope (动力学观测仪) 快速开始指南
 
 ## 📋 系统要求
 
@@ -28,8 +28,8 @@ gmx --version
 ### 2. 克隆工具箱
 ```bash
 # 复制工具箱到您的项目目录
-cp -r /path/to/molecular-simulation-toolkit /path/to/your/project/
-cd /path/to/your/project/molecular-simulation-toolkit
+cp -r /path/to/kinetic-scope /path/to/your/project/
+cd /path/to/your/project/kinetic-scope
 ```
 
 ### 3. 设置权限

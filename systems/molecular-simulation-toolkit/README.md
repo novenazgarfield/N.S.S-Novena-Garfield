@@ -1,4 +1,4 @@
-# 🧬 Molecular Simulation Toolkit
+# 🔬 Kinetic Scope (动力学观测仪)
 
 > **版本**: v1.0.0 | **创建时间**: 2025年8月20日
 
@@ -8,7 +8,7 @@
 
 ## 🎯 项目概述
 
-**Molecular Simulation Toolkit** 提供了一套完整的标准作业流程（SOP）脚本，涵盖从PDB文件到最终分析结果的整个分子动力学模拟流程。每个模块都经过精心设计，具有高度的可复用性和可配置性。
+**Kinetic Scope (动力学观测仪)** 提供了一套完整的标准作业流程（SOP）脚本，涵盖从PDB文件到最终分析结果的整个分子动力学模拟流程。每个模块都经过精心设计，具有高度的可复用性和可配置性。
 
 ### 🌟 核心特性
 - 🔧 **模块化设计**: 每个脚本对应一个标准作业流程
@@ -23,7 +23,7 @@
 ## 🏗️ 工具箱架构
 
 ```
-Molecular Simulation Toolkit/
+Kinetic Scope (动力学观测仪)/
 ├── 📂 sop_scripts/           # 标准作业流程脚本
 │   ├── 🔧 sop_prepare_system.sh    # 系统搭建
 │   ├── 🚀 sop_run_simulation.sh    # 模拟执行
@@ -83,7 +83,7 @@ pip install matplotlib numpy pandas seaborn
 ### 2. 使用流程
 ```bash
 # 1. 复制工具箱到项目目录
-cp -r molecular-simulation-toolkit/ my_project/
+cp -r kinetic-scope/ my_project/
 
 # 2. 准备PDB文件
 # 将您的PDB文件放在项目目录中

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #==============================================================================
-# Molecular Simulation Toolkit - 轨迹分析标准作业流程
+# Kinetic Scope (动力学观测仪) - 轨迹分析标准作业流程
 # 
 # 功能: 自动化执行分子动力学轨迹的标准分析
 # 作者: Research Workstation Team
@@ -521,7 +521,7 @@ EOF
 # 显示帮助信息
 show_help() {
     cat << EOF
-🧬 Molecular Simulation Toolkit - 轨迹分析标准作业流程
+🧬 Kinetic Scope (动力学观测仪) - 轨迹分析标准作业流程
 
 用法: $0 [选项]
 
@@ -610,7 +610,7 @@ main() {
     
     # 显示开始信息
     echo -e "${PURPLE}================================================================================${NC}"
-    echo -e "${PURPLE}           🧬 Molecular Simulation Toolkit - 轨迹分析 🧬${NC}"
+    echo -e "${PURPLE}           🧬 Kinetic Scope (动力学观测仪) - 轨迹分析 🧬${NC}"
     echo -e "${PURPLE}================================================================================${NC}"
     
     log_info "开始轨迹分析流程"

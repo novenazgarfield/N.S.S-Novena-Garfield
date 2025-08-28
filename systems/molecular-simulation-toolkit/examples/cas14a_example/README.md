@@ -1,6 +1,6 @@
 # 🧬 Cas14a蛋白质分子动力学模拟示例
 
-这个示例展示了如何使用Molecular Simulation Toolkit对Cas14a蛋白质进行完整的分子动力学模拟分析。
+这个示例展示了如何使用Kinetic Scope (动力学观测仪)对Cas14a蛋白质进行完整的分子动力学模拟分析。
 
 ## 📋 准备工作
 

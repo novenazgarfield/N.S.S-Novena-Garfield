@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #==============================================================================
-# Molecular Simulation Toolkit - 批量运行工具
+# Kinetic Scope (动力学观测仪) - 批量运行工具
 # 
 # 功能: 批量处理多个PDB文件的分子动力学模拟
 # 作者: Research Workstation Team
@@ -43,7 +43,7 @@ log_step() {
 # 显示帮助信息
 show_help() {
     cat << EOF
-🧬 Molecular Simulation Toolkit - 批量运行工具
+🧬 Kinetic Scope (动力学观测仪) - 批量运行工具
 
 用法: $0 [选项] <PDB文件目录>
 
@@ -400,7 +400,7 @@ main() {
     
     # 显示开始信息
     echo -e "${PURPLE}================================================================================${NC}"
-    echo -e "${PURPLE}           🧬 Molecular Simulation Toolkit - 批量运行工具 🧬${NC}"
+    echo -e "${PURPLE}           🧬 Kinetic Scope (动力学观测仪) - 批量运行工具 🧬${NC}"
     echo -e "${PURPLE}================================================================================${NC}"
     
     log_info "批量处理开始"

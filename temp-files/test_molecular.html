@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Molecular Page</title>
+    <style>
+        .content { display: none; padding: 20px; border: 2px solid #ccc; margin: 10px; }
+        .content.active { display: block; }
+        button { padding: 10px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Test Page Switching</h1>
+    
+    <button onclick="showPage('dashboard')">Dashboard</button>
+    <button onclick="showPage('molecular')">Molecular</button>
+    <button onclick="showPage('genome')">Genome</button>
+    
+    <div id="dashboard-page" class="content">
+        <h2>Dashboard Content</h2>
+        <p>This is the dashboard page.</p>
+    </div>
+    
+    <div id="molecular-page" class="content">
+        <h2>🧬 分子模拟系统</h2>
+        <p>Three.js 3D分子可视化与交互</p>
+        <button>▶️ 启动模拟</button>
+        <div style="border: 1px solid #ddd; padding: 20px; margin: 10px;">
+            <h3>分子模拟系统</h3>
+            <p>点击"启动模拟"开始3D分子可视化</p>
+            <div>✨ 3D原子结构显示</div>
+            <div>🎮 交互式旋转缩放</div>
+        </div>
+    </div>
+    
+    <div id="genome-page" class="content">
+        <h2>🧬 基因星云系统</h2>
+        <p>3D基因星云可视化与数据分析</p>
+        <button>▶️ 启动星云</button>
+        <div style="border: 1px solid #ddd; padding: 20px; margin: 10px;">
+            <h3>基因星云系统</h3>
+            <p>点击"启动星云"开始3D基因可视化</p>
+            <div>⭐ 3D基因点云显示</div>
+            <div>🎨 重要性颜色编码</div>
+        </div>
+    </div>
+    
+    <script>
+        function showPage(pageId) {
+            console.log('Switching to page:', pageId);
+            
+            // 隐藏所有页面
+            document.getElementById('dashboard-page').style.display = 'none';
+            document.getElementById('molecular-page').style.display = 'none';
+            document.getElementById('genome-page').style.display = 'none';
+            
+            // 显示选中的页面
+            if (pageId === 'dashboard') {
+                document.getElementById('dashboard-page').style.display = 'block';
+            } else if (pageId === 'molecular') {
+                document.getElementById('molecular-page').style.display = 'block';
+            } else if (pageId === 'genome') {
+                document.getElementById('genome-page').style.display = 'block';
+            }
+        }
+        
+        // 默认显示dashboard
+        showPage('dashboard');
+    </script>
+</body>
+</html>

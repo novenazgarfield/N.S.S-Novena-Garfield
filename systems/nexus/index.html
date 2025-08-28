@@ -3088,14 +3088,14 @@
                 </button>
                 
                 <button class="nav-item" onclick="showPage('genome')">
-                    <div class="nav-item-icon">🧬</div>
+                    <div class="nav-item-icon">🌌</div>
                     <div class="nav-item-text" data-i18n="nav.genomeNebula">基因星云</div>
                     <div class="status-indicator online"></div>
                 </button>
                 
                 <button class="nav-item" onclick="showPage('molecular')">
-                    <div class="nav-item-icon">🧪</div>
-                    <div class="nav-item-text" data-i18n="nav.molecularSimulation">分子模拟</div>
+                    <div class="nav-item-icon">🔬</div>
+                    <div class="nav-item-text" data-i18n="nav.molecularSimulation">Kinetic Scope</div>
                     <div class="status-indicator online"></div>
                 </button>
             </nav>
@@ -3433,28 +3433,28 @@
                     <div class="simulation-content">
                         <div id="molecular-canvas-container" class="canvas-container">
                             <div class="canvas-placeholder">
-                                <div class="placeholder-icon">🧪</div>
-                                <h3>分子模拟</h3>
-                                <p>选择版本并点击启动按钮开始可视化</p>
+                                <div class="placeholder-icon">🔬</div>
+                                <h3 data-i18n="cards.molecularSimulation.title">Kinetic Scope</h3>
+                                <p data-i18n="cards.molecularSimulation.subtitle">动力学观测仪 - 选择版本并点击启动观测</p>
                                 
                                 <div class="canvas-controls">
                                     <button id="molecular-start-btn" class="control-btn start-btn">
                                         <span class="btn-icon">▶️</span>
-                                        <span class="btn-text">启动模拟</span>
+                                        <span class="btn-text" data-i18n="cards.molecularSimulation.buttons.launch">启动观测</span>
                                     </button>
                                     <button id="molecular-stop-btn" class="control-btn stop-btn" style="display: none;">
                                         <span class="btn-icon">⏹️</span>
-                                        <span class="btn-text">停止模拟</span>
+                                        <span class="btn-text" data-i18n="cards.molecularSimulation.buttons.stop">停止观测</span>
                                     </button>
                                     
                                     <div class="version-selector">
                                         <label>
                                             <input type="radio" name="molecular-version" value="lite" checked>
-                                            <span>轻量版</span>
+                                            <span data-i18n="cards.molecularSimulation.versions.lite">轻量版</span>
                                         </label>
                                         <label>
                                             <input type="radio" name="molecular-version" value="full">
-                                            <span>完整版</span>
+                                            <span data-i18n="cards.molecularSimulation.versions.full">完整版</span>
                                         </label>
                                     </div>
                                 </div>
@@ -3553,12 +3553,12 @@
                                     <p>专业的实验数据记录和管理系统，确保研究过程的完整性和可追溯性。</p>
                                 </div>
                                 <div class="component-card">
-                                    <h3>🧬 基因星云 (Genome Nebula)</h3>
+                                    <h3>🌌 基因星云 (Genome Nebula)</h3>
                                     <p>基因组学分析工具，提供序列分析、比对和可视化功能。</p>
                                 </div>
                                 <div class="component-card">
-                                    <h3>⚛️ 分子模拟 (Molecular Simulation)</h3>
-                                    <p>高性能分子动力学模拟平台，支持复杂分子系统的建模和分析。</p>
+                                    <h3>🔬 Kinetic Scope (动力学观测仪)</h3>
+                                    <p>高精度分子动力学观测平台，实时监测和分析复杂分子系统的运动轨迹。</p>
                                 </div>
                             </div>
                         </section>
@@ -5655,7 +5655,7 @@
 
         // 分子模拟控制函数
         function startMolecularSimulation() {
-            console.log('🚀 启动分子模拟...');
+            console.log('🚀 启动Kinetic Scope观测...');
             
             const container = document.getElementById('molecular-canvas-container');
             
@@ -5663,9 +5663,7 @@
             const selectedVersion = document.querySelector('input[name="molecular-version"]:checked').value;
             const isLite = selectedVersion === 'lite';
             
-            // 更新UI状态
-            statusElement.textContent = '启动中...';
-            statusElement.style.color = '#FFC107';
+            // 更新UI状态 - 移除statusElement引用，直接更新容器状态
             
             // 清空容器
             container.innerHTML = '';
@@ -5682,31 +5680,32 @@
                 stopButton.style.top = '10px';
                 stopButton.style.right = '10px';
                 stopButton.style.zIndex = '1000';
-                stopButton.innerHTML = '<span class="btn-icon">⏹️</span><span class="btn-text">停止模拟</span>';
+                console.log('🔍 Debug i18n:', {
+                    i18nExists: !!window.i18n,
+                    currentLanguage: window.i18n ? window.i18n.currentLanguage : 'N/A',
+                    translationKey: 'cards.molecularSimulation.buttons.stop'
+                });
+                const stopText = window.i18n ? window.i18n.t('cards.molecularSimulation.buttons.stop') : '停止观测';
+                console.log('🔍 Stop button text:', stopText);
+                stopButton.innerHTML = `<span class="btn-icon">⏹️</span><span class="btn-text">${stopText}</span>`;
                 stopButton.addEventListener('click', stopMolecularSimulation);
                 container.appendChild(stopButton);
                 
-                // 更新状态
-                statusElement.textContent = '运行中';
-                statusElement.style.color = '#4CAF50';
-                
-                console.log('✅ 分子模拟启动成功');
+                console.log('✅ Kinetic Scope观测启动成功');
             } catch (error) {
-                console.error('❌ 分子模拟启动失败:', error);
-                statusElement.textContent = '启动失败';
-                statusElement.style.color = '#f44336';
+                console.error('❌ Kinetic Scope观测启动失败:', error);
                 
                 // 恢复占位符
                 container.innerHTML = `
                     <div class="canvas-placeholder">
-                        <div class="placeholder-icon">🧪</div>
-                        <h3>分子模拟</h3>
+                        <div class="placeholder-icon">🔬</div>
+                        <h3>Kinetic Scope</h3>
                         <p>启动失败，请重试</p>
                         
                         <div class="canvas-controls">
                             <button id="molecular-start-btn" class="control-btn start-btn">
                                 <span class="btn-icon">▶️</span>
-                                <span class="btn-text">启动模拟</span>
+                                <span class="btn-text">启动观测</span>
                             </button>
                             
                             <div class="version-selector">
@@ -5734,7 +5733,7 @@
         }
 
         function stopMolecularSimulation() {
-            console.log('⏹️ 停止分子模拟...');
+            console.log('⏹️ 停止Kinetic Scope观测...');
             
             const container = document.getElementById('molecular-canvas-container');
             const startBtn = document.getElementById('molecular-start-btn');
@@ -5749,33 +5748,42 @@
             // 恢复占位符
             container.innerHTML = `
                 <div class="canvas-placeholder">
-                    <div class="placeholder-icon">🧪</div>
-                    <h3>分子模拟</h3>
-                    <p>选择版本并点击启动按钮开始可视化</p>
+                    <div class="placeholder-icon">🔬</div>
+                    <h3 data-i18n="cards.molecularSimulation.title">Kinetic Scope</h3>
+                    <p data-i18n="cards.molecularSimulation.subtitle">动力学观测仪 - 选择版本并点击启动观测</p>
                     
                     <div class="canvas-controls">
                         <button id="molecular-start-btn" class="control-btn start-btn">
                             <span class="btn-icon">▶️</span>
-                            <span class="btn-text">启动模拟</span>
+                            <span class="btn-text" data-i18n="cards.molecularSimulation.buttons.launch">启动观测</span>
                         </button>
                         <button id="molecular-stop-btn" class="control-btn stop-btn" style="display: none;">
                             <span class="btn-icon">⏹️</span>
-                            <span class="btn-text">停止模拟</span>
+                            <span class="btn-text" data-i18n="cards.molecularSimulation.buttons.stop">停止观测</span>
                         </button>
                         
                         <div class="version-selector">
                             <label>
                                 <input type="radio" name="molecular-version" value="lite" checked>
-                                <span>轻量版</span>
+                                <span data-i18n="cards.molecularSimulation.versions.lite">轻量版</span>
                             </label>
                             <label>
                                 <input type="radio" name="molecular-version" value="full">
-                                <span>完整版</span>
+                                <span data-i18n="cards.molecularSimulation.versions.full">完整版</span>
                             </label>
                         </div>
                     </div>
                 </div>
             `;
+            
+            // 应用当前语言的翻译
+            if (window.i18n) {
+                container.querySelectorAll('[data-i18n]').forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    const text = window.i18n.t(key);
+                    element.textContent = text;
+                });
+            }
             
             // 重新绑定事件监听器
             setTimeout(() => {
@@ -5789,16 +5797,12 @@
                 }
             }, 100);
             
-            // 更新UI状态
-            statusElement.textContent = '未启动';
-            statusElement.style.color = '#6c757d';
-            
-            console.log('✅ 分子模拟已停止');
+            console.log('✅ Kinetic Scope观测已停止');
         }
 
         function updateMolecularVersionDisplay() {
             const selectedVersion = document.querySelector('input[name="molecular-version"]:checked').value;
-            displayElement.textContent = selectedVersion === 'lite' ? '轻量版' : '完整版';
+            console.log('🔬 Kinetic Scope版本切换:', selectedVersion === 'lite' ? '轻量版' : '完整版');
         }
 
         // 基因星云控制函数
@@ -5811,9 +5815,7 @@
             const selectedVersion = document.querySelector('input[name="genome-version"]:checked').value;
             const isLite = selectedVersion === 'lite';
             
-            // 更新UI状态
-            statusElement.textContent = '启动中...';
-            statusElement.style.color = '#FFC107';
+            // 更新UI状态 - 移除statusElement引用
             
             // 清空容器
             container.innerHTML = '';
@@ -5834,15 +5836,9 @@
                 stopButton.addEventListener('click', stopGenomeSimulation);
                 container.appendChild(stopButton);
                 
-                // 更新状态
-                statusElement.textContent = '运行中';
-                statusElement.style.color = '#4CAF50';
-                
                 console.log('✅ 基因星云启动成功');
             } catch (error) {
                 console.error('❌ 基因星云启动失败:', error);
-                statusElement.textContent = '启动失败';
-                statusElement.style.color = '#f44336';
                 
                 // 恢复占位符
                 container.innerHTML = `
@@ -5937,16 +5933,12 @@
                 }
             }, 100);
             
-            // 更新UI状态
-            statusElement.textContent = '未启动';
-            statusElement.style.color = '#6c757d';
-            
             console.log('✅ 基因星云已停止');
         }
 
         function updateGenomeVersionDisplay() {
             const selectedVersion = document.querySelector('input[name="genome-version"]:checked').value;
-            displayElement.textContent = selectedVersion === 'lite' ? '轻量版' : '完整版';
+            console.log('🌌 基因星云版本切换:', selectedVersion === 'lite' ? '轻量版' : '完整版');
         }
 
         // 动态加载Three.js库

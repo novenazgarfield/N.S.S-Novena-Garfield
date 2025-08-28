@@ -16,7 +16,7 @@ const LANGUAGES = {
             bovineInsight: '牛识别系统',
             chronicle: '实验记录仪',
             genomeNebula: '基因星云',
-            molecularSimulation: '分子模拟',
+            molecularSimulation: 'Kinetic Scope',
             settings: '设置'
         },
         
@@ -29,7 +29,7 @@ const LANGUAGES = {
             bovine: '牛识别系统',
             chronicle: '实验记录仪',
             genome: '基因星云',
-            molecular: '分子模拟',
+            molecular: 'Kinetic Scope',
             settings: '设置',
             projectinfo: 'N.S.S - Novena Garfield'
         },
@@ -115,16 +115,21 @@ const LANGUAGES = {
                 }
             },
             molecularSimulation: {
-                title: 'Molecular Simulation',
-                subtitle: '分子动力学模拟平台',
+                title: 'Kinetic Scope',
+                subtitle: '动力学观测仪 - 选择版本并点击启动观测',
                 features: [
-                    '蛋白质折叠模拟',
-                    '药物分子对接',
+                    '蛋白质折叠观测',
+                    '药物分子对接分析',
                     'GPU加速计算'
                 ],
                 buttons: {
-                    launch: '⚛️ 启动模拟',
+                    launch: '启动观测',
+                    stop: '停止观测',
                     results: '📈 结果分析'
+                },
+                versions: {
+                    lite: '轻量版',
+                    full: '完整版'
                 }
             },
             unifiedPlatform: {
@@ -264,7 +269,7 @@ const LANGUAGES = {
             bovineInsight: 'Bovine Insight',
             chronicle: 'Chronicle',
             genomeNebula: 'Genome Nebula',
-            molecularSimulation: 'Molecular Simulation',
+            molecularSimulation: 'Kinetic Scope',
             settings: 'Settings'
         },
         
@@ -276,7 +281,7 @@ const LANGUAGES = {
             bovine: 'Bovine Insight',
             chronicle: 'Chronicle',
             genome: 'Genome Nebula',
-            molecular: 'Molecular Simulation',
+            molecular: 'Kinetic Scope',
             settings: 'Settings',
             projectinfo: 'N.S.S - Novena Garfield'
         },
@@ -361,16 +366,21 @@ const LANGUAGES = {
                 }
             },
             molecularSimulation: {
-                title: 'Molecular Simulation',
-                subtitle: 'Molecular Dynamics Simulation Platform',
+                title: 'Kinetic Scope',
+                subtitle: 'Kinetic Observation Instrument - Select version and click to start observation',
                 features: [
-                    'Protein folding simulation',
-                    'Drug molecular docking',
+                    'Protein folding observation',
+                    'Drug molecular docking analysis',
                     'GPU-accelerated computing'
                 ],
                 buttons: {
-                    launch: '⚛️ Launch Simulation',
+                    launch: 'Start Observation',
+                    stop: 'Stop Observation',
                     results: '📈 Result Analysis'
+                },
+                versions: {
+                    lite: 'Lite Version',
+                    full: 'Full Version'
                 }
             },
             unifiedPlatform: {
@@ -506,7 +516,7 @@ const LANGUAGES = {
             bovineInsight: '牛認識システム',
             chronicle: 'クロニクル',
             genomeNebula: 'ゲノム星雲',
-            molecularSimulation: '分子シミュレーション',
+            molecularSimulation: 'Kinetic Scope',
             settings: '設定'
         },
         
@@ -518,7 +528,7 @@ const LANGUAGES = {
             bovine: '牛認識システム',
             chronicle: 'クロニクル',
             genome: 'ゲノム星雲',
-            molecular: '分子シミュレーション',
+            molecular: 'Kinetic Scope',
             settings: '設定',
             projectinfo: 'N.S.S - Novena Garfield'
         },
@@ -603,16 +613,21 @@ const LANGUAGES = {
                 }
             },
             molecularSimulation: {
-                title: '分子シミュレーション',
-                subtitle: '分子動力学シミュレーションプラットフォーム',
+                title: 'Kinetic Scope',
+                subtitle: '動力学観測装置 - バージョンを選択して観測開始をクリック',
                 features: [
-                    'タンパク質フォールディングシミュレーション',
-                    '薬物分子ドッキング',
+                    'タンパク質フォールディング観測',
+                    '薬物分子ドッキング分析',
                     'GPU加速計算'
                 ],
                 buttons: {
-                    launch: '⚛️ シミュレーション起動',
+                    launch: '観測開始',
+                    stop: '観測停止',
                     results: '📈 結果分析'
+                },
+                versions: {
+                    lite: 'ライト版',
+                    full: 'フル版'
                 }
             },
             unifiedPlatform: {

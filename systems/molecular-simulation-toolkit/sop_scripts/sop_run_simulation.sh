@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #==============================================================================
-# Molecular Simulation Toolkit - 模拟执行标准作业流程
+# Kinetic Scope (动力学观测仪) - 模拟执行标准作业流程
 # 
 # 功能: 自动执行完整的分子动力学模拟流程
 # 作者: Research Workstation Team
@@ -561,7 +561,7 @@ EOF
 # 显示帮助信息
 show_help() {
     cat << EOF
-🧬 Molecular Simulation Toolkit - 模拟执行标准作业流程
+🧬 Kinetic Scope (动力学观测仪) - 模拟执行标准作业流程
 
 用法: $0 [选项]
 
@@ -644,7 +644,7 @@ main() {
     
     # 显示开始信息
     echo -e "${PURPLE}================================================================================${NC}"
-    echo -e "${PURPLE}           🧬 Molecular Simulation Toolkit - 模拟执行 🧬${NC}"
+    echo -e "${PURPLE}           🧬 Kinetic Scope (动力学观测仪) - 模拟执行 🧬${NC}"
     echo -e "${PURPLE}================================================================================${NC}"
     
     log_info "开始分子动力学模拟流程"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Molecular Simulation Toolkit - 数据绘图工具
+Kinetic Scope (动力学观测仪) - 数据绘图工具
 
 功能: 将GROMACS分析生成的.xvg数据文件绘制成发表级别的图表
 作者: Research Workstation Team
@@ -412,7 +412,7 @@ def create_summary_plot(analysis_dir, output_dir='plots'):
 def main():
     """主函数"""
     parser = argparse.ArgumentParser(
-        description='🧬 Molecular Simulation Toolkit - 数据绘图工具',
+        description='🔬 Kinetic Scope (动力学观测仪) - 数据绘图工具',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 示例用法:
@@ -456,7 +456,7 @@ def main():
     # 创建绘图器
     plot_gen = PlotGenerator(output_format=args.format, output_dir=args.output)
     
-    print("🧬 Molecular Simulation Toolkit - 数据绘图工具")
+    print("🔬 Kinetic Scope (动力学观测仪) - 数据绘图工具")
     print("=" * 60)
     
     try:

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #==============================================================================
-# Molecular Simulation Toolkit - 系统搭建标准作业流程
+# Kinetic Scope (动力学观测仪) - 系统搭建标准作业流程
 # 
 # 功能: 从PDB文件自动搭建完整的分子动力学模拟系统
 # 作者: Research Workstation Team
@@ -350,7 +350,7 @@ EOF
 # 显示帮助信息
 show_help() {
     cat << EOF
-🧬 Molecular Simulation Toolkit - 系统搭建标准作业流程
+🔬 Kinetic Scope (动力学观测仪) - 系统搭建标准作业流程
 
 用法: $0 [选项]
 
@@ -436,7 +436,7 @@ main() {
     
     # 显示开始信息
     echo -e "${PURPLE}================================================================================${NC}"
-    echo -e "${PURPLE}           🧬 Molecular Simulation Toolkit - 系统搭建 🧬${NC}"
+    echo -e "${PURPLE}           🔬 Kinetic Scope (动力学观测仪) - 系统搭建 🧬${NC}"
     echo -e "${PURPLE}================================================================================${NC}"
     
     log_info "开始系统搭建流程"
