@@ -172,13 +172,13 @@ def check_optimization_status():
             print(f"   ❌ {system_name}: 不存在")
     
     # 检查API管理系统
-    api_management = workspace / "api_management"
-    api_entry = api_management / "api_manager.py"
+    api = workspace / "api"
+    api_entry = api / "api_manager.py"
     
-    if api_management.exists() and api_entry.exists():
+    if api.exists() and api_entry.exists():
         print(f"   ✅ API管理系统: 已优化 (api_manager.py)")
         optimized_count += 1
-    elif api_management.exists():
+    elif api.exists():
         print(f"   ⚠️ API管理系统: 存在但未优化")
     else:
         print(f"   ❌ API管理系统: 不存在")
@@ -207,7 +207,7 @@ def show_project_structure():
     # 显示主要目录
     main_dirs = [
         "systems",
-        "api_management", 
+        "api", 
         "scripts",
         "docs",
         "tests",
@@ -245,7 +245,7 @@ def run_system_tests():
         ("Genome-Nebula", "systems/genome-nebula/genome.py", ["--help"]),
         ("Kinetic-Scope", "systems/kinetic-scope/kinetic.py", ["--help"]),
         ("NEXUS", "systems/nexus/nexus.py", ["--help"]),
-        ("API管理系统", "api_management/api_manager.py", ["--help"])
+        ("API管理系统", "api/api_manager.py", ["--help"])
     ]
     
     print("\n🔍 测试统一入口点:")

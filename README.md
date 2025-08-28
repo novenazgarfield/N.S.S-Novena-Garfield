@@ -20,7 +20,7 @@ N.S.S-Novena-Garfield
 ├── 🧬 Genome-Nebula       # 基因组分析系统
 ├── 🔬 Kinetic-Scope       # 分子动力学系统
 ├── 🚀 NEXUS               # 集成管理系统
-└── 🔧 API Management      # API管理系统
+└── 🔧 API                 # API管理系统
 ```
 
 ## 🚀 快速开始
@@ -61,7 +61,7 @@ cd systems/kinetic-scope && python kinetic.py pipeline
 cd systems/nexus && python nexus.py dev
 
 # API管理系统
-cd api_management && python api_manager.py web
+cd api && python api_manager.py web
 ```
 
 #### 管理工具
@@ -98,7 +98,7 @@ python management/scripts/workspace_organizer.py status
 ```
 /workspace/
 ├── systems/           # 8个核心系统
-├── api_management/    # API管理系统
+├── api/               # API管理系统
 ├── management/        # 项目管理
 │   ├── scripts/       # 管理脚本
 │   ├── docs/          # 项目文档
@@ -129,7 +129,7 @@ python management/scripts/workspace_organizer.py status
 | 🧬 Genome-Nebula | `genome.py` | 12种模式 | 基因组分析、序列处理 |
 | 🔬 Kinetic-Scope | `kinetic.py` | 9种模式 | 分子动力学、轨迹分析 |
 | 🚀 NEXUS | `nexus.py` | 10种模式 | 系统集成、前后端管理 |
-| 🔧 API Management | `api_manager.py` | 9种模式 | API管理、服务集成 |
+| 🔧 API | `api_manager.py` | 9种模式 | API管理、服务集成 |
 
 ### 统一命令行接口
 所有系统支持标准参数：

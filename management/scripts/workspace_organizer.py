@@ -364,7 +364,7 @@ def create_workspace_index():
 ```
 /workspace/
 ├── systems/                    # 核心系统目录 (8个系统)
-├── api_management/             # API管理系统
+├── api/             # API管理系统
 ├── management/       # 工作区管理 (整理后)
 ├── cleanup_and_import.py       # 项目管理脚本
 ├── workspace_organizer.py      # 工作区整理脚本
@@ -479,7 +479,7 @@ def show_organization_status():
     workspace = Path("/workspace")
     
     # 检查主要目录
-    main_dirs = ["systems", "api_management", "management"]
+    main_dirs = ["systems", "api", "management"]
     for dir_name in main_dirs:
         dir_path = workspace / dir_name
         if dir_path.exists():
