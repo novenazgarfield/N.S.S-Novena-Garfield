@@ -5785,6 +5785,12 @@
                 if (window.i18n) {
                     window.i18n.updateElements();
                 }
+                
+                // 更新页面标题
+                const titleElement = document.querySelector('.page-title');
+                if (titleElement) {
+                    titleElement.textContent = '動力学観測器';
+                }
             } catch (error) {
                 console.error('❌ Kinetic Scope观测启动失败:', error);
                 console.error('❌ 错误详情:', error.stack);
@@ -5840,16 +5846,24 @@
             console.log('⏹️ 停止Kinetic Scope观测...');
             
             const container = document.getElementById('molecular-canvas-container');
-            const startBtn = document.getElementById('molecular-start-btn');
-            const stopBtn = document.getElementById('molecular-stop-btn');
+            if (!container) {
+                console.error('❌ 找不到容器元素');
+                return;
+            }
             
             // 清理3D场景
             if (molecularSimulation) {
-                molecularSimulation.cleanup();
+                try {
+                    molecularSimulation.cleanup();
+                    console.log('✅ 3D场景清理完成');
+                } catch (error) {
+                    console.error('❌ 清理3D场景时出错:', error);
+                }
                 molecularSimulation = null;
             }
             
             // 恢复占位符
+            console.log('🔄 恢复占位符界面...');
             container.innerHTML = `
                 <div class="canvas-placeholder">
                     <div class="placeholder-icon">🔬</div>
@@ -5879,6 +5893,7 @@
                     </div>
                 </div>
             `;
+            console.log('✅ 占位符界面恢复完成');
             
             // 应用当前语言的翻译
             if (window.i18n) {
@@ -5962,6 +5977,12 @@
                 }
                 
                 console.log('✅ 基因星云启动成功');
+                
+                // 更新页面标题
+                const titleElement = document.querySelector('.page-title');
+                if (titleElement) {
+                    titleElement.textContent = '基因星云';
+                }
             } catch (error) {
                 console.error('❌ 基因星云启动失败:', error);
                 alert('基因星云启动失败: ' + error.message);
@@ -6012,21 +6033,29 @@
             console.log('⏹️ 停止基因星云...');
             
             const container = document.getElementById('genome-canvas-container');
-            const startBtn = document.getElementById('genome-start-btn');
-            const stopBtn = document.getElementById('genome-stop-btn');
+            if (!container) {
+                console.error('❌ 找不到基因星云容器元素');
+                return;
+            }
             
             // 清理3D场景
             if (genomeSimulation) {
-                genomeSimulation.cleanup();
+                try {
+                    genomeSimulation.cleanup();
+                    console.log('✅ 基因星云3D场景清理完成');
+                } catch (error) {
+                    console.error('❌ 清理基因星云3D场景时出错:', error);
+                }
                 genomeSimulation = null;
             }
             
             // 恢复占位符
+            console.log('🔄 恢复基因星云占位符界面...');
             container.innerHTML = `
                 <div class="canvas-placeholder">
                     <div class="placeholder-icon">🌌</div>
-                    <h3>基因星云</h3>
-                    <p>选择版本并点击启动按钮开始可视化</p>
+                    <h3 data-i18n="cards.genomeNebula.title">基因星云</h3>
+                    <p data-i18n="cards.genomeNebula.subtitle">选择版本并点击启动按钮开始可视化</p>
                     
                     <div class="canvas-controls">
                         <button id="genome-start-btn" class="control-btn start-btn">
@@ -6054,13 +6083,20 @@
             
             // 重新绑定事件监听器
             setTimeout(() => {
+                console.log('🔄 重新绑定基因星云事件监听器...');
                 const newStartBtn = document.getElementById('genome-start-btn');
                 const newStopBtn = document.getElementById('genome-stop-btn');
                 if (newStartBtn) {
                     newStartBtn.addEventListener('click', startGenomeSimulation);
+                    console.log('✅ 基因星云启动按钮事件绑定成功');
+                } else {
+                    console.log('❌ 找不到基因星云启动按钮');
                 }
                 if (newStopBtn) {
                     newStopBtn.addEventListener('click', stopGenomeSimulation);
+                    console.log('✅ 基因星云停止按钮事件绑定成功');
+                } else {
+                    console.log('❌ 找不到基因星云停止按钮');
                 }
             }, 100);
             
@@ -6090,9 +6126,9 @@
                 const script = document.createElement('script');
                 script.src = 'https://unpkg.com/three@0.158.0/build/three.min.js';
                 script.onload = () => {
-                    // 加载OrbitControls - 使用CDN版本
+                    // 加载OrbitControls - 使用可靠的CDN版本
                     const controlsScript = document.createElement('script');
-                    controlsScript.src = 'https://unpkg.com/three@0.158.0/examples/js/controls/OrbitControls.js';
+                    controlsScript.src = 'https://cdn.skypack.dev/three@0.158.0/examples/jsm/controls/OrbitControls.js';
                     controlsScript.onload = () => {
                         console.log('✅ Three.js和OrbitControls库加载完成');
                         resolve();
@@ -6238,20 +6274,47 @@
             scene.background = new THREE.Color(0x000011);
             
             const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(10, 10, 10);
+            camera.position.set(0, 0, 10);
+            camera.lookAt(0, 0, 0);
             
             const renderer = new THREE.WebGLRenderer({ antialias: !isLite });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLite ? 1 : 2));
             container.appendChild(renderer.domElement);
             
-            let controls = null;
-            if (window.THREE && THREE.OrbitControls) {
-                controls = new THREE.OrbitControls(camera, renderer.domElement);
-                controls.enableDamping = !isLite;
-            } else {
-                console.warn('⚠️ OrbitControls不可用，使用基础相机控制');
-            }
+            // 实现基础的鼠标控制
+            let isMouseDown = false;
+            let mouseX = 0, mouseY = 0;
+            let targetRotationX = 0, targetRotationY = 0;
+            let rotationX = 0, rotationY = 0;
+            let isDragging = false;
+            
+            renderer.domElement.addEventListener('mousedown', (event) => {
+                isMouseDown = true;
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+            });
+            
+            renderer.domElement.addEventListener('mouseup', () => {
+                isMouseDown = false;
+                isDragging = false;
+            });
+            
+            renderer.domElement.addEventListener('mouseleave', () => {
+                isMouseDown = false;
+                isDragging = false;
+            });
+            
+            // 鼠标滚轮缩放
+            renderer.domElement.addEventListener('wheel', (event) => {
+                event.preventDefault();
+                const scale = event.deltaY > 0 ? 1.1 : 0.9;
+                camera.position.multiplyScalar(scale);
+                // 限制缩放范围
+                const distance = camera.position.length();
+                if (distance < 5) camera.position.normalize().multiplyScalar(5);
+                if (distance > 50) camera.position.normalize().multiplyScalar(50);
+            });
             
             // 添加光照
             const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
@@ -6265,35 +6328,163 @@
             const atomGroup = new THREE.Group();
             scene.add(atomGroup);
             
-            // 简化的咖啡因分子
+            // 简化的咖啡因分子 - 居中显示
             const atoms = [
-                { element: 'C', x: 0, y: 0, z: 0, color: 0x909090 },
-                { element: 'C', x: 1.4, y: 0, z: 0, color: 0x909090 },
-                { element: 'C', x: 2.1, y: 1.2, z: 0, color: 0x909090 },
-                { element: 'N', x: 1.4, y: 2.4, z: 0, color: 0x3050F8 },
-                { element: 'C', x: 0, y: 2.4, z: 0, color: 0x909090 },
-                { element: 'N', x: -0.7, y: 1.2, z: 0, color: 0x3050F8 },
-                { element: 'O', x: 3.3, y: 1.2, z: 0, color: 0xFF0D0D },
-                { element: 'H', x: -0.5, y: -0.9, z: 0, color: 0xFFFFFF },
-                { element: 'H', x: 1.9, y: -0.9, z: 0, color: 0xFFFFFF },
-                { element: 'H', x: 1.9, y: 3.3, z: 0, color: 0xFFFFFF }
+                { element: 'C', x: -1.05, y: -1.2, z: 0, color: 0x909090 },
+                { element: 'C', x: 0.35, y: -1.2, z: 0, color: 0x909090 },
+                { element: 'C', x: 1.05, y: 0, z: 0, color: 0x909090 },
+                { element: 'N', x: 0.35, y: 1.2, z: 0, color: 0x3050F8 },
+                { element: 'C', x: -1.05, y: 1.2, z: 0, color: 0x909090 },
+                { element: 'N', x: -1.75, y: 0, z: 0, color: 0x3050F8 },
+                { element: 'O', x: 2.25, y: 0, z: 0, color: 0xFF0D0D },
+                { element: 'H', x: -1.55, y: -2.1, z: 0, color: 0xFFFFFF },
+                { element: 'H', x: 0.85, y: -2.1, z: 0, color: 0xFFFFFF },
+                { element: 'H', x: 0.85, y: 2.1, z: 0, color: 0xFFFFFF }
             ];
             
-            atoms.forEach(atom => {
+            atoms.forEach((atom, index) => {
                 const radius = atom.element === 'H' ? 0.3 : 0.4;
                 const geometry = new THREE.SphereGeometry(radius, isLite ? 4 : 8, isLite ? 4 : 8);
                 const material = new THREE.MeshLambertMaterial({ color: atom.color });
                 const mesh = new THREE.Mesh(geometry, material);
                 mesh.position.set(atom.x, atom.y, atom.z);
+                
+                // 添加原子信息
+                mesh.userData = {
+                    id: `原子-${index + 1}`,
+                    element: atom.element,
+                    position: { x: atom.x.toFixed(1), y: atom.y.toFixed(1), z: atom.z.toFixed(1) },
+                    type: getAtomType(atom.element),
+                    bonds: getBondCount(atom.element)
+                };
+                
                 atomGroup.add(mesh);
             });
+            
+            function getAtomType(element) {
+                const types = {
+                    'C': '碳原子',
+                    'N': '氮原子', 
+                    'O': '氧原子',
+                    'H': '氢原子'
+                };
+                return types[element] || '未知原子';
+            }
+            
+            function getBondCount(element) {
+                const bonds = {
+                    'C': 4,
+                    'N': 3,
+                    'O': 2,
+                    'H': 1
+                };
+                return bonds[element] || 0;
+            }
+            
+            // 创建固定信息框
+            const infoPanel = document.createElement('div');
+            infoPanel.style.cssText = `
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                width: 200px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                z-index: 1000;
+                border: 1px solid #333;
+                display: none;
+            `;
+            infoPanel.innerHTML = '<div style="color: #999;">将鼠标悬停在基因点上查看信息</div>';
+            container.appendChild(infoPanel);
+            
+            // 鼠标交互
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            let hoveredObject = null;
+            
+            function onMouseMove(event) {
+                // 处理拖拽旋转
+                if (isMouseDown) {
+                    const deltaX = event.clientX - mouseX;
+                    const deltaY = event.clientY - mouseY;
+                    
+                    // 检测是否开始拖拽
+                    if (!isDragging && (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3)) {
+                        isDragging = true;
+                    }
+                    
+                    if (isDragging) {
+                        targetRotationY += deltaX * 0.01;
+                        targetRotationX += deltaY * 0.01;
+                    }
+                    
+                    mouseX = event.clientX;
+                    mouseY = event.clientY;
+                } else if (!isDragging) {
+                    // 处理悬停检测（只在非拖拽状态下）
+                    const rect = renderer.domElement.getBoundingClientRect();
+                    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                    
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObjects(atomGroup.children);
+                    
+                    if (intersects.length > 0) {
+                        const intersected = intersects[0].object;
+                        
+                        if (hoveredObject !== intersected) {
+                            // 恢复之前悬停对象的颜色
+                            if (hoveredObject) {
+                                hoveredObject.material.emissive.setHex(0x000000);
+                            }
+                            
+                            // 高亮当前悬停对象
+                            hoveredObject = intersected;
+                            hoveredObject.material.emissive.setHex(0x444444);
+                            
+                            // 显示信息提示
+                            const info = intersected.userData;
+                            infoPanel.innerHTML = `
+                                <div style="font-weight: bold; color: #4FC3F7; margin-bottom: 5px;">${info.id}</div>
+                                <div><span style="color: #81C784;">元素:</span> ${info.element}</div>
+                                <div><span style="color: #FFB74D;">类型:</span> ${info.type}</div>
+                                <div><span style="color: #F06292;">键数:</span> ${info.bonds}</div>
+                                <div style="margin-top: 5px; font-size: 10px; color: #999;">
+                                    位置: (${info.position.x}, ${info.position.y}, ${info.position.z})
+                                </div>
+                            `;
+                            infoPanel.style.display = 'block';
+                        }
+                    } else {
+                        // 没有悬停对象
+                        if (hoveredObject) {
+                            hoveredObject.material.emissive.setHex(0x000000);
+                            hoveredObject = null;
+                        }
+                        infoPanel.style.display = 'none';
+                    }
+                }
+            }
+            
+            renderer.domElement.addEventListener('mousemove', onMouseMove);
             
             // 动画循环
             function animate() {
                 if (!renderer.domElement.parentNode) return; // 检查是否还在DOM中
                 
                 requestAnimationFrame(animate);
-                if (controls) controls.update();
+                
+                // 平滑旋转
+                rotationX += (targetRotationX - rotationX) * 0.1;
+                rotationY += (targetRotationY - rotationY) * 0.1;
+                
+                // 应用旋转到场景
+                atomGroup.rotation.x = rotationX;
+                atomGroup.rotation.y = rotationY;
+                
                 renderer.render(scene, camera);
             }
             animate();
@@ -6311,6 +6502,14 @@
             return {
                 cleanup: () => {
                     window.removeEventListener('resize', onWindowResize);
+                    renderer.domElement.removeEventListener('mousemove', onMouseMove);
+                    renderer.domElement.removeEventListener('mousedown', () => {});
+                    renderer.domElement.removeEventListener('mouseup', () => {});
+                    renderer.domElement.removeEventListener('mouseleave', () => {});
+                    renderer.domElement.removeEventListener('wheel', () => {});
+                    if (tooltip && tooltip.parentNode) {
+                        infoPanel.parentNode.removeChild(infoPanel);
+                    }
                     if (renderer.domElement.parentNode) {
                         renderer.domElement.parentNode.removeChild(renderer.domElement);
                     }
@@ -6495,20 +6694,60 @@
             scene.background = new THREE.Color(0x000011);
             
             const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(50, 50, 50);
+            camera.position.set(0, 0, 50);
+            camera.lookAt(0, 0, 0);
             
             const renderer = new THREE.WebGLRenderer({ antialias: !isLite });
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, isLite ? 1 : 2));
             container.appendChild(renderer.domElement);
             
-            let controls = null;
-            if (window.THREE && THREE.OrbitControls) {
-                controls = new THREE.OrbitControls(camera, renderer.domElement);
-                controls.enableDamping = !isLite;
-            } else {
-                console.warn('⚠️ OrbitControls不可用，使用基础相机控制');
-            }
+            // 实现基础的鼠标控制
+            let isMouseDown = false;
+            let mouseX = 0, mouseY = 0;
+            let targetRotationX = 0, targetRotationY = 0;
+            let rotationX = 0, rotationY = 0;
+            let targetPanX = 0, targetPanY = 0;
+            let panX = 0, panY = 0;
+            let isDragging = false;
+            let isShiftPressed = false;
+            
+            // 键盘事件监听
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Shift') isShiftPressed = true;
+            });
+            
+            document.addEventListener('keyup', (event) => {
+                if (event.key === 'Shift') isShiftPressed = false;
+            });
+            
+            renderer.domElement.addEventListener('mousedown', (event) => {
+                isMouseDown = true;
+                mouseX = event.clientX;
+                mouseY = event.clientY;
+                isShiftPressed = event.shiftKey; // 检测Shift键
+            });
+            
+            renderer.domElement.addEventListener('mouseup', () => {
+                isMouseDown = false;
+                isDragging = false;
+            });
+            
+            renderer.domElement.addEventListener('mouseleave', () => {
+                isMouseDown = false;
+                isDragging = false;
+            });
+            
+            // 鼠标滚轮缩放
+            renderer.domElement.addEventListener('wheel', (event) => {
+                event.preventDefault();
+                const scale = event.deltaY > 0 ? 1.1 : 0.9;
+                camera.position.multiplyScalar(scale);
+                // 限制缩放范围
+                const distance = camera.position.length();
+                if (distance < 10) camera.position.normalize().multiplyScalar(10);
+                if (distance > 200) camera.position.normalize().multiplyScalar(200);
+            });
             
             // 添加光照
             const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
@@ -6523,18 +6762,22 @@
             scene.add(geneGroup);
             
             const geneCount = isLite ? 100 : 500;
+            const geneData = []; // 存储基因数据用于悬停显示
             
             for (let i = 0; i < geneCount; i++) {
                 const importance = Math.random();
                 const size = 0.2 + importance * 0.8;
                 
-                let color;
+                let color, geneType;
                 if (importance > 0.8) {
                     color = new THREE.Color(0xFF1744); // 红色
+                    geneType = '关键基因';
                 } else if (importance > 0.5) {
                     color = new THREE.Color(0x9C27B0); // 紫色
+                    geneType = '调节基因';
                 } else {
                     color = new THREE.Color(0x3F51B5); // 蓝色
+                    geneType = '结构基因';
                 }
                 
                 const geometry = new THREE.SphereGeometry(size, isLite ? 3 : 6, isLite ? 3 : 6);
@@ -6547,15 +6790,139 @@
                     (Math.random() - 0.5) * 100
                 );
                 
+                // 存储基因信息
+                const geneInfo = {
+                    id: `GENE_${i.toString().padStart(3, '0')}`,
+                    type: geneType,
+                    importance: (importance * 100).toFixed(1) + '%',
+                    expression: (Math.random() * 10).toFixed(2),
+                    position: {
+                        x: mesh.position.x.toFixed(1),
+                        y: mesh.position.y.toFixed(1),
+                        z: mesh.position.z.toFixed(1)
+                    }
+                };
+                
+                mesh.userData = geneInfo;
+                geneData.push(geneInfo);
                 geneGroup.add(mesh);
             }
+            
+            // 创建固定信息框
+            const infoPanel = document.createElement('div');
+            infoPanel.style.cssText = `
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                width: 200px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 12px;
+                border-radius: 6px;
+                font-size: 12px;
+                z-index: 1000;
+                border: 1px solid #333;
+                display: none;
+            `;
+            infoPanel.innerHTML = '<div style="color: #999;">将鼠标悬停在原子上查看信息</div>';
+            container.appendChild(infoPanel);
+            
+            // 鼠标交互
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2();
+            let hoveredObject = null;
+            
+            function onMouseMove(event) {
+                // 处理拖拽旋转
+                if (isMouseDown) {
+                    const deltaX = event.clientX - mouseX;
+                    const deltaY = event.clientY - mouseY;
+                    
+                    // 检测是否开始拖拽
+                    if (!isDragging && (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3)) {
+                        isDragging = true;
+                    }
+                    
+                    if (isDragging) {
+                        if (isShiftPressed) {
+                            // Shift + 拖拽 = 平移
+                            targetPanX += deltaX * 0.1;
+                            targetPanY -= deltaY * 0.1;
+                        } else {
+                            // 普通拖拽 = 旋转
+                            targetRotationY += deltaX * 0.01;
+                        targetRotationX += deltaY * 0.01;
+                        }
+                    }
+                    
+                    mouseX = event.clientX;
+                    mouseY = event.clientY;
+                } else if (!isDragging) {
+                    // 处理悬停检测（只在非拖拽状态下）
+                    const rect = renderer.domElement.getBoundingClientRect();
+                    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+                    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+                    
+                    raycaster.setFromCamera(mouse, camera);
+                    const intersects = raycaster.intersectObjects(geneGroup.children);
+                    
+                    if (intersects.length > 0) {
+                        const intersected = intersects[0].object;
+                        
+                        if (hoveredObject !== intersected) {
+                            // 恢复之前悬停对象的颜色
+                            if (hoveredObject) {
+                                hoveredObject.material.emissive.setHex(0x000000);
+                            }
+                            
+                            // 高亮当前悬停对象
+                            hoveredObject = intersected;
+                            hoveredObject.material.emissive.setHex(0x444444);
+                            
+                            // 显示信息提示
+                            const info = intersected.userData;
+                            infoPanel.innerHTML = `
+                                <div style="font-weight: bold; color: #4FC3F7; margin-bottom: 5px;">${info.id}</div>
+                                <div><span style="color: #81C784;">类型:</span> ${info.type}</div>
+                                <div><span style="color: #FFB74D;">重要性:</span> ${info.importance}</div>
+                                <div><span style="color: #F06292;">表达量:</span> ${info.expression}</div>
+                                <div style="margin-top: 5px; font-size: 10px; color: #999;">
+                                    位置: (${info.position.x}, ${info.position.y}, ${info.position.z})
+                                </div>
+                            `;
+                            infoPanel.style.display = 'block';
+                        }
+                    } else {
+                        // 没有悬停对象
+                        if (hoveredObject) {
+                            hoveredObject.material.emissive.setHex(0x000000);
+                            hoveredObject = null;
+                        }
+                        infoPanel.style.display = 'none';
+                    }
+                }
+            }
+            
+            renderer.domElement.addEventListener('mousemove', onMouseMove);
             
             // 动画循环
             function animate() {
                 if (!renderer.domElement.parentNode) return;
                 
                 requestAnimationFrame(animate);
-                if (controls) controls.update();
+                
+                // 平滑旋转和平移
+                rotationX += (targetRotationX - rotationX) * 0.1;
+                rotationY += (targetRotationY - rotationY) * 0.1;
+                panX += (targetPanX - panX) * 0.1;
+                panY += (targetPanY - panY) * 0.1;
+                
+                // 应用旋转到场景
+                geneGroup.rotation.x = rotationX;
+                geneGroup.rotation.y = rotationY;
+                geneGroup.position.x = panX;
+                geneGroup.position.y = panY;
+                
                 renderer.render(scene, camera);
             }
             animate();
@@ -6573,6 +6940,14 @@
             return {
                 cleanup: () => {
                     window.removeEventListener('resize', onWindowResize);
+                    renderer.domElement.removeEventListener('mousemove', onMouseMove);
+                    renderer.domElement.removeEventListener('mousedown', () => {});
+                    renderer.domElement.removeEventListener('mouseup', () => {});
+                    renderer.domElement.removeEventListener('mouseleave', () => {});
+                    renderer.domElement.removeEventListener('wheel', () => {});
+                    if (tooltip && tooltip.parentNode) {
+                        tooltip.parentNode.removeChild(tooltip);
+                    }
                     if (renderer.domElement.parentNode) {
                         renderer.domElement.parentNode.removeChild(renderer.domElement);
                     }

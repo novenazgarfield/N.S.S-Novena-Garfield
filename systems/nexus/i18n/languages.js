@@ -673,7 +673,7 @@ const LANGUAGES = {
             },
             genomeNebula: {
                 title: 'ゲノム星雲',
-                subtitle: 'バージョンを選択して起動ボタンをクリックして可視化開始',
+                subtitle: 'バージョンを選択して起動ボタンをクリックして可視化を開始',
                 error: '起動失敗、再試行してください',
                 features: [
                     'ゲノムデータ可視化',
