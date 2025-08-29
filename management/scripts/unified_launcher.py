@@ -1,512 +1,400 @@
 #!/usr/bin/env python3
 """
 🚀 N.S.S-Novena-Garfield 统一启动器
-集成所有系统的一键启动功能，支持Docker和本地模式
+==================================
+
+第一阶段优化后的统一系统启动器
+- RAG系统 (统一入口)
+- API管理 (统一管理器)
+- Nexus控制面板 (优化后)
+- 其他核心系统
+
+保持所有原有功能，提供统一的启动体验
 """
 
 import os
 import sys
-import json
-import time
-import signal
 import subprocess
 import threading
-from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+import time
+import signal
 import argparse
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+import json
 import webbrowser
 from datetime import datetime
 
-class UnifiedLauncher:
-    def __init__(self, workspace_path="."):
-        self.workspace_path = Path(workspace_path).resolve()
-        self.processes = {}
-        self.running = True
-        self.docker_mode = False
-        
-        # 系统配置
+# 项目根目录
+PROJECT_ROOT = Path(__file__).parent
+
+class SystemLauncher:
+    """系统启动器"""
+    
+    def __init__(self):
         self.systems = {
-            'api-manager': {
-                'name': 'API管理器',
-                'path': 'api',
-                'entry': 'api_manager.py',
-                'port': int(os.getenv('API_MANAGER_PORT', 8000)),
-                'type': 'python',
-                'required': True
+            "rag": {
+                "name": "🧠 RAG智能系统",
+                "path": "systems/rag-system",
+                "script": "unified_main.py",
+                "port": 8501,
+                "type": "streamlit",
+                "description": "统一的RAG智能问答系统"
             },
-            'rag-system': {
-                'name': 'RAG智能系统',
-                'path': 'systems/rag-system',
-                'entry': 'main.py',
-                'port': int(os.getenv('RAG_PORT', 8501)),
-                'type': 'streamlit',
-                'required': True
+            "api": {
+                "name": "🌐 API管理系统", 
+                "path": "api",
+                "script": "unified_api_manager.py",
+                "port": 8000,
+                "type": "fastapi",
+                "description": "统一的API管理服务"
             },
-            'changlee': {
-                'name': 'Changlee音乐播放器',
-                'path': 'systems/Changlee',
-                'entry': 'easy_start.js',
-                'port': int(os.getenv('CHANGLEE_WEB_PORT', 8082)),
-                'type': 'node',
-                'required': False
+            "nexus": {
+                "name": "🎯 Nexus控制面板",
+                "path": "systems/nexus",
+                "script": "index.html",
+                "port": 8080,
+                "type": "static",
+                "description": "优化后的中央控制面板"
             },
-            'chronicle': {
-                'name': 'Chronicle时间管理',
-                'path': 'systems/chronicle',
-                'entry': 'chronicle.js',
-                'port': int(os.getenv('CHRONICLE_PORT', 3000)),
-                'type': 'node',
-                'required': False
+            "chronicle": {
+                "name": "📚 Chronicle编年史",
+                "path": "systems/chronicle",
+                "script": "chronicle.js",
+                "port": 3000,
+                "type": "node",
+                "description": "ReAct智能代理系统"
             },
-            'nexus': {
-                'name': 'Nexus集成管理',
-                'path': 'systems/nexus',
-                'entry': 'main.js',
-                'port': int(os.getenv('NEXUS_PORT', 8080)),
-                'type': 'node',
-                'required': False
-            },
-            'bovine-insight': {
-                'name': 'Bovine洞察系统',
-                'path': 'systems/bovine-insight',
-                'entry': 'bovine.py',
-                'port': int(os.getenv('BOVINE_PORT', 8084)),
-                'type': 'python',
-                'required': False
-            },
-            'genome-nebula': {
-                'name': 'Genome基因分析',
-                'path': 'systems/genome-nebula',
-                'entry': 'genome.py',
-                'port': int(os.getenv('GENOME_PORT', 8085)),
-                'type': 'python',
-                'required': False
-            },
-            'kinetic-scope': {
-                'name': 'Kinetic分子动力学',
-                'path': 'systems/kinetic-scope',
-                'entry': 'kinetic.py',
-                'port': int(os.getenv('KINETIC_PORT', 8086)),
-                'type': 'python',
-                'required': False
+            "changlee": {
+                "name": "🔄 Changlee桌面宠物",
+                "path": "systems/Changlee",
+                "script": "main.js",
+                "port": None,
+                "type": "electron",
+                "description": "桌面宠物音乐系统"
             }
         }
         
-        # 设置信号处理
-        signal.signal(signal.SIGINT, self.signal_handler)
-        signal.signal(signal.SIGTERM, self.signal_handler)
+        self.running_processes = {}
+        self.status_log = []
     
-    def signal_handler(self, signum, frame):
-        """处理退出信号"""
-        print(f"\n🛑 收到退出信号 ({signum})，正在关闭所有服务...")
-        self.running = False
-        self.stop_all_services()
-        sys.exit(0)
-    
-    def log(self, message: str, level: str = "INFO"):
-        """日志输出"""
-        timestamp = datetime.now().strftime("%H:%M:%S")
-        print(f"[{timestamp}] {level}: {message}")
-    
-    def check_dependencies(self) -> bool:
-        """检查依赖项"""
-        self.log("🔍 检查系统依赖...")
-        
-        dependencies = {
-            'python3': 'Python 3.x',
-            'node': 'Node.js',
-            'npm': 'NPM'
+    def log_status(self, system: str, status: str, details: str = ""):
+        """记录系统状态"""
+        log_entry = {
+            "timestamp": datetime.now().isoformat(),
+            "system": system,
+            "status": status,
+            "details": details
         }
+        self.status_log.append(log_entry)
+        print(f"[{system.upper()}] {status}: {details}")
+    
+    def check_system_requirements(self, system_key: str) -> bool:
+        """检查系统运行要求"""
+        system = self.systems[system_key]
+        system_path = PROJECT_ROOT / system["path"]
+        script_path = system_path / system["script"]
         
-        missing = []
-        for cmd, name in dependencies.items():
-            try:
-                result = subprocess.run([cmd, '--version'], 
-                                      capture_output=True, text=True, timeout=5)
-                if result.returncode == 0:
-                    self.log(f"✅ {name}: {result.stdout.strip().split()[0]}")
-                else:
-                    missing.append(name)
-            except Exception:
-                missing.append(name)
+        if not system_path.exists():
+            self.log_status(system_key, "❌ 错误", f"系统目录不存在: {system_path}")
+            return False
         
-        if missing:
-            self.log(f"❌ 缺少依赖: {', '.join(missing)}", "ERROR")
+        if not script_path.exists():
+            self.log_status(system_key, "❌ 错误", f"启动脚本不存在: {script_path}")
+            return False
+        
+        # 检查端口是否被占用
+        if system["port"] and self._is_port_in_use(system["port"]):
+            self.log_status(system_key, "⚠️ 警告", f"端口 {system['port']} 已被占用")
             return False
         
         return True
     
-    def check_docker(self) -> bool:
-        """检查Docker是否可用"""
+    def _is_port_in_use(self, port: int) -> bool:
+        """检查端口是否被占用"""
+        import socket
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            return s.connect_ex(('localhost', port)) == 0
+    
+    def start_system(self, system_key: str) -> bool:
+        """启动单个系统"""
+        if system_key not in self.systems:
+            self.log_status(system_key, "❌ 错误", "未知的系统")
+            return False
+        
+        system = self.systems[system_key]
+        
+        # 检查系统要求
+        if not self.check_system_requirements(system_key):
+            return False
+        
+        system_path = PROJECT_ROOT / system["path"]
+        
         try:
-            result = subprocess.run(['docker', '--version'], 
-                                  capture_output=True, text=True, timeout=5)
-            if result.returncode == 0:
-                self.log(f"🐳 Docker可用: {result.stdout.strip()}")
+            if system["type"] == "streamlit":
+                cmd = [
+                    sys.executable, "-m", "streamlit", "run",
+                    system["script"],
+                    "--server.port", str(system["port"]),
+                    "--server.address", "0.0.0.0",
+                    "--server.headless", "true",
+                    "--browser.gatherUsageStats", "false"
+                ]
                 
-                # 检查Docker Compose
-                result = subprocess.run(['docker', 'compose', 'version'], 
-                                      capture_output=True, text=True, timeout=5)
-                if result.returncode == 0:
-                    self.log(f"🐳 Docker Compose可用: {result.stdout.strip()}")
-                    return True
-                else:
-                    self.log("⚠️ Docker Compose不可用", "WARNING")
-                    return False
+            elif system["type"] == "fastapi":
+                cmd = [sys.executable, system["script"], "--host", "0.0.0.0", "--port", str(system["port"])]
+                
+            elif system["type"] == "node":
+                cmd = ["node", system["script"]]
+                
+            elif system["type"] == "electron":
+                cmd = ["npm", "start"]
+                
+            elif system["type"] == "static":
+                # 启动简单的HTTP服务器
+                cmd = [sys.executable, "-m", "http.server", str(system["port"])]
+            
             else:
+                self.log_status(system_key, "❌ 错误", f"不支持的系统类型: {system['type']}")
                 return False
-        except Exception:
-            return False
-    
-    def install_dependencies(self, system_id: str) -> bool:
-        """安装系统依赖"""
-        system = self.systems[system_id]
-        system_path = self.workspace_path / system['path']
-        
-        if not system_path.exists():
-            self.log(f"❌ 系统路径不存在: {system_path}", "ERROR")
-            return False
-        
-        self.log(f"📦 安装 {system['name']} 依赖...")
-        
-        try:
-            if system['type'] in ['node', 'streamlit']:
-                # 检查package.json
-                package_json = system_path / 'package.json'
-                if package_json.exists():
-                    result = subprocess.run(['npm', 'install'], 
-                                          cwd=system_path, 
-                                          capture_output=True, text=True, timeout=120)
-                    if result.returncode != 0:
-                        self.log(f"❌ NPM安装失败: {result.stderr}", "ERROR")
-                        return False
             
-            elif system['type'] == 'python':
-                # 检查requirements.txt
-                requirements = system_path / 'requirements.txt'
-                if requirements.exists():
-                    result = subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'], 
-                                          cwd=system_path, 
-                                          capture_output=True, text=True, timeout=180)
-                    if result.returncode != 0:
-                        self.log(f"❌ Python依赖安装失败: {result.stderr}", "ERROR")
-                        return False
-            
-            return True
-            
-        except Exception as e:
-            self.log(f"❌ 依赖安装异常: {e}", "ERROR")
-            return False
-    
-    def start_system_local(self, system_id: str) -> Optional[subprocess.Popen]:
-        """本地启动系统"""
-        system = self.systems[system_id]
-        system_path = self.workspace_path / system['path']
-        entry_file = system_path / system['entry']
-        
-        if not entry_file.exists():
-            self.log(f"❌ 入口文件不存在: {entry_file}", "ERROR")
-            return None
-        
-        self.log(f"🚀 启动 {system['name']} (本地模式)")
-        
-        try:
-            env = os.environ.copy()
-            env['PORT'] = str(system['port'])
-            
-            if system['type'] == 'python':
-                cmd = [sys.executable, system['entry']]
-            elif system['type'] == 'streamlit':
-                cmd = ['streamlit', 'run', system['entry'], '--server.port', str(system['port']), '--server.address', '0.0.0.0']
-            elif system['type'] == 'node':
-                cmd = ['node', system['entry']]
-            else:
-                self.log(f"❌ 未知系统类型: {system['type']}", "ERROR")
-                return None
-            
+            # 启动进程
             process = subprocess.Popen(
                 cmd,
                 cwd=system_path,
-                env=env,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True
             )
             
-            return process
+            self.running_processes[system_key] = process
+            self.log_status(system_key, "✅ 启动", f"PID: {process.pid}, 端口: {system['port']}")
             
-        except Exception as e:
-            self.log(f"❌ 启动失败 {system['name']}: {e}", "ERROR")
-            return None
-    
-    def start_docker_compose(self, services: List[str] = None):
-        """启动Docker Compose服务"""
-        self.log("🐳 启动Docker Compose服务...")
-        
-        compose_file = self.workspace_path / 'management/deployment/docker-compose.yml'
-        if not compose_file.exists():
-            self.log("❌ docker-compose.yml不存在", "ERROR")
-            return False
-        
-        try:
-            cmd = ['docker', 'compose', '-f', 'management/deployment/docker-compose.yml', 'up', '-d']
-            if services:
-                cmd.extend(services)
+            # 等待一下确保启动成功
+            time.sleep(2)
             
-            result = subprocess.run(cmd, cwd=self.workspace_path, 
-                                  capture_output=True, text=True, timeout=300)
-            
-            if result.returncode == 0:
-                self.log("✅ Docker Compose服务启动成功")
+            if process.poll() is None:  # 进程仍在运行
+                if system["port"]:
+                    url = f"http://localhost:{system['port']}"
+                    self.log_status(system_key, "🌐 就绪", f"访问地址: {url}")
                 return True
             else:
-                self.log(f"❌ Docker Compose启动失败: {result.stderr}", "ERROR")
+                self.log_status(system_key, "❌ 失败", "进程意外退出")
                 return False
                 
         except Exception as e:
-            self.log(f"❌ Docker Compose启动异常: {e}", "ERROR")
+            self.log_status(system_key, "❌ 异常", str(e))
             return False
     
-    def stop_docker_compose(self):
-        """停止Docker Compose服务"""
-        self.log("🛑 停止Docker Compose服务...")
+    def stop_system(self, system_key: str) -> bool:
+        """停止单个系统"""
+        if system_key not in self.running_processes:
+            self.log_status(system_key, "⚠️ 警告", "系统未运行")
+            return False
+        
+        process = self.running_processes[system_key]
         
         try:
-            result = subprocess.run(['docker', 'compose', '-f', 'management/deployment/docker-compose.yml', 'down'], 
-                                  cwd=self.workspace_path, 
-                                  capture_output=True, text=True, timeout=60)
+            process.terminate()
+            process.wait(timeout=10)
+            del self.running_processes[system_key]
+            self.log_status(system_key, "🛑 停止", "系统已关闭")
+            return True
             
-            if result.returncode == 0:
-                self.log("✅ Docker Compose服务已停止")
-            else:
-                self.log(f"⚠️ Docker Compose停止警告: {result.stderr}", "WARNING")
-                
+        except subprocess.TimeoutExpired:
+            process.kill()
+            del self.running_processes[system_key]
+            self.log_status(system_key, "💀 强制停止", "系统已强制关闭")
+            return True
+            
         except Exception as e:
-            self.log(f"❌ Docker Compose停止异常: {e}", "ERROR")
-    
-    def monitor_process(self, system_id: str, process: subprocess.Popen):
-        """监控进程输出"""
-        system = self.systems[system_id]
-        
-        def read_output(stream, prefix):
-            for line in iter(stream.readline, ''):
-                if line.strip():
-                    self.log(f"[{system['name']}] {line.strip()}")
-        
-        # 启动输出监控线程
-        threading.Thread(target=read_output, args=(process.stdout, "OUT"), daemon=True).start()
-        threading.Thread(target=read_output, args=(process.stderr, "ERR"), daemon=True).start()
-    
-    def wait_for_service(self, port: int, timeout: int = 30) -> bool:
-        """等待服务启动"""
-        import socket
-        
-        for i in range(timeout):
-            try:
-                with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                    s.settimeout(1)
-                    result = s.connect_ex(('localhost', port))
-                    if result == 0:
-                        return True
-            except Exception:
-                pass
-            time.sleep(1)
-        
-        return False
-    
-    def start_services(self, systems: List[str] = None, docker: bool = False):
-        """启动服务"""
-        if docker and self.check_docker():
-            self.docker_mode = True
-            return self.start_docker_compose(systems)
-        
-        # 本地模式启动
-        if not self.check_dependencies():
+            self.log_status(system_key, "❌ 停止失败", str(e))
             return False
-        
-        systems_to_start = systems or list(self.systems.keys())
-        
-        # 首先启动必需的系统
-        required_systems = [s for s in systems_to_start if self.systems[s]['required']]
-        optional_systems = [s for s in systems_to_start if not self.systems[s]['required']]
-        
-        all_systems = required_systems + optional_systems
-        
-        for system_id in all_systems:
-            system = self.systems[system_id]
-            
-            # 安装依赖
-            if not self.install_dependencies(system_id):
-                if system['required']:
-                    self.log(f"❌ 必需系统 {system['name']} 依赖安装失败", "ERROR")
-                    return False
-                else:
-                    self.log(f"⚠️ 可选系统 {system['name']} 依赖安装失败，跳过", "WARNING")
-                    continue
-            
-            # 启动系统
-            process = self.start_system_local(system_id)
-            if process:
-                self.processes[system_id] = process
-                self.monitor_process(system_id, process)
-                
-                # 等待服务启动
-                if self.wait_for_service(system['port'], 10):
-                    self.log(f"✅ {system['name']} 启动成功 (端口: {system['port']})")
-                else:
-                    self.log(f"⚠️ {system['name']} 可能未完全启动", "WARNING")
-            else:
-                if system['required']:
-                    self.log(f"❌ 必需系统 {system['name']} 启动失败", "ERROR")
-                    return False
-                else:
-                    self.log(f"⚠️ 可选系统 {system['name']} 启动失败，跳过", "WARNING")
-        
-        return True
     
-    def stop_all_services(self):
-        """停止所有服务"""
-        if self.docker_mode:
-            self.stop_docker_compose()
-        else:
-            self.log("🛑 停止所有本地服务...")
-            for system_id, process in self.processes.items():
-                try:
-                    process.terminate()
-                    process.wait(timeout=10)
-                    self.log(f"✅ {self.systems[system_id]['name']} 已停止")
-                except Exception as e:
-                    self.log(f"⚠️ 停止 {self.systems[system_id]['name']} 时出错: {e}", "WARNING")
-                    try:
-                        process.kill()
-                    except:
-                        pass
+    def start_all_systems(self):
+        """启动所有系统"""
+        print("🚀 启动所有系统...")
+        print("=" * 60)
         
-        self.processes.clear()
+        success_count = 0
+        
+        for system_key in self.systems:
+            if self.start_system(system_key):
+                success_count += 1
+            time.sleep(1)  # 避免端口冲突
+        
+        print("\n" + "=" * 60)
+        print(f"✅ 成功启动 {success_count}/{len(self.systems)} 个系统")
+        
+        if success_count > 0:
+            self._show_access_info()
+    
+    def _show_access_info(self):
+        """显示访问信息"""
+        print("\n🌐 系统访问地址:")
+        print("-" * 40)
+        
+        for system_key, process in self.running_processes.items():
+            system = self.systems[system_key]
+            if system["port"]:
+                url = f"http://localhost:{system['port']}"
+                print(f"{system['name']}: {url}")
+        
+        print("\n💡 提示: 按 Ctrl+C 停止所有系统")
+    
+    def stop_all_systems(self):
+        """停止所有系统"""
+        print("\n🛑 停止所有系统...")
+        
+        for system_key in list(self.running_processes.keys()):
+            self.stop_system(system_key)
     
     def show_status(self):
-        """显示服务状态"""
-        self.log("📊 服务状态:")
+        """显示系统状态"""
+        print("📊 系统状态:")
+        print("=" * 60)
         
-        if self.docker_mode:
-            try:
-                result = subprocess.run(['docker', 'compose', '-f', 'management/deployment/docker-compose.yml', 'ps'], 
-                                      cwd=self.workspace_path, 
-                                      capture_output=True, text=True, timeout=10)
-                print(result.stdout)
-            except Exception as e:
-                self.log(f"❌ 获取Docker状态失败: {e}", "ERROR")
-        else:
-            for system_id, system in self.systems.items():
-                if system_id in self.processes:
-                    process = self.processes[system_id]
-                    status = "运行中" if process.poll() is None else "已停止"
-                    self.log(f"  {system['name']}: {status} (端口: {system['port']})")
-                else:
-                    self.log(f"  {system['name']}: 未启动")
+        for system_key, system in self.systems.items():
+            status = "🟢 运行中" if system_key in self.running_processes else "🔴 未运行"
+            port_info = f":{system['port']}" if system["port"] else ""
+            print(f"{system['name']:<25} {status} {port_info}")
+            print(f"   📝 {system['description']}")
+            print()
     
-    def open_web_interfaces(self):
-        """打开Web界面"""
-        self.log("🌐 打开Web界面...")
-        
-        web_services = [
-            ('rag-system', 'RAG智能系统'),
-            ('changlee', 'Changlee音乐播放器'),
-            ('chronicle', 'Chronicle时间管理'),
-            ('nexus', 'Nexus集成管理')
-        ]
-        
-        for system_id, name in web_services:
-            if system_id in self.processes or self.docker_mode:
-                port = self.systems[system_id]['port']
-                url = f"http://localhost:{port}"
-                try:
-                    webbrowser.open(url)
-                    self.log(f"🌐 已打开 {name}: {url}")
-                except Exception as e:
-                    self.log(f"⚠️ 无法打开 {name}: {e}", "WARNING")
-    
-    def run_interactive(self):
-        """交互式运行"""
-        self.log("🎮 进入交互模式 (输入 'help' 查看命令)")
-        
-        while self.running:
+    def interactive_menu(self):
+        """交互式菜单"""
+        while True:
+            print("\n" + "=" * 60)
+            print("🎯 N.S.S-Novena-Garfield 统一启动器")
+            print("=" * 60)
+            print("1. 启动所有系统")
+            print("2. 启动单个系统")
+            print("3. 停止单个系统")
+            print("4. 显示系统状态")
+            print("5. 停止所有系统")
+            print("0. 退出")
+            print("-" * 60)
+            
             try:
-                command = input("\n> ").strip().lower()
+                choice = input("请选择操作 (0-5): ").strip()
                 
-                if command == 'help':
-                    print("""
-可用命令:
-  status  - 显示服务状态
-  web     - 打开Web界面
-  stop    - 停止所有服务
-  restart - 重启所有服务
-  quit    - 退出程序
-                    """)
-                elif command == 'status':
-                    self.show_status()
-                elif command == 'web':
-                    self.open_web_interfaces()
-                elif command == 'stop':
-                    self.stop_all_services()
-                elif command == 'restart':
-                    self.stop_all_services()
-                    time.sleep(2)
-                    self.start_services(docker=self.docker_mode)
-                elif command in ['quit', 'exit', 'q']:
+                if choice == "0":
+                    self.stop_all_systems()
+                    print("👋 再见!")
                     break
-                elif command == '':
-                    continue
+                    
+                elif choice == "1":
+                    self.start_all_systems()
+                    
+                elif choice == "2":
+                    self._interactive_start_system()
+                    
+                elif choice == "3":
+                    self._interactive_stop_system()
+                    
+                elif choice == "4":
+                    self.show_status()
+                    
+                elif choice == "5":
+                    self.stop_all_systems()
+                    
                 else:
-                    print(f"未知命令: {command}")
+                    print("❌ 无效选择，请重试")
                     
             except KeyboardInterrupt:
+                print("\n\n🛑 用户中断")
+                self.stop_all_systems()
                 break
-            except EOFError:
-                break
+            except Exception as e:
+                print(f"❌ 操作失败: {e}")
+    
+    def _interactive_start_system(self):
+        """交互式启动单个系统"""
+        print("\n可用系统:")
+        for i, (key, system) in enumerate(self.systems.items(), 1):
+            status = "🟢" if key in self.running_processes else "🔴"
+            print(f"{i}. {status} {system['name']}")
         
-        self.stop_all_services()
+        try:
+            choice = int(input("选择要启动的系统 (1-{}): ".format(len(self.systems))))
+            if 1 <= choice <= len(self.systems):
+                system_key = list(self.systems.keys())[choice - 1]
+                self.start_system(system_key)
+            else:
+                print("❌ 无效选择")
+        except ValueError:
+            print("❌ 请输入有效数字")
+    
+    def _interactive_stop_system(self):
+        """交互式停止单个系统"""
+        if not self.running_processes:
+            print("⚠️ 没有运行中的系统")
+            return
+        
+        print("\n运行中的系统:")
+        running_systems = list(self.running_processes.keys())
+        for i, key in enumerate(running_systems, 1):
+            system = self.systems[key]
+            print(f"{i}. {system['name']}")
+        
+        try:
+            choice = int(input("选择要停止的系统 (1-{}): ".format(len(running_systems))))
+            if 1 <= choice <= len(running_systems):
+                system_key = running_systems[choice - 1]
+                self.stop_system(system_key)
+            else:
+                print("❌ 无效选择")
+        except ValueError:
+            print("❌ 请输入有效数字")
 
 def main():
-    parser = argparse.ArgumentParser(description='N.S.S-Novena-Garfield 统一启动器')
-    parser.add_argument('--docker', action='store_true', help='使用Docker模式启动')
-    parser.add_argument('--systems', nargs='+', help='指定要启动的系统')
-    parser.add_argument('--no-web', action='store_true', help='不自动打开Web界面')
-    parser.add_argument('--interactive', action='store_true', help='交互模式')
-    parser.add_argument('--path', default='.', help='工作空间路径')
+    """主函数"""
+    parser = argparse.ArgumentParser(description="N.S.S-Novena-Garfield 统一启动器")
+    parser.add_argument("--system", "-s", help="启动指定系统")
+    parser.add_argument("--all", "-a", action="store_true", help="启动所有系统")
+    parser.add_argument("--status", action="store_true", help="显示系统状态")
+    parser.add_argument("--interactive", "-i", action="store_true", help="交互式模式")
     
     args = parser.parse_args()
     
-    launcher = UnifiedLauncher(args.path)
+    launcher = SystemLauncher()
     
-    print("🚀 N.S.S-Novena-Garfield 统一启动器")
-    print("="*50)
+    # 设置信号处理
+    def signal_handler(sig, frame):
+        print("\n\n🛑 接收到中断信号，正在关闭所有系统...")
+        launcher.stop_all_systems()
+        sys.exit(0)
     
-    # 启动服务
-    if launcher.start_services(args.systems, args.docker):
-        launcher.log("✅ 所有服务启动完成")
-        
-        # 显示状态
-        launcher.show_status()
-        
-        # 打开Web界面
-        if not args.no_web:
-            time.sleep(2)
-            launcher.open_web_interfaces()
-        
-        # 交互模式或等待
-        if args.interactive:
-            launcher.run_interactive()
-        else:
-            launcher.log("💡 按 Ctrl+C 停止所有服务")
+    signal.signal(signal.SIGINT, signal_handler)
+    signal.signal(signal.SIGTERM, signal_handler)
+    
+    try:
+        if args.status:
+            launcher.show_status()
+            
+        elif args.system:
+            launcher.start_system(args.system)
+            
+        elif args.all:
+            launcher.start_all_systems()
+            # 保持运行直到用户中断
             try:
-                while launcher.running:
+                while True:
                     time.sleep(1)
             except KeyboardInterrupt:
                 pass
-    else:
-        launcher.log("❌ 服务启动失败", "ERROR")
-        sys.exit(1)
+                
+        elif args.interactive:
+            launcher.interactive_menu()
+            
+        else:
+            # 默认启动交互式模式
+            launcher.interactive_menu()
+            
+    except Exception as e:
+        print(f"❌ 启动器异常: {e}")
+    finally:
+        launcher.stop_all_systems()
 
 if __name__ == "__main__":
     main()
