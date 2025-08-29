@@ -1,0 +1,106 @@
+{
+  "globalMonitoring": {
+    "enabled": true,
+    "projectsPath": "/workspace/systems",
+    "monitorInterval": 30000,
+    "resourceThresholds": {
+      "cpu": 80,
+      "memory": 85,
+      "disk": 90
+    },
+    "systemLogPaths": {
+      "linux": [
+        "/var/log/syslog",
+        "/var/log/messages",
+        "/var/log/kern.log",
+        "/var/log/auth.log"
+      ],
+      "darwin": [
+        "/var/log/system.log",
+        "/var/log/kernel.log"
+      ],
+      "win32": []
+    },
+    "projectTypes": {
+      "nodejs": {
+        "healthCheckPorts": [3000, 3001, 8000, 8080],
+        "criticalFiles": ["package.json", "index.js", "server.js", "app.js", "main.js"],
+        "logPaths": ["logs", "log"],
+        "restartCommands": {
+          "express": "node server.js",
+          "default": "npm start"
+        }
+      },
+      "python": {
+        "healthCheckPorts": [8501, 5000, 8000, 8080],
+        "criticalFiles": ["requirements.txt", "main.py", "app.py", "run.py"],
+        "logPaths": ["logs", "log"],
+        "restartCommands": {
+          "streamlit": "streamlit run app.py",
+          "flask": "python app.py",
+          "default": "python main.py"
+        }
+      }
+    },
+    "crossProjectAnalysis": {
+      "enabled": true,
+      "timeWindow": 300000,
+      "minFailuresForPattern": 2,
+      "patternTypes": [
+        "similar_errors",
+        "cascade_failure",
+        "resource_exhaustion"
+      ]
+    },
+    "autoRecovery": {
+      "enabled": true,
+      "maxRetries": 3,
+      "retryDelay": 5000,
+      "strategies": {
+        "file_recovery": {
+          "enabled": true,
+          "backupPaths": [".backup", ".git"],
+          "templateGeneration": true
+        },
+        "process_restart": {
+          "enabled": true,
+          "gracefulTimeout": 10000,
+          "forceKillTimeout": 30000
+        },
+        "resource_optimization": {
+          "enabled": true,
+          "memoryCleanup": true,
+          "diskCleanup": true,
+          "processOptimization": true
+        },
+        "system_recovery": {
+          "enabled": true,
+          "serviceRestart": true,
+          "logRotation": true,
+          "cacheCleanup": true
+        }
+      }
+    }
+  },
+  "api": {
+    "globalMonitorEndpoints": {
+      "start": "/api/global/start",
+      "stop": "/api/global/stop",
+      "status": "/api/global/status",
+      "projects": "/api/global/projects",
+      "systemHealth": "/api/global/system-health",
+      "analytics": "/api/global/analytics",
+      "projectRestart": "/api/global/project/:name/restart",
+      "projectDetails": "/api/global/project/:name/details",
+      "optimizeResources": "/api/global/optimize-resources"
+    }
+  },
+  "metadata": {
+    "version": "2.0.0",
+    "name": "Chronicle Global System Monitor",
+    "description": "全系统监控和自动修复配置",
+    "author": "N.S.S-Novena-Garfield Project",
+    "created": "2025-08-29",
+    "lastModified": "2025-08-29"
+  }
+}

@@ -15,6 +15,8 @@ const { customValidators } = require('./middleware/validation');
 const sessionsRouter = require('./routes/sessions');
 const reportsRouter = require('./routes/reports');
 const genesisRouter = require('./routes/genesis'); // 🏥 Genesis中央医院API
+const globalMonitorRouter = require('./routes/global-monitor'); // 🌍 全系统监控API
+const { router: confirmationRouter, setDependencies } = require('./routes/confirmation'); // 🧠 ReAct确认API
 
 const logger = createModuleLogger('api-server');
 
@@ -23,6 +25,7 @@ class APIServer {
     this.app = express();
     this.server = null;
     this.isInitialized = false;
+    this.reactIntegration = null; // 🧠 ReAct集成实例
   }
 
   /**
@@ -44,6 +47,9 @@ class APIServer {
 
       // 设置错误处理
       this.setupErrorHandling();
+
+      // 初始化ReAct集成
+      await this.initializeReActIntegration();
 
       this.isInitialized = true;
       logger.info('API server initialized successfully');
@@ -154,6 +160,7 @@ class APIServer {
           sessions: '/sessions',
           reports: '/reports',
           genesis: '/api', // 🏥 Genesis中央医院API
+          global_monitor: '/api/global', // 🌍 全系统监控API
           health: '/health',
           info: '/info'
         },
@@ -199,6 +206,8 @@ class APIServer {
     this.app.use('/sessions', sessionsRouter);
     this.app.use('/reports', reportsRouter);
     this.app.use('/api', genesisRouter); // 🏥 Genesis中央医院API路由
+    this.app.use('/api/global', globalMonitorRouter); // 🌍 全系统监控API路由
+    this.app.use('/api/confirmation', confirmationRouter); // 🧠 ReAct确认API路由
 
     // 管理路由
     this.setupAdminRoutes();
@@ -322,6 +331,42 @@ class APIServer {
   }
 
   /**
+   * 初始化ReAct集成
+   */
+  async initializeReActIntegration() {
+    try {
+      logger.info('🧠 Initializing ReAct Integration...');
+      
+      const ChronicleReActIntegration = require('../intelligence/chronicle-integration');
+      this.reactIntegration = new ChronicleReActIntegration(this);
+      
+      // 初始化集成系统
+      await this.reactIntegration.initialize();
+      
+      // 设置确认路由的依赖注入
+      const dependencies = this.reactIntegration.getDependencies();
+      setDependencies(dependencies.confirmationInterface, dependencies.intelligenceCoordinator);
+      
+      // 监听集成事件
+      this.reactIntegration.on('confirmation_required', (data) => {
+        logger.info(`🔔 Confirmation required: ${data.confirmationId}`);
+        // 这里可以添加WebSocket通知等
+      });
+      
+      this.reactIntegration.on('investigation_completed', (data) => {
+        logger.info(`🎯 Investigation completed: ${data.investigationId}`);
+      });
+      
+      logger.info('✅ ReAct Integration initialized successfully');
+      
+    } catch (error) {
+      logger.error(`❌ Failed to initialize ReAct Integration: ${error.message}`);
+      // 不抛出错误，允许服务器在没有ReAct的情况下运行
+      logger.warn('⚠️ Server will continue without ReAct Integration');
+    }
+  }
+
+  /**
    * 设置错误处理
    */
   setupErrorHandling() {
@@ -429,6 +474,11 @@ class APIServer {
     try {
       // 停止接受新连接
       await this.stop();
+
+      // 关闭ReAct集成
+      if (this.reactIntegration) {
+        await this.reactIntegration.shutdown();
+      }
 
       // 停止所有监控
       const fileMonitor = require('../collector/file-monitor');

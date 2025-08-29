@@ -23,6 +23,7 @@ from enum import Enum
 import logging
 
 from utils.logger import logger
+from core.performance_monitor import get_performance_monitor
 
 class ChronicleConnectionStatus(Enum):
     """Chronicle连接状态"""
@@ -124,29 +125,40 @@ class ChronicleClient:
     
     async def health_check(self) -> bool:
         """🏥 健康检查 - 检查Chronicle中央医院是否在线"""
+        monitor = get_performance_monitor()
+        start_time = time.time()
+        
         try:
             response = self.session.get(
                 f"{self.config.base_url}/health",
                 timeout=self.config.timeout
             )
             
+            # 记录网络延迟
+            network_latency = (time.time() - start_time) * 1000
+            monitor.record_network_latency(network_latency)
+            
             if response.status_code == 200:
                 self.connection_status = ChronicleConnectionStatus.CONNECTED
                 self.last_health_check = datetime.now()
                 logger.info("🏥 Chronicle中央医院在线")
+                monitor.record_api_call(time.time() - start_time, True)
                 return True
             else:
                 self.connection_status = ChronicleConnectionStatus.ERROR
                 logger.warning(f"⚠️ Chronicle健康检查失败: {response.status_code}")
+                monitor.record_api_call(time.time() - start_time, False)
                 return False
                 
         except requests.exceptions.Timeout:
             self.connection_status = ChronicleConnectionStatus.TIMEOUT
             logger.warning("⏰ Chronicle健康检查超时")
+            monitor.record_api_call(time.time() - start_time, False)
             return False
         except Exception as e:
             self.connection_status = ChronicleConnectionStatus.ERROR
             logger.error(f"❌ Chronicle健康检查异常: {e}")
+            monitor.record_api_call(time.time() - start_time, False)
             return False
     
     async def log_failure(self, failure_report: FailureReport) -> Optional[Dict[str, Any]]:
