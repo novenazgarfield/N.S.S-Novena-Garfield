@@ -1,0 +1,16 @@
+{
+  "monitoring": {
+    "enabled": true,
+    "interval": 60,
+    "metrics": {
+      "cpu_usage": true,
+      "memory_usage": true,
+      "disk_usage": true
+    },
+    "alerts": {
+      "cpu_threshold": 80,
+      "memory_threshold": 85,
+      "disk_threshold": 90
+    }
+  }
+}

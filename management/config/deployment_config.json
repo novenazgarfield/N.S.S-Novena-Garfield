@@ -1,0 +1,23 @@
+{
+  "deployment": {
+    "environments": {
+      "development": {
+        "auto_deploy": true,
+        "branch": "develop",
+        "health_check": true
+      },
+      "production": {
+        "auto_deploy": false,
+        "branch": "main",
+        "health_check": true,
+        "approval_required": true
+      }
+    },
+    "steps": [
+      "pre_deployment_checks",
+      "backup_current_version",
+      "deploy_new_version",
+      "run_health_checks"
+    ]
+  }
+}

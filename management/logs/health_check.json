@@ -1,0 +1,25 @@
+{
+  "timestamp": "2025-08-29T15:21:51.618625",
+  "overall_status": "healthy",
+  "checks": {
+    "cpu_usage": {
+      "status": "ok",
+      "value": 1.9,
+      "unit": "%"
+    },
+    "memory_usage": {
+      "status": "ok",
+      "value": 17.0,
+      "unit": "%"
+    },
+    "disk_usage": {
+      "status": "ok",
+      "value": 60.2,
+      "unit": "%"
+    },
+    "critical_directories": {
+      "status": "ok",
+      "missing": []
+    }
+  }
+}

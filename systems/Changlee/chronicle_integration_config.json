@@ -1,0 +1,48 @@
+{
+  "chronicle_integration": {
+    "connection": {
+      "timeout": 10000,
+      "retry_attempts": 3,
+      "retry_delay": 2000,
+      "keep_alive": true
+    },
+    "performance": {
+      "batch_requests": true,
+      "cache_responses": true,
+      "cache_duration": 300000,
+      "compress_data": true
+    },
+    "error_handling": {
+      "auto_reconnect": true,
+      "fallback_mode": true,
+      "log_errors": true
+    }
+  },
+  "analysis_results": {
+    "test_chronicle_integration.js": {
+      "type": "script",
+      "size": 10263,
+      "api_calls": 14,
+      "event_handlers": 15
+    },
+    "chronicle.config.js": {
+      "type": "script",
+      "size": 8227,
+      "api_calls": 0,
+      "event_handlers": 5
+    },
+    "ChronicleClient.js": {
+      "type": "script",
+      "size": 10626,
+      "api_calls": 22,
+      "event_handlers": 41
+    },
+    "ChronicleService.js": {
+      "type": "script",
+      "size": 15082,
+      "api_calls": 0,
+      "event_handlers": 26
+    }
+  },
+  "optimized_at": "2025-08-29T15:16:40.569485"
+}

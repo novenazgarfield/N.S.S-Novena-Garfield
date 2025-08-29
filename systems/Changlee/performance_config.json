@@ -1,0 +1,20 @@
+{
+  "electron_performance": {
+    "memory_optimization": {
+      "enable_memory_info": true,
+      "gc_interval": 60000,
+      "max_memory_usage": "512MB"
+    },
+    "window_optimization": {
+      "use_ready_to_show": true,
+      "enable_background_throttling": true,
+      "web_security": true
+    },
+    "renderer_optimization": {
+      "node_integration": false,
+      "context_isolation": true,
+      "enable_remote_module": false
+    }
+  },
+  "created_at": "2025-08-29T15:16:40.256885"
+}
