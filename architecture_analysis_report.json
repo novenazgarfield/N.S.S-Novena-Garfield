@@ -1,0 +1,324 @@
+{
+  "project_name": "N.S.S-Novena-Garfield",
+  "analysis_date": "2025-08-29T15:26:53.835454",
+  "project_root": "/workspace",
+  "total_files": 578,
+  "total_lines": 226451,
+  "systems": {
+    "rag-system": {
+      "name": "🧠 RAG智能系统",
+      "path": "/workspace/systems/rag-system",
+      "file_count": 100,
+      "total_lines": 31992,
+      "file_types": {
+        ".py": 84,
+        ".json": 4,
+        ".md": 12
+      },
+      "main_modules": [
+        "main.py",
+        "app.py",
+        "universal_app.py",
+        "unified_main.py",
+        "intelligence_app.py",
+        "chat_rag_app.py",
+        "public_mobile_app.py",
+        "desktop_app.py",
+        "enhanced_app.py",
+        "secure_rag_app.py"
+      ],
+      "config_files": [
+        "config.yaml",
+        "requirements.txt",
+        "config_advanced.py",
+        "Dockerfile",
+        "config_manager.py",
+        "config.py"
+      ],
+      "optimization_files": [
+        "mobile_optimized_rag.py",
+        "unified_main.py",
+        "unified_config.py",
+        "unified_app.py",
+        "performance_monitor.py"
+      ],
+      "key_features": [
+        "智能问答系统",
+        "多模型支持",
+        "向量数据库",
+        "文档检索",
+        "API服务",
+        "Web界面",
+        "配置管理",
+        "多应用模式"
+      ]
+    },
+    "api": {
+      "name": "🌐 API管理系统",
+      "path": "/workspace/api",
+      "file_count": 26,
+      "total_lines": 6897,
+      "file_types": {
+        ".py": 20,
+        ".json": 2,
+        ".md": 4
+      },
+      "main_modules": [
+        "simple_energy_server.py",
+        "unified_api_manager.py",
+        "energy_api_server.py",
+        "gemini_chat_app.py"
+      ],
+      "config_files": [
+        "Dockerfile"
+      ],
+      "optimization_files": [
+        "unified_api_manager.py"
+      ],
+      "key_features": [
+        "API密钥管理",
+        "多提供商支持",
+        "使用统计",
+        "Web管理界面",
+        "安全认证",
+        "请求代理",
+        "错误处理",
+        "配置管理"
+      ]
+    },
+    "nexus": {
+      "name": "🎯 Nexus控制面板",
+      "path": "/workspace/systems/nexus",
+      "file_count": 146,
+      "total_lines": 76220,
+      "file_types": {
+        ".py": 8,
+        ".js": 18,
+        ".jsx": 2,
+        ".ts": 19,
+        ".html": 27,
+        ".css": 11,
+        ".json": 15,
+        ".md": 27,
+        ".sh": 19
+      },
+      "main_modules": [
+        "index.js",
+        "index.html",
+        "websocket_server.py"
+      ],
+      "config_files": [
+        "package.json",
+        "requirements.txt",
+        "eslint.config.js"
+      ],
+      "optimization_files": [
+        "firebase-deploy-guide.md",
+        "nss-final-deployment.json",
+        "one-click-deploy.sh",
+        "update-deploy.py",
+        "performance.ts",
+        "deploy_nexus.sh",
+        "nss-deployment-results.json",
+        "deploy-short.sh",
+        "nss-unified-url.txt",
+        "deploy_nexus.ps1"
+      ],
+      "key_features": [
+        "中央控制面板",
+        "系统监控",
+        "可视化界面",
+        "响应式设计",
+        "多系统集成",
+        "实时状态",
+        "操作面板",
+        "移动端适配"
+      ]
+    },
+    "chronicle": {
+      "name": "📚 Chronicle编年史",
+      "path": "/workspace/systems/chronicle",
+      "file_count": 52,
+      "total_lines": 32275,
+      "file_types": {
+        ".js": 41,
+        ".json": 3,
+        ".md": 8
+      },
+      "main_modules": [],
+      "config_files": [
+        "Dockerfile",
+        "package.json",
+        "jest.config.js"
+      ],
+      "optimization_files": [
+        "system-monitor",
+        "global-monitor.js",
+        "file-monitor.js",
+        "window-monitor.js",
+        "start-global-monitor.js",
+        "command-monitor.js",
+        "global-monitor.json"
+      ],
+      "key_features": [
+        "ReAct智能代理",
+        "任务执行",
+        "历史记录",
+        "智能推理",
+        "工具集成",
+        "对话管理",
+        "状态跟踪",
+        "结果分析"
+      ]
+    },
+    "Changlee": {
+      "name": "🔄 Changlee桌面宠物",
+      "path": "/workspace/systems/Changlee",
+      "file_count": 118,
+      "total_lines": 46974,
+      "file_types": {
+        ".py": 5,
+        ".js": 52,
+        ".jsx": 26,
+        ".ts": 1,
+        ".html": 1,
+        ".css": 4,
+        ".json": 9,
+        ".md": 19,
+        ".sh": 1
+      },
+      "main_modules": [
+        "hybrid_ai_server.py",
+        "index.js",
+        "index.html",
+        "local_ai_server.py"
+      ],
+      "config_files": [
+        "changlee.config.js",
+        "package.json",
+        "chronicle.config.js",
+        "app.config.js"
+      ],
+      "optimization_files": [
+        "changlee_optimization_report.json",
+        "performance_config.json",
+        "optimize_changlee.py"
+      ],
+      "key_features": [
+        "桌面宠物",
+        "Electron应用",
+        "音乐播放",
+        "情感陪伴",
+        "英语学习",
+        "React界面",
+        "本地存储",
+        "系统集成"
+      ]
+    },
+    "management": {
+      "name": "📋 Management项目管理",
+      "path": "/workspace/management",
+      "file_count": 136,
+      "total_lines": 32093,
+      "file_types": {
+        ".py": 21,
+        ".js": 4,
+        ".html": 1,
+        ".json": 7,
+        ".md": 96,
+        ".sh": 7
+      },
+      "main_modules": [
+        "streamlit_app.py",
+        "index.html",
+        "unified_script_manager.py",
+        "unified_launcher.py"
+      ],
+      "config_files": [
+        "global.config.js",
+        "config_validator.py"
+      ],
+      "optimization_files": [
+        "monitoring_config.json",
+        "deployment_config.json",
+        "optimize_management.py",
+        "deploy-pages.yml",
+        "performance",
+        "unified_launcher.py",
+        "optimize_management_simple.py",
+        "management_optimization_report.json",
+        "health_check.py",
+        "quick_deploy.sh"
+      ],
+      "key_features": [
+        "项目管理",
+        "脚本自动化",
+        "部署管理",
+        "系统监控",
+        "健康检查",
+        "日志管理",
+        "配置管理",
+        "运维工具"
+      ]
+    }
+  },
+  "file_types": {
+    "py": 177,
+    "js": 115,
+    "jsx": 28,
+    "ts": 20,
+    "html": 29,
+    "css": 15,
+    "json": 41,
+    "md": 185,
+    "sh": 33,
+    "yaml": 3
+  },
+  "optimization_status": {
+    "phase_1_completed": true,
+    "phase_2_completed": true,
+    "unified_components": [
+      "unified_app.py",
+      "unified_config.py",
+      "unified_main.py",
+      "unified_api_manager.py"
+    ],
+    "optimization_reports": [
+      "management_optimization_report.json",
+      "changlee_optimization_report.json",
+      "optimization_report.json"
+    ],
+    "performance_configs": [
+      "performance_config.json"
+    ],
+    "monitoring_systems": [
+      "health_check.py",
+      "monitoring_config.json"
+    ]
+  },
+  "code_metrics": {
+    "total_lines": 244881,
+    "code_lines": 0,
+    "comment_lines": 0,
+    "blank_lines": 0,
+    "languages": {
+      "Python": 58635,
+      "JavaScript": 57822,
+      "TypeScript": 4918,
+      "HTML": 30991,
+      "CSS": 9188,
+      "JSON": 32663,
+      "Markdown": 44192,
+      "Shell": 6472
+    }
+  },
+  "summary": {
+    "total_systems": 6,
+    "optimization_progress": {
+      "phase_1": true,
+      "phase_2": true
+    },
+    "largest_system": "nexus",
+    "most_files": "nexus"
+  }
+}
