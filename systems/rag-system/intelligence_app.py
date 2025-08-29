@@ -984,7 +984,7 @@ def main():
         st.subheader("🔧 功能选择")
         selected_function = st.radio(
             "选择功能",
-            ["📥 文档摄取", "🔍 智能查询", "🌌 记忆星图", "🛡️ 秩序之盾", "🎯 火控系统", "🏥 Chronicle联邦", "🛡️ 系统工程日志"],
+            ["📥 文档摄取", "🔍 智能查询", "🌌 记忆星图", "🛡️ 秩序之盾", "🎯 火控系统", "🏥 Chronicle联邦", "📊 性能监控", "🛡️ 系统工程日志"],
             help="选择要使用的功能模块"
         )
         
@@ -1020,6 +1020,8 @@ def main():
         fire_control_system_interface(brain)
     elif selected_function == "🏥 Chronicle联邦":
         chronicle_federation_interface(brain)
+    elif selected_function == "📊 性能监控":
+        performance_monitoring_interface(brain)
     elif selected_function == "🛡️ 系统工程日志":
         system_engineering_log_interface(brain)
 
@@ -1444,6 +1446,211 @@ def chronicle_federation_interface(brain: IntelligenceBrain):
         """)
     else:
         st.error("🔴 RAG系统状态：异常")
+
+def performance_monitoring_interface(brain: IntelligenceBrain):
+    """性能监控界面"""
+    st.header("📊 Chronicle联邦性能监控")
+    
+    st.markdown("""
+    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+        <h4 style="color: white; margin: 0; text-align: center;">📊 Chronicle联邦性能监控中心</h4>
+        <p style="color: #e0e0e0; margin: 0.5rem 0 0 0; text-align: center;">
+            "监控RAG系统与Chronicle中央医院的性能指标，确保联邦系统高效运行。"
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    try:
+        from core.performance_monitor import get_performance_monitor, log_performance_summary
+        monitor = get_performance_monitor()
+        
+        # 实时性能指标
+        st.subheader("🔄 实时性能指标")
+        
+        if st.button("🔄 刷新性能数据"):
+            current_metrics = monitor.collect_system_metrics()
+            
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                st.metric(
+                    "内存使用", 
+                    f"{current_metrics.memory_usage_mb:.1f} MB",
+                    help="当前RAG系统内存使用量"
+                )
+            
+            with col2:
+                st.metric(
+                    "CPU使用率", 
+                    f"{current_metrics.cpu_usage_percent:.1f}%",
+                    help="当前RAG系统CPU使用率"
+                )
+            
+            with col3:
+                st.metric(
+                    "API响应时间", 
+                    f"{current_metrics.api_response_time:.2f}s",
+                    help="Chronicle API平均响应时间"
+                )
+            
+            with col4:
+                st.metric(
+                    "成功率", 
+                    f"{current_metrics.success_rate:.1%}",
+                    help="Chronicle API调用成功率"
+                )
+        
+        # 性能摘要
+        st.subheader("📋 性能摘要")
+        
+        if st.button("📊 获取性能摘要"):
+            summary = monitor.get_performance_summary()
+            
+            if summary.get("status") == "operational":
+                st.success("🟢 系统运行正常")
+                
+                # 运行统计
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.info(f"""
+                    **运行统计:**
+                    - 运行时间: {summary.get('uptime_seconds', 0):.0f} 秒
+                    - 总请求数: {summary.get('total_requests', 0)}
+                    - 失败请求: {summary.get('failed_requests', 0)}
+                    - 成功率: {summary.get('success_rate', 0):.1%}
+                    """)
+                
+                with col2:
+                    perf = summary.get('performance', {})
+                    st.info(f"""
+                    **平均性能:**
+                    - API响应: {perf.get('avg_api_response_time', 0):.2f}s
+                    - 内存使用: {perf.get('avg_memory_usage_mb', 0):.1f}MB
+                    - CPU使用: {perf.get('avg_cpu_usage_percent', 0):.1f}%
+                    - 网络延迟: {perf.get('avg_network_latency_ms', 0):.1f}ms
+                    """)
+                
+                # 性能阈值
+                st.subheader("⚠️ 性能阈值")
+                thresholds = summary.get('thresholds', {})
+                
+                threshold_data = {
+                    "指标": ["API响应时间", "内存使用", "CPU使用", "网络延迟", "最低成功率"],
+                    "当前值": [
+                        f"{perf.get('avg_api_response_time', 0):.2f}s",
+                        f"{perf.get('avg_memory_usage_mb', 0):.1f}MB",
+                        f"{perf.get('avg_cpu_usage_percent', 0):.1f}%",
+                        f"{perf.get('avg_network_latency_ms', 0):.1f}ms",
+                        f"{summary.get('success_rate', 0):.1%}"
+                    ],
+                    "阈值": [
+                        f"{thresholds.get('api_response_time', 0)}s",
+                        f"{thresholds.get('memory_usage_mb', 0)}MB",
+                        f"{thresholds.get('cpu_usage_percent', 0)}%",
+                        f"{thresholds.get('network_latency_ms', 0)}ms",
+                        f"{thresholds.get('min_success_rate', 0):.1%}"
+                    ]
+                }
+                
+                st.table(threshold_data)
+            else:
+                st.warning("⚠️ 暂无性能数据")
+        
+        # 性能趋势
+        st.subheader("📈 性能趋势")
+        
+        trend_minutes = st.selectbox(
+            "选择时间范围",
+            [15, 30, 60, 120, 240],
+            index=2,
+            format_func=lambda x: f"过去{x}分钟",
+            help="选择要查看的性能趋势时间范围"
+        )
+        
+        if st.button("📈 查看性能趋势"):
+            trends = monitor.get_performance_trends(minutes=trend_minutes)
+            
+            if "message" in trends:
+                st.info(trends["message"])
+            else:
+                # 显示趋势图表
+                import pandas as pd
+                
+                if trends.get("timestamps"):
+                    df = pd.DataFrame({
+                        "时间": pd.to_datetime(trends["timestamps"]),
+                        "API响应时间(s)": trends["api_response_times"],
+                        "内存使用(MB)": trends["memory_usage"],
+                        "CPU使用(%)": trends["cpu_usage"],
+                        "网络延迟(ms)": trends["network_latency"]
+                    })
+                    
+                    # API响应时间趋势
+                    st.line_chart(df.set_index("时间")["API响应时间(s)"])
+                    
+                    # 系统资源使用趋势
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.line_chart(df.set_index("时间")["内存使用(MB)"])
+                    with col2:
+                        st.line_chart(df.set_index("时间")["CPU使用(%)"])
+        
+        # 性能优化建议
+        st.subheader("💡 性能优化建议")
+        
+        if st.button("💡 获取优化建议"):
+            current_metrics = monitor.collect_system_metrics()
+            suggestions = []
+            
+            if current_metrics.memory_usage_mb > 300:
+                suggestions.append("🔧 内存使用较高，建议重启系统或清理缓存")
+            
+            if current_metrics.cpu_usage_percent > 70:
+                suggestions.append("⚡ CPU使用率较高，建议减少并发处理")
+            
+            if current_metrics.api_response_time > 2.0:
+                suggestions.append("🌐 API响应较慢，建议检查Chronicle服务器状态")
+            
+            if current_metrics.success_rate < 0.9:
+                suggestions.append("🚨 成功率较低，建议检查网络连接和服务器状态")
+            
+            if not suggestions:
+                suggestions.append("✅ 系统性能良好，无需优化")
+            
+            for suggestion in suggestions:
+                st.info(suggestion)
+        
+        # 导出性能数据
+        st.subheader("📤 导出性能数据")
+        
+        if st.button("📤 导出性能报告"):
+            import tempfile
+            import os
+            
+            with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as f:
+                monitor.export_metrics(f.name)
+                
+                # 读取文件内容
+                with open(f.name, 'r', encoding='utf-8') as rf:
+                    report_content = rf.read()
+                
+                st.download_button(
+                    label="📥 下载性能报告",
+                    data=report_content,
+                    file_name=f"chronicle_performance_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json",
+                    mime="application/json"
+                )
+                
+                # 清理临时文件
+                os.unlink(f.name)
+                
+                st.success("✅ 性能报告已准备就绪")
+        
+    except ImportError:
+        st.error("❌ 性能监控模块未找到，请检查系统配置")
+    except Exception as e:
+        st.error(f"❌ 性能监控异常: {e}")
 
 def system_engineering_log_interface(brain: IntelligenceBrain):
     """系统工程日志界面 - 黑匣子与免疫系统"""
