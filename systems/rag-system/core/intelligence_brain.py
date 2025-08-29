@@ -27,7 +27,14 @@ from utils.logger import logger
 from core.memory_nebula import MemoryNebula
 from core.shields_of_order import ShieldsOfOrder
 from core.fire_control_system import FireControlSystem, SearchScope, AttentionTarget
-from core.pantheon_soul import PantheonSoul, ReActAgent, ai_self_healing, HealingStrategy, TaskComplexity
+from core.chronicle_healing import (
+    chronicle_self_healing as ai_self_healing, 
+    intelligence_brain_self_healing,
+    FailureSeverity,
+    SystemSource,
+    configure_chronicle_healing,
+    check_chronicle_federation_health
+)
 
 # 确保NLTK数据可用
 try:
@@ -413,11 +420,16 @@ class IntelligenceBrain:
         self.memory_nebula = MemoryNebula(llm_manager)
         self.shields_of_order = ShieldsOfOrder(self.eternal_archive, self.memory_nebula, llm_manager)
         self.fire_control_system = FireControlSystem()
-        self.pantheon_soul = PantheonSoul()
-        self.react_agent = ReActAgent(self.pantheon_soul)
-        logger.info("🧠 中央情报大脑已启动 - 集成记忆星图、秩序之盾、火控系统与Pantheon灵魂")
+        # 配置Chronicle联邦治疗系统
+        configure_chronicle_healing(
+            chronicle_url="http://localhost:3000",
+            max_retries=3,
+            enable_fallback=True,
+            default_source=SystemSource.INTELLIGENCE_BRAIN
+        )
+        logger.info("🧠 中央情报大脑已启动 - 集成记忆星图、秩序之盾、火控系统，连接Chronicle中央医院")
     
-    @ai_self_healing(strategy=HealingStrategy.AI_ANALYZE_FIX, max_retries=2)
+    @intelligence_brain_self_healing(severity=FailureSeverity.MEDIUM, max_retries=2)
     def ingest_document(self, document_content: str, filename: str, 
                        file_path: str = None, metadata: Dict = None) -> Dict[str, Any]:
         """摄取文档并执行完整的知识处理流程"""
@@ -600,7 +612,7 @@ class IntelligenceBrain:
                 "shields_protection": False
             }
     
-    @ai_self_healing(strategy=HealingStrategy.AI_ANALYZE_FIX, max_retries=3)
+    @intelligence_brain_self_healing(severity=FailureSeverity.HIGH, max_retries=3)
     def fire_controlled_query(self, query: str, search_scope: str = None, 
                             target_id: str = None, top_k: int = 10,
                             enable_reranking: bool = True) -> Dict[str, Any]:
@@ -789,51 +801,45 @@ class IntelligenceBrain:
             logger.error(f"神之档位检索失败: {e}")
             return {"results": [], "error": str(e)}
     
-    def execute_complex_task(self, task_description: str, 
-                           complexity: TaskComplexity = TaskComplexity.MODERATE) -> Dict[str, Any]:
-        """执行复杂任务 - ReAct代理模式"""
+    async def check_chronicle_federation_health(self) -> Dict[str, Any]:
+        """检查Chronicle联邦健康状态"""
         try:
-            logger.info(f"🎖️ 启动ReAct代理执行复杂任务: {task_description}")
+            logger.info("🏥 检查Chronicle联邦健康状态...")
             
-            # 使用ReAct代理执行任务
-            result = self.react_agent.execute_complex_task(task_description, complexity)
+            # 使用Chronicle联邦健康检查
+            health_status = await check_chronicle_federation_health()
             
             return {
                 "success": True,
-                "message": "ReAct代理任务执行完成",
-                "task_description": task_description,
-                "complexity": complexity.value,
-                "result": result,
-                "react_mode": True,
-                "pantheon_enhanced": True,
+                "message": "Chronicle联邦健康检查完成",
+                "federation_status": health_status,
                 "timestamp": datetime.now().isoformat()
             }
             
         except Exception as e:
-            logger.error(f"ReAct代理任务执行失败: {e}")
+            logger.error(f"Chronicle联邦健康检查失败: {e}")
             return {
                 "success": False,
                 "error": str(e),
-                "task_description": task_description,
-                "react_mode": True,
-                "pantheon_enhanced": False
+                "federation_status": "error"
             }
     
-    def get_transparency_view(self, function_name: str) -> Optional[Dict[str, Any]]:
-        """获取透明观察窗视图"""
+    async def get_chronicle_healing_statistics(self) -> Dict[str, Any]:
+        """获取Chronicle联邦治疗统计"""
         try:
-            return self.pantheon_soul.get_transparency_view(function_name)
+            from core.chronicle_client import get_chronicle_client
+            client = get_chronicle_client()
+            health_report = await client.get_health_report(source="intelligence_brain")
+            
+            return {
+                "success": True,
+                "message": "Chronicle治疗统计获取成功",
+                "healing_statistics": health_report,
+                "timestamp": datetime.now().isoformat()
+            }
         except Exception as e:
-            logger.error(f"获取透明视图失败: {e}")
-            return None
-    
-    def get_healing_statistics(self) -> Dict[str, Any]:
-        """获取自我修复统计"""
-        try:
-            return self.pantheon_soul.get_healing_statistics()
-        except Exception as e:
-            logger.error(f"获取修复统计失败: {e}")
-            return {"error": str(e)}
+            logger.error(f"获取Chronicle治疗统计失败: {e}")
+            return {"error": str(e), "success": False}
     
     def get_brain_status(self) -> Dict[str, Any]:
         """获取大脑状态"""
@@ -842,13 +848,11 @@ class IntelligenceBrain:
             nebula_status = self.memory_nebula.get_nebula_status()
             shields_status = self.shields_of_order.get_shields_status()
             fire_control_status = self.fire_control_system.get_fire_control_status()
-            pantheon_status = self.pantheon_soul.get_healing_statistics()
-            react_status = self.react_agent.get_agent_status()
             
             return {
                 "status": "operational",
-                "brain_version": "2.0.0-Genesis-Chapter6",
-                "architecture": "Trinity Smart Chunking + Memory Nebula + Shields of Order + Fire Control System + Pantheon Soul + Black Box Recorder",
+                "brain_version": "2.0.0-Chronicle-Federation",
+                "architecture": "Trinity Smart Chunking + Memory Nebula + Shields of Order + Fire Control System + Chronicle Federation",
                 "capabilities": [
                     "长期记忆",
                     "深度理解", 
@@ -863,20 +867,17 @@ class IntelligenceBrain:
                     "AI注意力控制",
                     "三段式拨盘",
                     "火控系统",
-                    "自我修复基因",
-                    "透明观察窗",
-                    "ReAct代理模式",
-                    "智慧汲取与成长",
-                    "黑匣子记录器",
-                    "故障记忆系统",
-                    "免疫系统构建"
+                    "Chronicle联邦治疗",
+                    "中央医院求救",
+                    "故障记录委托",
+                    "治疗方案获取",
+                    "联邦免疫系统"
                 ],
                 "statistics": stats,
                 "memory_nebula": nebula_status,
                 "shields_of_order": shields_status,
                 "fire_control_system": fire_control_status,
-                "pantheon_soul": pantheon_status,
-                "react_agent": react_status,
+                "chronicle_federation": "connected",
                 "last_check": datetime.now().isoformat()
             }
             
