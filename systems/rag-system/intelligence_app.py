@@ -984,14 +984,14 @@ def main():
         st.subheader("🔧 功能选择")
         selected_function = st.radio(
             "选择功能",
-            ["📥 文档摄取", "🔍 智能查询", "🌌 记忆星图", "🛡️ 秩序之盾", "🎯 火控系统", "🌟 Pantheon灵魂", "🛡️ 系统工程日志"],
+            ["📥 文档摄取", "🔍 智能查询", "🌌 记忆星图", "🛡️ 秩序之盾", "🎯 火控系统", "🏥 Chronicle联邦", "🛡️ 系统工程日志"],
             help="选择要使用的功能模块"
         )
         
         # 系统信息
         st.subheader("ℹ️ 系统信息")
         st.info("""
-        **中央情报大脑 v2.0.0-Chapter3**
+        **中央情报大脑 v2.0.0-Chronicle-Federation**
         
         🔹 三位一体智能分块
         🔹 永恒归档系统  
@@ -1002,9 +1002,9 @@ def main():
         🔹 星图导航策略
         🔹 深度理解能力
         🔹 精准控制机制
-        🔹 自我修复功能
+        🏥 Chronicle联邦治疗
         
-        基于"大宪章"构建
+        基于"Chronicle联邦"架构
         """)
     
     # 主内容区域
@@ -1018,8 +1018,8 @@ def main():
         shields_of_order_interface(brain)
     elif selected_function == "🎯 火控系统":
         fire_control_system_interface(brain)
-    elif selected_function == "🌟 Pantheon灵魂":
-        pantheon_soul_interface(brain)
+    elif selected_function == "🏥 Chronicle联邦":
+        chronicle_federation_interface(brain)
     elif selected_function == "🛡️ 系统工程日志":
         system_engineering_log_interface(brain)
 
@@ -1213,221 +1213,237 @@ def fire_control_system_interface(brain: IntelligenceBrain):
         </div>
         """, unsafe_allow_html=True)
 
-def pantheon_soul_interface(brain: IntelligenceBrain):
-    """Pantheon灵魂界面"""
-    st.header("🌟 Pantheon灵魂 - 知识的进化与自我成长")
+def chronicle_federation_interface(brain: IntelligenceBrain):
+    """Chronicle联邦界面"""
+    st.header("🏥 Chronicle联邦 - 中央医院治疗系统")
     
     st.markdown("""
-    <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
-        <h4 style="color: white; margin: 0; text-align: center;">🌟 Pantheon灵魂 - 系统自我进化核心</h4>
+    <div style="background: linear-gradient(135deg, #2c5aa0 0%, #1e3c72 100%); padding: 1.5rem; border-radius: 10px; margin: 1rem 0;">
+        <h4 style="color: white; margin: 0; text-align: center;">🏥 Chronicle联邦 - RAG系统的中央医院</h4>
         <p style="color: #e0e0e0; margin: 0.5rem 0 0 0; text-align: center;">
-            "我们，必须，从最优秀的'同行'身上，汲取'智慧'，让我们的'大脑'，拥有'学习'和'成长'的能力。"
+            "当RAG系统遇到故障时，它会向Chronicle中央医院求救，获得专业的治疗方案。"
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    # 获取Pantheon灵魂状态
-    pantheon_status = brain.get_healing_statistics()
-    react_status = brain.react_agent.get_agent_status()
+    # 检查Chronicle联邦健康状态
+    if st.button("🏥 检查Chronicle联邦健康状态"):
+        with st.spinner("正在检查Chronicle联邦健康状态..."):
+            import asyncio
+            try:
+                # 创建事件循环来运行异步函数
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                health_result = loop.run_until_complete(brain.check_chronicle_federation_health())
+                
+                if health_result.get("success"):
+                    federation_status = health_result.get("federation_status", {})
+                    
+                    if federation_status.get("chronicle_online"):
+                        st.success("🟢 Chronicle中央医院在线")
+                        
+                        # 显示连接状态
+                        st.markdown("""
+                        <div class="success-card">
+                            <h4>✅ Chronicle联邦状态：已连接</h4>
+                            <p><strong>版本：</strong> 2.0.0-Chronicle-Federation</p>
+                            <p><strong>连接状态：</strong> 正常</p>
+                        </div>
+                        """, unsafe_allow_html=True)
+                        
+                        # 显示健康报告
+                        health_report = federation_status.get("health_report")
+                        if health_report:
+                            st.subheader("📊 Chronicle健康报告")
+                            
+                            col1, col2, col3, col4 = st.columns(4)
+                            with col1:
+                                st.metric("故障记录", health_report.get("total_failures", 0))
+                            with col2:
+                                st.metric("治疗成功", health_report.get("successful_healings", 0))
+                            with col3:
+                                st.metric("免疫记录", health_report.get("immune_records", 0))
+                            with col4:
+                                success_rate = health_report.get("healing_success_rate", 0)
+                                st.metric("治疗成功率", f"{success_rate:.1%}")
+                    else:
+                        st.error("🔴 Chronicle中央医院离线")
+                        st.warning("⚠️ 系统将使用降级治疗模式")
+                else:
+                    st.error(f"❌ 健康检查失败: {health_result.get('error')}")
+                    
+            except Exception as e:
+                st.error(f"❌ 健康检查异常: {e}")
     
-    if pantheon_status.get("pantheon_status") == "evolving":
-        st.markdown("""
-        <div class="success-card">
-            <h4>🟢 Pantheon灵魂状态：进化中</h4>
-            <p><strong>版本：</strong> 2.0.0-Genesis-Chapter5</p>
-            <p><strong>进化级别：</strong> 自我修复与智慧汲取</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # 核心能力展示
-        st.subheader("🧬 自我修复基因")
-        
-        healing_stats = pantheon_status.get("statistics", {})
-        col1, col2, col3, col4 = st.columns(4)
-        
-        with col1:
-            st.metric("总执行次数", healing_stats.get("total_executions", 0))
-        with col2:
-            st.metric("成功执行", healing_stats.get("successful_executions", 0))
-        with col3:
-            st.metric("自我修复", healing_stats.get("healed_executions", 0))
-        with col4:
-            success_rate = healing_stats.get("overall_success_rate", 0)
-            st.metric("成功率", f"{success_rate:.1%}")
-        
-        # 知识库状态
-        knowledge_base = pantheon_status.get("knowledge_base", {})
-        if knowledge_base:
-            st.subheader("🧠 智慧汲取知识库")
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("学习的错误类型", knowledge_base.get("error_types_learned", 0))
-            with col2:
-                st.metric("修复尝试总数", knowledge_base.get("total_healing_attempts", 0))
-        
-        # 透明观察窗
-        st.subheader("🔍 透明观察窗")
-        
-        function_names = ["ingest_document", "fire_controlled_query", "protected_query_intelligence"]
-        selected_function = st.selectbox(
-            "选择要观察的函数",
-            options=function_names,
-            help="查看函数执行的透明化信息"
+    # Chronicle治疗统计
+    st.subheader("📈 Chronicle治疗统计")
+    
+    if st.button("📊 获取治疗统计"):
+        with st.spinner("正在获取Chronicle治疗统计..."):
+            import asyncio
+            try:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                stats_result = loop.run_until_complete(brain.get_chronicle_healing_statistics())
+                
+                if stats_result.get("success"):
+                    healing_stats = stats_result.get("healing_statistics", {})
+                    
+                    if healing_stats:
+                        st.success("✅ 治疗统计获取成功")
+                        
+                        # 显示统计信息
+                        col1, col2, col3 = st.columns(3)
+                        with col1:
+                            st.metric("总故障数", healing_stats.get("total_failures", 0))
+                        with col2:
+                            st.metric("治疗成功", healing_stats.get("successful_healings", 0))
+                        with col3:
+                            st.metric("免疫激活", healing_stats.get("immunity_activations", 0))
+                        
+                        # 故障类型分布
+                        failure_types = healing_stats.get("failure_types", {})
+                        if failure_types:
+                            st.subheader("🔍 故障类型分布")
+                            for error_type, count in failure_types.items():
+                                st.write(f"**{error_type}:** {count} 次")
+                    else:
+                        st.info("📊 暂无治疗统计数据")
+                else:
+                    st.error(f"❌ 获取治疗统计失败: {stats_result.get('error')}")
+                    
+            except Exception as e:
+                st.error(f"❌ 获取治疗统计异常: {e}")
+    
+    # 手动故障报告测试
+    st.subheader("🚨 手动故障报告测试")
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        test_function = st.text_input(
+            "函数名称",
+            placeholder="例如: ingest_document",
+            help="要测试的函数名称"
         )
-        
-        if st.button("🔍 查看后台代码"):
-            transparency_view = brain.get_transparency_view(selected_function)
-            
-            if transparency_view:
-                st.success("✅ 透明观察窗已激活")
-                
-                # 函数信息
-                func_info = transparency_view.get("function_info", {})
-                st.info(f"""
-                **函数名称：** {func_info.get('name', 'N/A')}  
-                **执行时间：** {func_info.get('execution_time', 'N/A')}s  
-                **执行状态：** {'成功' if func_info.get('success') else '失败'}  
-                **修复尝试：** {func_info.get('healing_attempts', 0)} 次
-                """)
-                
-                # 代码透明性
-                code_info = transparency_view.get("code_transparency", {})
-                if code_info:
-                    with st.expander("</> 查看后台代码"):
-                        st.code(code_info.get("source_code", "代码不可用"), language="python")
-                        
-                        st.markdown("**函数签名：**")
-                        st.code(code_info.get("signature", "N/A"))
-                        
-                        if code_info.get("docstring"):
-                            st.markdown("**文档字符串：**")
-                            st.text(code_info.get("docstring"))
-                
-                # 错误信息（如果有）
-                error_info = transparency_view.get("error_info")
-                if error_info:
-                    st.error(f"**错误信息：** {error_info.get('error_message')}")
-                    if error_info.get("healing_strategy"):
-                        st.info(f"**修复策略：** {error_info.get('healing_strategy')}")
-            else:
-                st.warning("⚠️ 暂无该函数的透明化信息")
-        
-        # ReAct代理状态
-        st.subheader("🎖️ ReAct代理 - 战地指挥官")
-        
-        if react_status.get("agent_status") == "operational":
-            st.success("🎖️ ReAct代理状态：运行正常")
-            
-            # 代理统计
-            agent_stats = react_status.get("statistics", {})
-            col1, col2, col3 = st.columns(3)
-            
-            with col1:
-                st.metric("执行任务", agent_stats.get("total_tasks", 0))
-            with col2:
-                st.metric("成功任务", agent_stats.get("successful_tasks", 0))
-            with col3:
-                success_rate = agent_stats.get("success_rate", 0)
-                st.metric("成功率", f"{success_rate:.1%}")
-            
-            # 复杂任务测试
-            st.subheader("🧪 复杂任务测试")
-            
-            col1, col2 = st.columns(2)
-            with col1:
-                task_description = st.text_area(
-                    "任务描述",
-                    placeholder="例如：分析用户查询意图并生成个性化回答",
-                    help="描述要执行的复杂任务"
+        test_error_type = st.selectbox(
+            "错误类型",
+            ["ValueError", "ConnectionError", "TimeoutError", "FileNotFoundError", "MemoryError"],
+            help="选择错误类型"
+        )
+    
+    with col2:
+        test_error_message = st.text_area(
+            "错误信息",
+            placeholder="例如: 文档处理失败，内存不足",
+            help="描述错误信息"
+        )
+        test_severity = st.selectbox(
+            "严重程度",
+            ["low", "medium", "high", "critical"],
+            index=1,
+            help="选择故障严重程度"
+        )
+    
+    if st.button("🚨 发送测试故障报告") and test_function and test_error_message:
+        with st.spinner("正在向Chronicle中央医院发送故障报告..."):
+            try:
+                from core.chronicle_client import (
+                    chronicle_log_failure, 
+                    SystemSource, 
+                    FailureSeverity
                 )
-            
-            with col2:
-                from core.pantheon_soul import TaskComplexity
-                complexity = st.selectbox(
-                    "任务复杂度",
-                    options=[c.value for c in TaskComplexity],
-                    format_func=lambda x: {
-                        "simple": "🟢 简单",
-                        "moderate": "🟡 中等", 
-                        "complex": "🟠 复杂",
-                        "critical": "🔴 关键"
-                    }.get(x, x)
-                )
-            
-            if st.button("🎖️ 启动ReAct代理") and task_description:
-                with st.spinner("ReAct代理正在执行任务..."):
-                    try:
-                        from core.pantheon_soul import TaskComplexity
-                        complexity_enum = TaskComplexity(complexity)
-                        
-                        result = brain.execute_complex_task(task_description, complexity_enum)
-                        
-                        if result["success"]:
-                            st.success("✅ ReAct代理任务执行完成！")
+                import asyncio
+                
+                # 创建模拟异常
+                class TestException(Exception):
+                    pass
+                
+                test_exception = TestException(test_error_message)
+                severity_map = {
+                    "low": FailureSeverity.LOW,
+                    "medium": FailureSeverity.MEDIUM,
+                    "high": FailureSeverity.HIGH,
+                    "critical": FailureSeverity.CRITICAL
+                }
+                
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                result = loop.run_until_complete(chronicle_log_failure(
+                    source=SystemSource.INTELLIGENCE_BRAIN,
+                    function_name=test_function,
+                    error=test_exception,
+                    context={"test_mode": True, "user_initiated": True},
+                    severity=severity_map[test_severity]
+                ))
+                
+                if result:
+                    st.success("✅ 故障报告发送成功！")
+                    st.info(f"**故障ID:** {result.get('failure_id', 'N/A')}")
+                    
+                    # 自动请求治疗方案
+                    if st.button("🏥 请求治疗方案"):
+                        with st.spinner("正在请求治疗方案..."):
+                            from core.chronicle_client import chronicle_request_healing
                             
-                            task_record = result.get("result", {}).get("task_record", {})
+                            healing_result = loop.run_until_complete(chronicle_request_healing(
+                                source=SystemSource.INTELLIGENCE_BRAIN,
+                                function_name=test_function,
+                                error=test_exception,
+                                context={"failure_id": result.get('failure_id')}
+                            ))
                             
-                            # 显示执行计划
-                            plan = task_record.get("plan", {})
-                            if plan:
+                            if healing_result and healing_result.success:
+                                st.success("🏥 治疗方案获取成功！")
+                                
                                 st.info(f"""
-                                **任务ID：** {plan.get('task_id')}  
-                                **复杂度：** {plan.get('complexity')}  
-                                **步骤数：** {len(plan.get('steps', []))}  
-                                **预估时间：** {plan.get('estimated_duration')}秒
-                                """)
-                            
-                            # 显示执行结果
-                            execution = task_record.get("execution", {})
-                            if execution:
-                                st.success(f"""
-                                **执行状态：** {execution.get('overall_status')}  
-                                **成功步骤：** {execution.get('successful_steps')}/{execution.get('total_steps')}  
-                                **成功率：** {execution.get('success_rate', 0):.1%}
+                                **治疗策略:** {healing_result.strategy}  
+                                **治疗信息:** {healing_result.message}  
+                                **成功率预估:** {healing_result.estimated_success_rate:.1%}
                                 """)
                                 
-                                # 显示执行步骤
-                                with st.expander("📋 查看执行步骤"):
-                                    for step in execution.get("execution_results", []):
-                                        status_icon = "✅" if step["status"] == "completed" else "❌"
-                                        st.write(f"{status_icon} 步骤 {step['step_number']}: {step['step_description']}")
-                        else:
-                            st.error(f"❌ ReAct代理任务执行失败: {result.get('error')}")
-                            
-                    except Exception as e:
-                        st.error(f"❌ 任务执行过程中发生错误: {str(e)}")
-        
-        # 最近活动
-        recent_activity = pantheon_status.get("recent_activity", [])
-        if recent_activity:
-            st.subheader("📊 最近活动")
-            
-            for activity in recent_activity[-5:]:  # 显示最近5个活动
-                status_icon = "✅" if activity["success"] else "❌"
-                healing_info = f" (修复 {activity['healing_attempts']} 次)" if activity["healing_attempts"] > 0 else ""
-                
-                st.write(f"{status_icon} **{activity['function']}**{healing_info} - {activity['timestamp']}")
-        
-        # 系统进化建议
-        st.subheader("🚀 系统进化建议")
-        st.markdown("""
-        <div style="background: #e8f5e8; padding: 1rem; border-radius: 5px; border-left: 4px solid #28a745;">
-            <h5>🌱 持续进化能力</h5>
-            <p><strong>自我修复基因：</strong> 系统能够自动捕获错误、分析原因并尝试修复</p>
-            <p><strong>透明观察窗：</strong> 所有AI生成内容都可以查看后台代码和执行过程</p>
-            <p><strong>ReAct代理模式：</strong> 复杂任务采用"先规划、再沟通、后执行"的智能模式</p>
-            <p><strong>智慧汲取：</strong> 从错误中学习，不断积累修复知识</p>
-        </div>
-        """, unsafe_allow_html=True)
+                                if healing_result.recommendations:
+                                    st.subheader("💡 治疗建议")
+                                    for i, rec in enumerate(healing_result.recommendations, 1):
+                                        st.write(f"{i}. {rec}")
+                            else:
+                                st.error("❌ 治疗方案获取失败")
+                else:
+                    st.error("❌ 故障报告发送失败")
+                    
+            except Exception as e:
+                st.error(f"❌ 测试故障报告异常: {e}")
     
+    # Chronicle联邦架构说明
+    st.subheader("🏗️ Chronicle联邦架构")
+    
+    st.markdown("""
+    **Chronicle联邦治疗系统架构：**
+    
+    1. **🚨 故障检测** - RAG系统自动检测故障
+    2. **📡 求救信号** - 向Chronicle中央医院发送故障报告
+    3. **🏥 中央诊断** - Chronicle分析故障并生成治疗方案
+    4. **💊 治疗执行** - RAG系统执行Chronicle提供的治疗方案
+    5. **🛡️ 免疫记录** - 成功治疗后建立免疫记录
+    
+    **权力分离原则：**
+    - **RAG系统** 保留"学术大脑"（智能分块、知识图谱）
+    - **Chronicle系统** 承担"工程大脑"（故障记录、自我修复）
+    - **联邦连接** 通过API实现两系统的神经连接
+    """)
+    
+    # 系统状态总览
+    st.subheader("🔍 系统状态总览")
+    
+    brain_status = brain.get_brain_status()
+    if brain_status.get("status") == "operational":
+        st.success("🟢 RAG系统状态：运行正常")
+        st.info(f"""
+        **架构版本:** {brain_status.get('brain_version')}  
+        **架构类型:** {brain_status.get('architecture')}  
+        **Chronicle联邦:** {brain_status.get('chronicle_federation')}
+        """)
     else:
-        st.markdown("""
-        <div class="error-card">
-            <h4>🔴 Pantheon灵魂状态：未激活</h4>
-            <p>系统检测到Pantheon灵魂未正常激活，请检查系统配置。</p>
-        </div>
-        """, unsafe_allow_html=True)
+        st.error("🔴 RAG系统状态：异常")
 
 def system_engineering_log_interface(brain: IntelligenceBrain):
     """系统工程日志界面 - 黑匣子与免疫系统"""

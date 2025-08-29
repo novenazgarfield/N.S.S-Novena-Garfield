@@ -14,6 +14,7 @@ const { customValidators } = require('./middleware/validation');
 // 路由导入
 const sessionsRouter = require('./routes/sessions');
 const reportsRouter = require('./routes/reports');
+const genesisRouter = require('./routes/genesis'); // 🏥 Genesis中央医院API
 
 const logger = createModuleLogger('api-server');
 
@@ -152,6 +153,7 @@ class APIServer {
         endpoints: {
           sessions: '/sessions',
           reports: '/reports',
+          genesis: '/api', // 🏥 Genesis中央医院API
           health: '/health',
           info: '/info'
         },
@@ -196,6 +198,7 @@ class APIServer {
     // 主要路由
     this.app.use('/sessions', sessionsRouter);
     this.app.use('/reports', reportsRouter);
+    this.app.use('/api', genesisRouter); // 🏥 Genesis中央医院API路由
 
     // 管理路由
     this.setupAdminRoutes();
