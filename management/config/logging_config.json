@@ -1,0 +1,16 @@
+{
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "handlers": {
+      "console": true,
+      "file": {
+        "enabled": true,
+        "filename": "logs/application.log",
+        "max_size": "10MB",
+        "backup_count": 5
+      }
+    },
+    "retention_days": 30
+  }
+}

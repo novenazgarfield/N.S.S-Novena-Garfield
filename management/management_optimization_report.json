@@ -1,0 +1,275 @@
+{
+  "optimization_date": "2025-08-29T15:21:47.404461",
+  "management_directory": "/workspace/management",
+  "actions_performed": [
+    {
+      "timestamp": "2025-08-29T15:21:47.398231",
+      "action": "开始脚本冗余分析",
+      "details": "扫描所有管理脚本",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.403483",
+      "action": "脚本冗余分析完成",
+      "details": "总脚本: 17, 冗余组: 4, 冗余率: 80.0%",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.403507",
+      "action": "创建统一脚本管理器",
+      "details": "整合所有管理脚本功能",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.403820",
+      "action": "统一脚本管理器创建完成",
+      "details": "管理器保存到 /workspace/management/unified_script_manager.py",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.403845",
+      "action": "创建自动化部署配置",
+      "details": "设置CI/CD流程配置",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.404006",
+      "action": "自动化部署配置创建完成",
+      "details": "配置保存到 /workspace/management/config/deployment_config.json",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.404023",
+      "action": "创建系统监控配置",
+      "details": "设置监控和告警配置",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.404148",
+      "action": "系统监控配置创建完成",
+      "details": "配置保存到 /workspace/management/config/monitoring_config.json",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.404164",
+      "action": "创建统一日志配置",
+      "details": "设置集中化日志管理",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.404315",
+      "action": "统一日志配置创建完成",
+      "details": "配置保存到 /workspace/management/config/logging_config.json",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.404332",
+      "action": "创建健康检查脚本",
+      "details": "设置系统健康监控",
+      "level": "INFO"
+    },
+    {
+      "timestamp": "2025-08-29T15:21:47.404445",
+      "action": "健康检查脚本创建完成",
+      "details": "脚本保存到 /workspace/management/health_check.py",
+      "level": "INFO"
+    }
+  ],
+  "script_analysis": {
+    "total_scripts": 17,
+    "script_functions": {
+      "cleanup_and_import.py": {
+        "function_type": "cleanup",
+        "size": 10152,
+        "lines": 349,
+        "code_lines": 269,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "code_quality_checker.py": {
+        "function_type": "monitoring",
+        "size": 9794,
+        "lines": 279,
+        "code_lines": 216,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "config_validator.py": {
+        "function_type": "utility",
+        "size": 10547,
+        "lines": 323,
+        "code_lines": 250,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "start_system.py": {
+        "function_type": "startup",
+        "size": 5208,
+        "lines": 214,
+        "code_lines": 170,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "unified_launcher.py": {
+        "function_type": "startup",
+        "size": 18213,
+        "lines": 512,
+        "code_lines": 421,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "workspace_organizer.py": {
+        "function_type": "utility",
+        "size": 15689,
+        "lines": 571,
+        "code_lines": 439,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "online_rag_api.py": {
+        "function_type": "utility",
+        "size": 14215,
+        "lines": 479,
+        "code_lines": 365,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "simple_api.py": {
+        "function_type": "utility",
+        "size": 9820,
+        "lines": 331,
+        "code_lines": 252,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "start_ai_system.py": {
+        "function_type": "startup",
+        "size": 1854,
+        "lines": 79,
+        "code_lines": 65,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "start_services.py": {
+        "function_type": "startup",
+        "size": 6696,
+        "lines": 242,
+        "code_lines": 180,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "service_status.py": {
+        "function_type": "utility",
+        "size": 3396,
+        "lines": 125,
+        "code_lines": 95,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "test_api.py": {
+        "function_type": "testing",
+        "size": 3898,
+        "lines": 140,
+        "code_lines": 110,
+        "last_modified": "2025-08-29T03:00:08.696932"
+      },
+      "start_federation.sh": {
+        "function_type": "startup",
+        "size": 5616,
+        "lines": 226,
+        "code_lines": 168,
+        "last_modified": "2025-08-29T06:43:59.220346"
+      },
+      "quick_start.sh": {
+        "function_type": "startup",
+        "size": 241,
+        "lines": 17,
+        "code_lines": 7,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "start_tunnels.sh": {
+        "function_type": "startup",
+        "size": 6658,
+        "lines": 315,
+        "code_lines": 200,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "check_status.sh": {
+        "function_type": "monitoring",
+        "size": 2216,
+        "lines": 93,
+        "code_lines": 64,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      },
+      "cleanup.sh": {
+        "function_type": "cleanup",
+        "size": 4227,
+        "lines": 178,
+        "code_lines": 132,
+        "last_modified": "2025-08-29T03:00:08.686931"
+      }
+    },
+    "duplicate_groups": {
+      "cleanup": [
+        "cleanup_and_import.py",
+        "cleanup.sh"
+      ],
+      "monitoring": [
+        "code_quality_checker.py",
+        "check_status.sh"
+      ],
+      "utility": [
+        "config_validator.py",
+        "workspace_organizer.py",
+        "online_rag_api.py",
+        "simple_api.py",
+        "service_status.py"
+      ],
+      "startup": [
+        "start_system.py",
+        "unified_launcher.py",
+        "start_ai_system.py",
+        "start_services.py",
+        "start_federation.sh",
+        "quick_start.sh",
+        "start_tunnels.sh"
+      ],
+      "testing": [
+        "test_api.py"
+      ]
+    },
+    "redundant_groups": {
+      "cleanup": [
+        "cleanup_and_import.py",
+        "cleanup.sh"
+      ],
+      "monitoring": [
+        "code_quality_checker.py",
+        "check_status.sh"
+      ],
+      "utility": [
+        "config_validator.py",
+        "workspace_organizer.py",
+        "online_rag_api.py",
+        "simple_api.py",
+        "service_status.py"
+      ],
+      "startup": [
+        "start_system.py",
+        "unified_launcher.py",
+        "start_ai_system.py",
+        "start_services.py",
+        "start_federation.sh",
+        "quick_start.sh",
+        "start_tunnels.sh"
+      ]
+    },
+    "redundancy_percentage": 80.0
+  },
+  "summary": {
+    "total_actions": 12,
+    "scripts_analyzed": 17,
+    "redundancy_percentage": 80.0,
+    "unified_manager_created": true,
+    "deployment_config_created": true,
+    "monitoring_config_created": true,
+    "logging_config_created": true,
+    "health_check_created": true
+  },
+  "recommendations": [
+    "定期运行健康检查脚本监控系统状态",
+    "使用统一脚本管理器简化运维操作",
+    "实施自动化部署提高发布效率",
+    "建立完善的日志分析机制",
+    "定期清理和归档旧数据"
+  ]
+}
