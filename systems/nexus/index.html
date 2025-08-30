@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="api-url" content="https://voltage-sense-olive-photographic.trycloudflare.com">
+    <meta name="api-url" content="https://speaker-guatemala-circular-sampling.trycloudflare.com">
     <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -3217,6 +3217,18 @@
                             <span class="function-item-icon">🗑️</span>
                             <span class="function-item-text">清空对话</span>
                         </div>
+                        <div class="function-item" onclick="showDocumentManager()">
+                            <span class="function-item-icon">📋</span>
+                            <span class="function-item-text">文档管理</span>
+                        </div>
+                        <div class="function-item" onclick="showSystemStatus()">
+                            <span class="function-item-icon">📊</span>
+                            <span class="function-item-text">系统状态</span>
+                        </div>
+                        <div class="function-item" onclick="clearTestData()">
+                            <span class="function-item-icon">🧹</span>
+                            <span class="function-item-text">清理测试数据</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4453,9 +4465,150 @@
             toggleFunctionMenu();
         }
 
+        // 🌟 NEXUS RAG 系统增强功能
+        
+        // 显示文档管理器
+        async function showDocumentManager() {
+            try {
+                const response = await fetch(`${RAG_CONFIG.baseURL}/api/documents`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    let message = '📋 **文档管理器**\n\n';
+                    
+                    if (data.documents && data.documents.length > 0) {
+                        message += `📊 **总计**: ${data.total_count} 个文档\n\n`;
+                        
+                        data.documents.forEach((doc, index) => {
+                            message += `**${index + 1}. ${doc.filename}**\n`;
+                            message += `   📄 分块数量: ${doc.chunks_count}\n`;
+                            message += `   📅 上传时间: ${new Date(doc.upload_time).toLocaleString('zh-CN')}\n`;
+                            message += `   🆔 文档ID: ${doc.id}\n\n`;
+                        });
+                        
+                        message += '💡 **提示**: 使用"清理测试数据"功能可以清理包含test/demo/sample关键词的文档';
+                    } else {
+                        message += '📭 暂无文档\n\n';
+                        message += '💡 **提示**: 点击"上传文件"按钮开始上传文档';
+                    }
+                    
+                    addMessage(message, 'assistant');
+                } else {
+                    addMessage(`❌ 获取文档列表失败: ${data.error}`, 'assistant');
+                }
+            } catch (error) {
+                console.error('获取文档列表失败:', error);
+                addMessage('❌ 获取文档列表失败，请确保NEXUS RAG服务器正在运行。', 'assistant');
+            }
+            
+            toggleFunctionMenu();
+        }
+
+        // 显示系统状态
+        async function showSystemStatus() {
+            try {
+                const [systemResponse, chronicleResponse] = await Promise.all([
+                    fetch(`${RAG_CONFIG.baseURL}/api/system/status`),
+                    fetch(`${RAG_CONFIG.baseURL}/api/chronicle/status`)
+                ]);
+
+                const systemData = await systemResponse.json();
+                const chronicleData = await chronicleResponse.json();
+
+                if (systemResponse.ok && chronicleResponse.ok) {
+                    let message = '📊 **NEXUS RAG 系统状态**\n\n';
+                    
+                    // 系统基本信息
+                    message += `🌟 **${systemData.system_name}**\n`;
+                    message += `📦 版本: ${systemData.version}\n`;
+                    message += `📚 文档数量: ${systemData.runtime_stats.documents_loaded}\n`;
+                    message += `💬 对话次数: ${systemData.runtime_stats.chat_interactions}\n`;
+                    message += `🤖 Gemini状态: ${systemData.runtime_stats.gemini_integration.available ? '✅ 可用' : '❌ 不可用'}\n`;
+                    
+                    if (systemData.runtime_stats.gemini_integration.current_key) {
+                        message += `🔑 当前密钥: ${systemData.runtime_stats.gemini_integration.current_key}\n`;
+                    }
+                    
+                    message += `🕐 系统时间: ${new Date(systemData.runtime_stats.uptime).toLocaleString('zh-CN')}\n\n`;
+                    
+                    // Chronicle系统状态
+                    message += `🏥 **${chronicleData.chronicle_system}**\n`;
+                    message += `📦 版本: ${chronicleData.version}\n`;
+                    message += `🔗 状态: ${chronicleData.status === 'active' ? '✅ 活跃' : '❌ 离线'}\n`;
+                    message += `🔗 集成: ${chronicleData.rag_integration}\n\n`;
+                    
+                    // 七大核心系统
+                    message += '🛡️ **七大核心系统**\n';
+                    Object.entries(systemData.core_systems).forEach(([key, value]) => {
+                        message += `   ${value} ✅\n`;
+                    });
+                    
+                    message += '\n🚀 **系统能力**\n';
+                    systemData.capabilities.forEach(capability => {
+                        message += `   ${capability}\n`;
+                    });
+                    
+                    addMessage(message, 'assistant');
+                } else {
+                    addMessage('❌ 获取系统状态失败', 'assistant');
+                }
+            } catch (error) {
+                console.error('获取系统状态失败:', error);
+                addMessage('❌ 获取系统状态失败，请确保NEXUS RAG服务器正在运行。', 'assistant');
+            }
+            
+            toggleFunctionMenu();
+        }
+
+        // 清理测试数据
+        async function clearTestData() {
+            if (!confirm('🧹 确定要清理所有测试数据吗？\n\n这将删除文件名包含 test/demo/sample 关键词的文档及相关对话历史。')) {
+                toggleFunctionMenu();
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${RAG_CONFIG.baseURL}/api/clear/test`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    let message = '🧹 **测试数据清理完成**\n\n';
+                    message += `📄 删除文档: ${data.deleted_documents.length} 个\n`;
+                    message += `💬 清理对话: ${data.deleted_chats} 条\n`;
+                    message += `📚 剩余文档: ${data.remaining_documents} 个\n`;
+                    message += `🕐 清理时间: ${new Date(data.timestamp).toLocaleString('zh-CN')}\n\n`;
+                    
+                    if (data.deleted_documents.length > 0) {
+                        message += '🗑️ **已删除的文档**:\n';
+                        data.deleted_documents.forEach((doc, index) => {
+                            message += `   ${index + 1}. ${doc.filename} (${doc.id})\n`;
+                        });
+                    } else {
+                        message += '✨ 没有找到需要清理的测试数据';
+                    }
+                    
+                    addMessage(message, 'assistant');
+                } else {
+                    addMessage(`❌ 清理测试数据失败: ${data.error}`, 'assistant');
+                }
+            } catch (error) {
+                console.error('清理测试数据失败:', error);
+                addMessage('❌ 清理测试数据失败，请确保NEXUS RAG服务器正在运行。', 'assistant');
+            }
+            
+            toggleFunctionMenu();
+        }
+
         // RAG系统配置 - 动态检测服务器地址
         const RAG_CONFIG = {
             baseURL: (() => {
+                // 🌟 相对论引擎 - 动态API地址发现
                 // 如果是通过隧道访问，尝试从配置中获取最新地址
                 if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
                     // 尝试从页面元数据中获取API地址
@@ -4463,21 +4616,26 @@
                     if (apiUrlMeta) {
                         return apiUrlMeta.content;
                     }
-                    // 回退到默认地址
-                    return 'https://voltage-sense-olive-photographic.trycloudflare.com';
+                    // 回退到NEXUS RAG服务器地址
+                    return 'https://speaker-guatemala-circular-sampling.trycloudflare.com';
                 }
-                // 本地开发环境 - 使用HTTPS隧道避免混合内容问题
-                return 'https://voltage-sense-olive-photographic.trycloudflare.com';
+                // 本地开发环境 - 使用NEXUS RAG服务器
+                return 'https://speaker-guatemala-circular-sampling.trycloudflare.com';
             })(),
             fallbackURLs: [
-                'https://voltage-sense-olive-photographic.trycloudflare.com' // Cloudflare隧道
+                'https://speaker-guatemala-circular-sampling.trycloudflare.com', // NEXUS RAG服务器
+                'https://voltage-sense-olive-photographic.trycloudflare.com' // 备用地址
             ],
             endpoints: {
                 health: '/api/health',
                 chat: '/api/chat',
                 history: '/api/history',
                 upload: '/api/upload',
-                clear: '/api/clear'
+                clear: '/api/clear',
+                documents: '/api/documents',
+                systemStatus: '/api/system/status',
+                chronicleStatus: '/api/chronicle/status',
+                clearTest: '/api/clear/test'
             },
             timeout: 60000
         };

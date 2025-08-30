@@ -9,6 +9,7 @@ from flask_cors import CORS
 import json
 import os
 from datetime import datetime
+from pathlib import Path
 import pytz
 import logging
 
@@ -19,10 +20,17 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 CORS(app)
 
+# 🌟 相对论引擎 - 动态路径发现系统
+current_file = Path(__file__)
+# 找到项目根目录 (假设此文件在 PROJECT_ROOT/systems/rag-system/ 下)
+PROJECT_ROOT = current_file.parent.parent.parent
+
 # 配置
 TIMEZONE = pytz.timezone('Asia/Shanghai')
-UPLOAD_FOLDER = '/workspace/systems/rag-system/uploads'
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+# 错误的"绝对"路径: UPLOAD_FOLDER = '/workspace/systems/rag-system/uploads'
+# 正确的"相对"路径:
+UPLOAD_FOLDER = current_file.parent / 'uploads'
+UPLOAD_FOLDER.mkdir(exist_ok=True)
 
 # 模拟数据存储
 chat_history = []

@@ -10,25 +10,35 @@ import os
 import secrets
 from typing import Dict, List, Any, Optional
 from datetime import datetime, timedelta
+from pathlib import Path
 
 class UserManager:
     """用户管理器"""
     
     def __init__(self):
-        self.users_file = "/workspace/rag_system/config/users.json"
-        self.sessions_file = "/workspace/rag_system/config/sessions.json"
+        # 🌟 相对论引擎 - 动态路径发现
+        current_file = Path(__file__)
+        # 找到项目根目录 (假设此文件在 PROJECT_ROOT/systems/rag-system/common/ 下)
+        project_root = current_file.parent.parent.parent.parent
+        
+        # 错误的"绝对"路径:
+        # self.users_file = "/workspace/rag_system/config/users.json"
+        # 正确的"相对"路径:
+        config_dir = project_root / "systems" / "rag-system" / "config"
+        self.users_file = config_dir / "users.json"
+        self.sessions_file = config_dir / "sessions.json"
+        
         self.ensure_config_dir()
         self.init_default_users()
     
     def ensure_config_dir(self):
         """确保配置目录存在"""
-        config_dir = os.path.dirname(self.users_file)
-        if not os.path.exists(config_dir):
-            os.makedirs(config_dir)
+        config_dir = self.users_file.parent
+        config_dir.mkdir(parents=True, exist_ok=True)
     
     def init_default_users(self):
         """初始化默认用户"""
-        if not os.path.exists(self.users_file):
+        if not self.users_file.exists():
             default_users = {
                 "admin": {
                     "password_hash": self._hash_password("admin123"),

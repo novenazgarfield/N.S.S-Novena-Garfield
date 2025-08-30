@@ -29,11 +29,18 @@ from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
 import pytz
 
-# 添加项目路径
-current_dir = Path(__file__).parent
+# 🌟 相对论引擎 - 动态路径发现系统
+# 这会自动找到当前正在运行的脚本文件
+current_file = Path(__file__)
+# 这会自动找到我们整个项目的"根目录"！
+# (假设我们的脚本在 PROJECT_ROOT/systems/rag-system/ 下)
+PROJECT_ROOT = current_file.parent.parent.parent
+
+# 动态添加项目路径
+current_dir = current_file.parent
 sys.path.insert(0, str(current_dir))
 sys.path.insert(0, str(current_dir / 'common'))
-sys.path.insert(0, str(current_dir.parent.parent / 'api'))
+sys.path.insert(0, str(PROJECT_ROOT / 'api'))
 
 # 导入核心系统
 try:
