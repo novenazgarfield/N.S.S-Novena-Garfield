@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="api-url" content="https://speaker-guatemala-circular-sampling.trycloudflare.com">
+    <meta name="api-url" content="http://localhost:8502">
     <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -4617,13 +4617,14 @@
                         return apiUrlMeta.content;
                     }
                     // 回退到NEXUS RAG服务器地址
-                    return 'https://speaker-guatemala-circular-sampling.trycloudflare.com';
+                    return 'http://localhost:8502';
                 }
                 // 本地开发环境 - 使用NEXUS RAG服务器
-                return 'https://speaker-guatemala-circular-sampling.trycloudflare.com';
+                return 'http://localhost:8502';
             })(),
             fallbackURLs: [
-                'https://speaker-guatemala-circular-sampling.trycloudflare.com', // NEXUS RAG服务器
+                'http://localhost:8502', // NEXUS RAG服务器本地
+                'https://speaker-guatemala-circular-sampling.trycloudflare.com', // NEXUS RAG服务器隧道
                 'https://voltage-sense-olive-photographic.trycloudflare.com' // 备用地址
             ],
             endpoints: {
