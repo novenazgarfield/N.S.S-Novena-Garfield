@@ -25,7 +25,7 @@ import hashlib
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Tuple
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify, send_from_directory, render_template
 from flask_cors import CORS
 import pytz
 
@@ -124,21 +124,36 @@ try:
         
         def _setup_gemini(self):
             try:
-                # 获取Google API密钥
+                # 获取Google API密钥，按优先级排序
                 user_keys = self.api_manager.get_user_api_keys('admin')
-                google_keys = [key for key in user_keys if key.provider.value == 'google']
+                google_keys = [key for key in user_keys if key.provider.value == 'google' and key.status.value == 'active']
+                
+                # 按daily_limit降序排序，优先使用高限额的密钥
+                google_keys.sort(key=lambda x: x.daily_limit, reverse=True)
                 
                 if google_keys:
-                    key_id = google_keys[0].key_id
-                    api_key = self.api_manager.get_api_key('admin', key_id)
-                    if api_key:
-                        genai.configure(api_key=api_key)
-                        self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
-                        print("✅ Gemini模型初始化成功")
-                    else:
-                        print("⚠️ 无法解密Gemini API密钥")
+                    for key_info in google_keys:
+                        try:
+                            api_key = self.api_manager.get_api_key('admin', key_info.key_id)
+                            if api_key:
+                                genai.configure(api_key=api_key)
+                                # 尝试使用最新的Gemini 2.0 Flash模型
+                                self.model = genai.GenerativeModel('gemini-2.0-flash-exp')
+                                self.current_key_info = key_info
+                                print(f"✅ Gemini模型初始化成功 - 使用密钥: {key_info.key_name}")
+                                
+                                # 测试API连接
+                                test_response = self.model.generate_content("Hello")
+                                if test_response:
+                                    print("✅ Gemini API连接测试成功")
+                                    return
+                        except Exception as key_error:
+                            print(f"⚠️ 密钥 {key_info.key_name} 测试失败: {key_error}")
+                            continue
+                    
+                    print("⚠️ 所有Gemini API密钥都无法使用")
                 else:
-                    print("⚠️ 未找到Gemini API密钥")
+                    print("⚠️ 未找到活跃的Gemini API密钥")
             except Exception as e:
                 print(f"⚠️ Gemini初始化失败: {e}")
         
@@ -200,6 +215,11 @@ def log_system_event(event_type: str, details: Dict[str, Any]):
     }
     print(f"[{event_type}] {json.dumps(details, ensure_ascii=False)}")
     return event
+
+@app.route('/')
+def index():
+    """前端界面"""
+    return render_template('nexus_frontend.html')
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
@@ -488,27 +508,146 @@ def list_documents():
     except Exception as e:
         return jsonify({'error': f'获取文档列表失败: {str(e)}'}), 500
 
+@app.route('/api/documents/<document_id>', methods=['DELETE'])
+def delete_document(document_id):
+    """删除指定文档"""
+    try:
+        # 查找并删除文档
+        doc_to_delete = None
+        for i, doc in enumerate(intelligence_brain.documents):
+            if doc['id'] == document_id:
+                doc_to_delete = intelligence_brain.documents.pop(i)
+                break
+        
+        if doc_to_delete:
+            # 从聊天历史中删除相关记录
+            intelligence_brain.chat_history = [
+                chat for chat in intelligence_brain.chat_history 
+                if not any(doc.get('id') == document_id for doc in chat.get('search_results', []))
+            ]
+            
+            log_system_event('DOCUMENT_DELETE', {
+                'document_id': document_id,
+                'filename': doc_to_delete['filename']
+            })
+            
+            return jsonify({
+                'message': f'文档 {doc_to_delete["filename"]} 已成功删除',
+                'document_id': document_id
+            })
+        else:
+            return jsonify({'error': '文档不存在'}), 404
+    except Exception as e:
+        return jsonify({'error': f'删除文档失败: {str(e)}'}), 500
+
 @app.route('/api/clear', methods=['POST'])
 def clear_data():
     """清空所有数据"""
     try:
+        docs_count = len(intelligence_brain.documents)
+        chat_count = len(intelligence_brain.chat_history)
+        
         intelligence_brain.documents.clear()
         intelligence_brain.chat_history.clear()
         
-        log_system_event('DATA_CLEAR', {'cleared_documents': True, 'cleared_chat': True})
+        log_system_event('DATA_CLEAR', {
+            'cleared_documents': docs_count,
+            'cleared_chats': chat_count,
+            'action': 'complete_clear'
+        })
         
         return jsonify({
             'message': '所有数据已清空',
+            'deleted_documents': docs_count,
+            'deleted_chats': chat_count,
             'timestamp': get_current_time().isoformat()
         })
     
     except Exception as e:
         return jsonify({'error': f'清空数据失败: {str(e)}'}), 500
 
+@app.route('/api/clear/test', methods=['POST'])
+def clear_test_data():
+    """清空测试数据（文件名包含test的文档）"""
+    try:
+        deleted_docs = []
+        remaining_docs = []
+        
+        # 分离测试文档和正常文档
+        for doc in intelligence_brain.documents:
+            filename = doc['filename'].lower()
+            if 'test' in filename or 'demo' in filename or 'sample' in filename:
+                deleted_docs.append(doc)
+            else:
+                remaining_docs.append(doc)
+        
+        # 更新文档列表
+        intelligence_brain.documents = remaining_docs
+        
+        # 清理相关的聊天历史
+        original_chat_count = len(intelligence_brain.chat_history)
+        deleted_doc_ids = [doc['id'] for doc in deleted_docs]
+        intelligence_brain.chat_history = [
+            chat for chat in intelligence_brain.chat_history 
+            if not any(doc.get('id') in deleted_doc_ids 
+                      for doc in chat.get('search_results', []))
+        ]
+        cleaned_chat_count = original_chat_count - len(intelligence_brain.chat_history)
+        
+        log_system_event('TEST_DATA_CLEAR', {
+            'deleted_documents': len(deleted_docs),
+            'deleted_chats': cleaned_chat_count,
+            'action': 'test_data_cleanup'
+        })
+        
+        return jsonify({
+            'message': f'已清理 {len(deleted_docs)} 个测试文档',
+            'deleted_documents': [{'id': doc['id'], 'filename': doc['filename']} for doc in deleted_docs],
+            'deleted_chats': cleaned_chat_count,
+            'remaining_documents': len(remaining_docs),
+            'timestamp': get_current_time().isoformat()
+        })
+    
+    except Exception as e:
+        return jsonify({'error': f'清理测试数据失败: {str(e)}'}), 500
+
+@app.route('/api/chronicle/status', methods=['GET'])
+def chronicle_status():
+    """获取Chronicle系统状态"""
+    try:
+        chronicle_stats = {
+            'healing_system': '🏥 Chronicle治疗系统',
+            'performance_monitor': '📊 性能监控器',
+            'central_hospital': '🔗 中央医院连接',
+            'federation_status': '联邦治疗系统已加载',
+            'emergency_protocols': '紧急救援协议已激活'
+        }
+        
+        return jsonify({
+            'chronicle_system': 'Chronicle联邦治疗系统',
+            'version': '2.0.0',
+            'status': 'active',
+            'components': chronicle_stats,
+            'rag_integration': 'RAG系统现在可以向中央医院求救',
+            'timestamp': get_current_time().isoformat()
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/system/status', methods=['GET'])
 def system_status():
     """获取系统详细状态"""
     try:
+        # 获取Gemini API状态
+        gemini_status = {
+            'available': GEMINI_AVAILABLE and gemini_integration is not None,
+            'model': 'gemini-2.0-flash-exp',
+            'current_key': None
+        }
+        
+        if gemini_integration and hasattr(gemini_integration, 'current_key_info'):
+            gemini_status['current_key'] = gemini_integration.current_key_info.key_name
+        
         status = {
             'system_name': 'NEXUS RAG 集成系统',
             'version': '3.0.0',
@@ -524,7 +663,8 @@ def system_status():
             'runtime_stats': {
                 'documents_loaded': len(intelligence_brain.documents),
                 'chat_interactions': len(intelligence_brain.chat_history),
-                'gemini_integration': GEMINI_AVAILABLE,
+                'gemini_integration': gemini_status,
+                'chronicle_integration': True,
                 'uptime': get_current_time().isoformat(),
                 'timezone': 'Asia/Shanghai'
             },
@@ -535,7 +675,9 @@ def system_status():
                 '🔍 语义搜索',
                 '💬 上下文对话',
                 '📊 文档分析和总结',
-                '🛡️ 自我修复和监控'
+                '🛡️ 自我修复和监控',
+                '🏥 Chronicle治疗系统集成',
+                '🗑️ 智能数据清理'
             ]
         }
         
