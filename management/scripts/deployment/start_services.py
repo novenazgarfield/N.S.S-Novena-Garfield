@@ -13,10 +13,11 @@ import signal
 import json
 from pathlib import Path
 
-# 配置
-PROJECT_DIR = "/workspace"
-FRONTEND_DIR = f"{PROJECT_DIR}/systems/nexus"
-CLOUDFLARED_PATH = f"{FRONTEND_DIR}/cloudflared"
+# 配置 - 动态发现项目根目录
+script_dir = Path(__file__).resolve().parent
+PROJECT_DIR = script_dir.parent.parent.parent  # deployment -> scripts -> management -> project_root
+FRONTEND_DIR = PROJECT_DIR / "systems" / "nexus"
+CLOUDFLARED_PATH = FRONTEND_DIR / "cloudflared"
 API_PORT = 5000
 FRONTEND_PORT = 53870  # 使用提供的端口
 

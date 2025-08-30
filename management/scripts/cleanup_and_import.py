@@ -26,9 +26,12 @@ def cleanup_workspace():
     """清理workspace"""
     print("🧹 开始清理workspace...")
     
-    workspace = Path("/workspace")
+    # 动态发现项目根目录
+    script_dir = Path(__file__).resolve().parent
+    workspace = script_dir.parent.parent  # management/scripts -> management -> project_root
+    
     if not workspace.exists():
-        print("❌ /workspace 目录不存在")
+        print(f"❌ 项目根目录不存在: {workspace}")
         return False
     
     # 保留的重要文件和目录
@@ -70,7 +73,9 @@ def import_project(github_url, token=None):
     """从GitHub导入项目"""
     print(f"📥 开始导入项目: {github_url}")
     
-    workspace = Path("/workspace")
+    # 动态发现项目根目录
+    script_dir = Path(__file__).resolve().parent
+    workspace = script_dir.parent.parent
     
     # 构建git命令
     if token:
@@ -138,7 +143,9 @@ def check_optimization_status():
     """检查系统优化状态"""
     print("📊 检查系统优化状态...")
     
-    workspace = Path("/workspace")
+    # 动态发现项目根目录
+    script_dir = Path(__file__).resolve().parent
+    workspace = script_dir.parent.parent
     systems_dir = workspace / "systems"
     
     if not systems_dir.exists():
@@ -199,9 +206,12 @@ def show_project_structure():
     """显示项目结构"""
     print("📁 项目结构:")
     
-    workspace = Path("/workspace")
+    # 动态发现项目根目录
+    script_dir = Path(__file__).resolve().parent
+    workspace = script_dir.parent.parent
+    
     if not workspace.exists():
-        print("❌ /workspace 目录不存在")
+        print(f"❌ 项目根目录不存在: {workspace}")
         return
     
     # 显示主要目录
@@ -234,7 +244,9 @@ def run_system_tests():
     """运行系统测试"""
     print("🧪 运行系统测试...")
     
-    workspace = Path("/workspace")
+    # 动态发现项目根目录
+    script_dir = Path(__file__).resolve().parent
+    workspace = script_dir.parent.parent
     
     # 测试统一入口点
     test_commands = [

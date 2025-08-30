@@ -26,7 +26,7 @@ def create_organized_structure():
     """创建整理后的目录结构"""
     print("📁 创建整理后的目录结构...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     
     # 创建主要的整理目录
     organized_dirs = {
@@ -54,7 +54,7 @@ def move_temp_files():
     """移动临时文件"""
     print("🗂️ 整理临时文件...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     temp_target = workspace / "management" / "temp"
     
     # 移动temp目录
@@ -93,7 +93,7 @@ def move_tools():
     """移动工具目录"""
     print("🔧 整理工具目录...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     tools_source = workspace / "tools"
     tools_target = workspace / "management" / "tools"
     
@@ -116,7 +116,7 @@ def move_screenshots():
     """移动截图文件"""
     print("📸 整理截图文件...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     screenshots_source = workspace / ".browser_screenshots"
     screenshots_target = workspace / "management" / "screenshots"
     
@@ -139,7 +139,7 @@ def move_archive():
     """移动归档文件"""
     print("📦 整理归档文件...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     archive_source = workspace / "archive"
     archive_target = workspace / "management" / "archive"
     
@@ -162,7 +162,7 @@ def move_data():
     """移动数据目录"""
     print("💾 整理数据目录...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     data_source = workspace / "data"
     data_target = workspace / "management" / "data"
     
@@ -185,7 +185,7 @@ def move_logs():
     """移动日志目录"""
     print("📋 整理日志目录...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     logs_source = workspace / "logs"
     logs_target = workspace / "management" / "logs"
     
@@ -208,7 +208,7 @@ def move_tests():
     """移动测试目录"""
     print("🧪 整理测试目录...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     tests_source = workspace / "tests"
     tests_target = workspace / "management" / "tests"
     
@@ -231,7 +231,7 @@ def move_scripts():
     """移动脚本目录"""
     print("📜 整理脚本目录...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     scripts_source = workspace / "scripts"
     scripts_target = workspace / "management" / "scripts"
     
@@ -254,7 +254,7 @@ def consolidate_docs():
     """整合文档目录"""
     print("📚 整合文档目录...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     docs_target = workspace / "management" / "docs"
     
     # 移动docs目录
@@ -293,7 +293,7 @@ def move_config_files():
     """移动配置文件"""
     print("⚙️ 整理配置文件...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     config_target = workspace / "management" / "config"
     
     # 移动隐藏的配置文件
@@ -320,7 +320,7 @@ def organize_root_docs():
     """整理根目录文档"""
     print("📄 整理根目录文档...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     docs_target = workspace / "management" / "docs" / "root_docs"
     docs_target.mkdir(exist_ok=True)
     
@@ -350,7 +350,7 @@ def create_workspace_index():
     """创建工作区索引文件"""
     print("📋 创建工作区索引...")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     index_file = workspace / "management" / "WORKSPACE_INDEX.md"
     
     content = f"""# 🗂️ N.S.S-Novena-Garfield 工作区管理索引
@@ -476,7 +476,7 @@ def show_organization_status():
     """显示整理状态"""
     print("📊 工作区整理状态:")
     
-    workspace = Path("/workspace")
+    workspace = Path(__file__).resolve().parent.parent.parent
     
     # 检查主要目录
     main_dirs = ["systems", "api", "management"]
