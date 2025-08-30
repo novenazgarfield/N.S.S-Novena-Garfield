@@ -42,7 +42,7 @@ def check_process_status():
         result = subprocess.run(['ps', 'aux'], capture_output=True, text=True)
         processes = result.stdout
         
-        api_running = 'simple_api.py' in processes
+        api_running = 'smart_rag_server.py' in processes
         frontend_running = 'http.server 53870' in processes
         tunnel_running = processes.count('cloudflared') >= 2
         

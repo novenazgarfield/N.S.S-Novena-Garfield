@@ -24,7 +24,7 @@ function createWindow() {
 
   // Load the app
   const startUrl = isDev 
-    ? 'http://localhost:52305' 
+    ? `http://localhost:${process.env.VITE_PORT || process.env.PORT || '52300'}` 
     : `file://${path.join(__dirname, '../dist/index.html')}`;
   
   mainWindow.loadURL(startUrl);

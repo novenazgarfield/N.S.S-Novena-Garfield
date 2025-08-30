@@ -1,0 +1,13 @@
+{
+  "api_endpoints": {
+    "rag_api": "http://localhost:5001",
+    "health_check": "http://localhost:5001/api/health",
+    "chat": "http://localhost:5001/api/chat",
+    "upload": "http://localhost:5001/api/upload",
+    "energy_api": "http://localhost:56400",
+    "energy_health": "http://localhost:56400/api/energy/health",
+    "energy_models": "http://localhost:56400/api/energy/models/available",
+    "energy_config": "http://localhost:56400/api/energy/config"
+  },
+  "updated_at": 1756571533.4466026
+}

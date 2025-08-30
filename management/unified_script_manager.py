@@ -38,7 +38,7 @@ class UnifiedScriptManager:
                 "config_validator",
                 "workspace_organizer",
                 "online_rag_api",
-                "simple_api",
+                "smart_rag_server",
                 "service_status"
         ],
         "startup": [

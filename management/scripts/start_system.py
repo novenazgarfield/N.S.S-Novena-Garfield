@@ -13,7 +13,7 @@ from pathlib import Path
 
 # 添加脚本目录到路径
 SCRIPT_DIR = Path(__file__).parent
-WORKSPACE_DIR = SCRIPT_DIR.parent
+WORKSPACE_DIR = SCRIPT_DIR.parent.parent
 sys.path.append(str(SCRIPT_DIR / "management"))
 
 def print_banner():
@@ -44,15 +44,16 @@ def run_command(cmd, cwd=None, background=False):
         return None
 
 def start_simple_mode():
-    """启动简化模式"""
-    print("🚀 启动简化模式...")
+    """启动完整模式（原简化模式已升级为完整功能）"""
+    print("🚀 启动完整RAG系统...")
     
-    deployment_dir = SCRIPT_DIR / "deployment"
+    # 使用完整版RAG系统
+    rag_dir = WORKSPACE_DIR.parent / "systems" / "rag-system"
     
-    # 启动API服务
-    print("  📡 启动API服务...")
+    # 启动完整版RAG API服务
+    print("  📡 启动完整版RAG API服务...")
     api_process = run_command(
-        f"python {deployment_dir}/simple_api.py",
+        f"python {rag_dir}/smart_rag_server.py",
         background=True
     )
     
@@ -140,7 +141,7 @@ def stop_services():
     print("🛑 停止所有服务...")
     
     # 停止Python进程
-    run_command("pkill -f simple_api.py")
+    run_command("pkill -f smart_rag_server.py")
     run_command("pkill -f online_rag_api.py")
     run_command("pkill -f 'http.server 53870'")
     run_command("pkill -f cloudflared")
