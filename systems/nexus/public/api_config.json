@@ -9,5 +9,5 @@
     "energy_models": "http://localhost:56400/api/energy/models/available",
     "energy_config": "http://localhost:56400/api/energy/config"
   },
-  "updated_at": 1756569276.9737322
+  "updated_at": 1756571533.4466026
 }

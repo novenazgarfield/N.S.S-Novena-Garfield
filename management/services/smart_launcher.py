@@ -125,6 +125,7 @@ class SmartLauncher:
         # 启动前端服务
         env = os.environ.copy()
         env['PORT'] = str(port)
+        env['VITE_PORT'] = str(port)  # 确保Vite和Electron都能获取到端口
         
         process = subprocess.Popen([
             "npm", "run", "dev", "--", "--port", str(port), "--host", "0.0.0.0"

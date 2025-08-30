@@ -97,7 +97,7 @@ class NexusStarter:
             },
             'frontend': {
                 'host': '0.0.0.0',
-                'port': 52305,
+                'port': int(os.environ.get('VITE_PORT', os.environ.get('PORT', '52300'))),
                 'build_dir': 'dist'
             },
             'backend': {
@@ -114,7 +114,7 @@ class NexusStarter:
             },
             'electron': {
                 'main': 'public/electron.js',
-                'wait_url': 'http://localhost:52305'
+                'wait_url': f'http://localhost:{os.environ.get("VITE_PORT", os.environ.get("PORT", "52300"))}'
             }
         }
         
@@ -479,7 +479,7 @@ class NexusStarter:
         frontend = self.config.get('frontend', {})
         print("⚛️ 前端配置:")
         print(f"   主机: {frontend.get('host', '0.0.0.0')}")
-        print(f"   端口: {frontend.get('port', 52305)}")
+        print(f"   端口: {frontend.get('port', int(os.environ.get('VITE_PORT', os.environ.get('PORT', '52300'))))}")
         print(f"   构建目录: {frontend.get('build_dir', 'dist')}")
         print("")
         
@@ -678,7 +678,7 @@ class NexusStarter:
 选项:
   --config <path>       - 指定配置文件路径
   --host <host>         - 指定主机地址 (默认: 0.0.0.0)
-  --port <port>         - 指定端口号 (默认: 52305)
+  --port <port>         - 指定端口号 (默认: 从环境变量VITE_PORT或PORT获取，否则52300)
   --frontend-only       - 仅启动前端 (dev模式)
   --skip-build          - 跳过构建步骤 (prod模式)
   --build               - 构建模式 (frontend模式)

@@ -6,7 +6,7 @@
       "port": 5001,
       "local_url": "http://localhost:5001",
       "status": "registered",
-      "registered_at": "2025-08-30T15:55:12.594788",
+      "registered_at": "2025-08-30T16:32:05.437404",
       "pid": null,
       "tunnel_url": null
     },
@@ -16,9 +16,9 @@
       "port": 52300,
       "local_url": "http://localhost:52300",
       "status": "registered",
-      "registered_at": "2025-08-30T15:54:36.973391",
+      "registered_at": "2025-08-30T16:32:13.446215",
       "pid": null,
-      "tunnel_url": "https://episodes-most-beaches-arg.trycloudflare.com"
+      "tunnel_url": null
     },
     "api_gateway": {
       "name": "api_gateway",
@@ -36,11 +36,21 @@
       "port": 56400,
       "local_url": "http://localhost:56400",
       "status": "registered",
-      "registered_at": "2025-08-30T15:55:17.599480",
+      "registered_at": "2025-08-30T16:32:10.442190",
+      "pid": null,
+      "tunnel_url": null
+    },
+    "test_service": {
+      "name": "test_service",
+      "type": "test",
+      "port": 5002,
+      "local_url": "http://localhost:5002",
+      "status": "registered",
+      "registered_at": "2025-08-30T16:06:29.020858",
       "pid": null,
       "tunnel_url": null
     }
   },
   "tunnels": {},
-  "updated_at": "2025-08-30T15:55:17.599491"
+  "updated_at": "2025-08-30T16:32:13.446224"
 }
