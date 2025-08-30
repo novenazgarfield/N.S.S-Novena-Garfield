@@ -1,6 +1,6 @@
 {
   "optimization_date": "2025-08-29T15:16:40.569755",
-  "changlee_directory": "/workspace/systems/Changlee",
+  "changlee_directory": "./systems/Changlee",
   "actions_performed": [
     {
       "timestamp": "2025-08-29T15:16:40.255630",

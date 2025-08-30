@@ -5,8 +5,20 @@
 
 const path = require('path');
 
-// 基础路径配置
-const BASE_PATH = process.env.NSS_BASE_PATH || '/workspace';
+// 基础路径配置 - 动态发现项目根目录
+function findProjectRoot() {
+  let currentPath = __dirname;
+  while (currentPath !== path.dirname(currentPath)) {
+    if (require('fs').existsSync(path.join(currentPath, 'DEVELOPMENT_GUIDE.md'))) {
+      return currentPath;
+    }
+    currentPath = path.dirname(currentPath);
+  }
+  // 如果找不到，返回management的上级目录
+  return path.resolve(__dirname, '../..');
+}
+
+const BASE_PATH = process.env.NSS_BASE_PATH || findProjectRoot();
 const SYSTEMS_PATH = path.join(BASE_PATH, 'systems');
 const API_PATH = path.join(BASE_PATH, 'api');
 

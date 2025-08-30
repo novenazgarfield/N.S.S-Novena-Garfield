@@ -1,7 +1,7 @@
 {
   "globalMonitoring": {
     "enabled": true,
-    "projectsPath": "/workspace/systems",
+    "projectsPath": "./systems",
     "monitorInterval": 30000,
     "resourceThresholds": {
       "cpu": 80,

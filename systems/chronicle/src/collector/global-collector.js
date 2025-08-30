@@ -5,7 +5,7 @@
  * 第一章：能力的"扩展" - 全域视野的建立
  * 
  * 功能：
- * - 扫描并解析所有子项目 (/workspace/systems/) 的输出日志
+ * - 扫描并解析所有子项目 (systems/) 的输出日志
  * - 监控核心操作系统日志 (/var/log/syslog等)
  * - 控制CPU占用率，保持静默运行
  * - 定期扫描，不影响用户正常使用
@@ -54,7 +54,7 @@ class GlobalDataCollector {
 
     // 全域监控配置
     this.globalConfig = {
-      projectsPath: '/workspace/systems',
+      projectsPath: path.resolve(__dirname, '../../../../systems'),
       systemLogPaths: this.getSystemLogPaths(),
       excludePatterns: [
         'node_modules',

@@ -1,6 +1,6 @@
 {
   "optimization_date": "2025-08-29T15:10:42.899410",
-  "nexus_directory": "/workspace/systems/nexus",
+  "nexus_directory": "./systems/nexus",
   "actions_performed": [
     {
       "timestamp": "2025-08-29T15:10:42.891499",

@@ -1,6 +1,6 @@
 {
   "optimization_date": "2025-08-29T15:21:47.404461",
-  "management_directory": "/workspace/management",
+  "management_directory": "./management",
   "actions_performed": [
     {
       "timestamp": "2025-08-29T15:21:47.398231",
@@ -23,7 +23,7 @@
     {
       "timestamp": "2025-08-29T15:21:47.403820",
       "action": "统一脚本管理器创建完成",
-      "details": "管理器保存到 /workspace/management/unified_script_manager.py",
+      "details": "管理器保存到 ./management/unified_script_manager.py",
       "level": "INFO"
     },
     {
@@ -35,7 +35,7 @@
     {
       "timestamp": "2025-08-29T15:21:47.404006",
       "action": "自动化部署配置创建完成",
-      "details": "配置保存到 /workspace/management/config/deployment_config.json",
+      "details": "配置保存到 ./management/config/deployment_config.json",
       "level": "INFO"
     },
     {
@@ -47,7 +47,7 @@
     {
       "timestamp": "2025-08-29T15:21:47.404148",
       "action": "系统监控配置创建完成",
-      "details": "配置保存到 /workspace/management/config/monitoring_config.json",
+      "details": "配置保存到 ./management/config/monitoring_config.json",
       "level": "INFO"
     },
     {
@@ -59,7 +59,7 @@
     {
       "timestamp": "2025-08-29T15:21:47.404315",
       "action": "统一日志配置创建完成",
-      "details": "配置保存到 /workspace/management/config/logging_config.json",
+      "details": "配置保存到 ./management/config/logging_config.json",
       "level": "INFO"
     },
     {
@@ -71,7 +71,7 @@
     {
       "timestamp": "2025-08-29T15:21:47.404445",
       "action": "健康检查脚本创建完成",
-      "details": "脚本保存到 /workspace/management/health_check.py",
+      "details": "脚本保存到 ./management/health_check.py",
       "level": "INFO"
     }
   ],

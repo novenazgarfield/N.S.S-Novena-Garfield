@@ -2,7 +2,7 @@
  * 🌍 Chronicle全系统监控器 (Global System Monitor)
  * ================================================
  * 
- * 扩展Chronicle监控能力到整个/workspace/systems和本机系统
+ * 扩展Chronicle监控能力到整个systems目录和本机系统
  * - 多项目监控
  * - 系统日志监控
  * - 进程监控
@@ -31,7 +31,7 @@ class GlobalSystemMonitor {
     this.projectWatchers = new Map();
     this.systemWatchers = new Map();
     this.monitoringConfig = {
-      projectsPath: '/workspace/systems',
+      projectsPath: path.resolve(__dirname, '../../../../systems'),
       systemLogPaths: this.getSystemLogPaths(),
       monitorInterval: 30000, // 30秒
       resourceThresholds: {
@@ -107,7 +107,7 @@ class GlobalSystemMonitor {
    */
   async discoverAndRegisterProjects() {
     try {
-      logger.info('🔍 扫描/workspace/systems中的项目...');
+      logger.info('🔍 扫描systems目录中的项目...');
 
       const systemsPath = this.monitoringConfig.projectsPath;
       const entries = await fs.readdir(systemsPath, { withFileTypes: true });

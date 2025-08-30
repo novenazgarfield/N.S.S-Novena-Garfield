@@ -54,7 +54,7 @@ class PermissionManager {
       maxPendingRequests: 50,                 // 最大待处理请求数
       auditLogMaxSize: 10000,                 // 审计日志最大条数
       allowedPaths: [                         // 允许操作的路径
-        '/workspace/systems',
+        path.resolve(__dirname, '../../../../systems'),
         '/tmp/chronicle-sandbox'
       ],
       restrictedPaths: [                      // 受限路径

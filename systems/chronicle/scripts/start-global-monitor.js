@@ -5,7 +5,7 @@
  * ===============================
  * 
  * 启动Chronicle全系统监控，覆盖：
- * - /workspace/systems下的所有项目
+ * - systems目录下的所有项目
  * - 本机系统日志和资源监控
  * - 跨项目故障关联分析
  * 
@@ -26,9 +26,22 @@ const path = require('path');
 const fs = require('fs');
 const { program } = require('commander');
 
-// 设置项目根目录
-const PROJECT_ROOT = path.resolve(__dirname, '..');
-process.chdir(PROJECT_ROOT);
+// 动态发现项目根目录
+function findProjectRoot(startPath) {
+  let currentPath = startPath;
+  while (currentPath !== path.dirname(currentPath)) {
+    if (fs.existsSync(path.join(currentPath, 'DEVELOPMENT_GUIDE.md'))) {
+      return currentPath;
+    }
+    currentPath = path.dirname(currentPath);
+  }
+  // 如果找不到，返回Chronicle系统目录
+  return path.resolve(__dirname, '..');
+}
+
+const PROJECT_ROOT = findProjectRoot(__dirname);
+const CHRONICLE_ROOT = path.resolve(__dirname, '..');
+process.chdir(CHRONICLE_ROOT);
 
 // 导入模块
 const logger = require('../src/shared/logger');
@@ -121,10 +134,10 @@ async function performDryRun() {
 
   // 检查必需的目录
   const requiredDirs = [
-    '/workspace/systems',
-    path.join(PROJECT_ROOT, 'src'),
-    path.join(PROJECT_ROOT, 'src/system-monitor'),
-    path.join(PROJECT_ROOT, 'src/api')
+    path.join(PROJECT_ROOT, 'systems'),
+    path.join(CHRONICLE_ROOT, 'src'),
+    path.join(CHRONICLE_ROOT, 'src/system-monitor'),
+    path.join(CHRONICLE_ROOT, 'src/api')
   ];
 
   for (const dir of requiredDirs) {
@@ -138,7 +151,7 @@ async function performDryRun() {
   // 检查项目
   logger.info('🔍 扫描项目...');
   try {
-    const systemsPath = '/workspace/systems';
+    const systemsPath = path.join(PROJECT_ROOT, 'systems');
     const entries = fs.readdirSync(systemsPath, { withFileTypes: true });
     const projects = entries.filter(entry => entry.isDirectory()).map(entry => entry.name);
     
@@ -330,7 +343,7 @@ function displayAccessInfo() {
 
   if (!options.apiOnly) {
     logger.info('🔍 监控范围:');
-    logger.info('   📁 项目监控: /workspace/systems/*');
+    logger.info(`   📁 项目监控: ${path.join(PROJECT_ROOT, 'systems')}/*`);
     logger.info('   📋 系统日志: /var/log/*');
     logger.info('   📊 资源监控: CPU, 内存, 磁盘');
     logger.info('   🔗 跨项目分析: 故障关联分析');

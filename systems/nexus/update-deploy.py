@@ -12,7 +12,8 @@ def main():
     print("🚀 开始更新部署...")
     
     # 确保在正确的目录
-    os.chdir('/workspace/N.S.S-Novena-Garfield/systems/nexus')
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(script_dir)
     
     # 构建项目
     print("📦 构建项目...")

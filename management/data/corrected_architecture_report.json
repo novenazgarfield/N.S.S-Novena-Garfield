@@ -2,7 +2,7 @@
   "project_name": "N.S.S-Novena-Garfield",
   "analysis_date": "2025-08-29T15:34:47.600050",
   "note": "修正版 - 排除node_modules等无关目录",
-  "project_root": "/workspace",
+  "project_root": ".",
   "excluded_directories": [
     "node_modules",
     "__pycache__",
@@ -14,7 +14,7 @@
   "systems": {
     "rag-system": {
       "name": "🧠 RAG智能系统",
-      "path": "/workspace/systems/rag-system",
+      "path": "./systems/rag-system",
       "file_count": 100,
       "total_lines": 31766,
       "file_types": {
@@ -54,7 +54,7 @@
     },
     "api": {
       "name": "🌐 API管理系统",
-      "path": "/workspace/api",
+      "path": "./api",
       "file_count": 26,
       "total_lines": 6897,
       "file_types": {
@@ -73,7 +73,7 @@
     },
     "nexus": {
       "name": "🎯 Nexus控制面板",
-      "path": "/workspace/systems/nexus",
+      "path": "./systems/nexus",
       "file_count": 145,
       "total_lines": 75847,
       "file_types": {
@@ -106,7 +106,7 @@
     },
     "chronicle": {
       "name": "📚 Chronicle编年史",
-      "path": "/workspace/systems/chronicle",
+      "path": "./systems/chronicle",
       "file_count": 52,
       "total_lines": 32275,
       "file_types": {
@@ -131,7 +131,7 @@
     },
     "Changlee": {
       "name": "🔄 Changlee桌面宠物",
-      "path": "/workspace/systems/Changlee",
+      "path": "./systems/Changlee",
       "file_count": 118,
       "total_lines": 46974,
       "file_types": {
@@ -167,7 +167,7 @@
     },
     "management": {
       "name": "📋 Management项目管理",
-      "path": "/workspace/management",
+      "path": "./management",
       "file_count": 138,
       "total_lines": 32519,
       "file_types": {

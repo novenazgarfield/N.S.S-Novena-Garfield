@@ -4,7 +4,7 @@
 
 Chronicle全系统监控是一个强大的监控和自动修复系统，能够：
 
-- 🔍 监控 `/workspace/systems` 下的所有项目
+- 🔍 监控 `./systems` 下的所有项目
 - 📋 监控本机系统日志和资源使用情况
 - 🔗 进行跨项目故障关联分析
 - 🛠️ 自动修复常见问题
@@ -64,7 +64,7 @@ curl http://localhost:3000/api/global/system-health \
 
 ### 📁 项目监控
 
-Chronicle会自动发现并监控 `/workspace/systems` 下的所有项目：
+Chronicle会自动发现并监控 `./systems` 下的所有项目：
 
 #### 支持的项目类型
 - **Node.js项目**: 检测 `package.json`，支持Express、React、Vue等框架
@@ -170,7 +170,7 @@ curl -X POST http://localhost:3000/api/build_immunity \
     "monitored_projects": ["rag-system", "nexus", "changlee"],
     "system_monitors": ["resource_monitor", "system_log_syslog"],
     "monitoring_config": {
-      "projectsPath": "/workspace/systems",
+      "projectsPath": "./systems",
       "monitorInterval": 30000,
       "resourceThresholds": {
         "cpu": 80,
@@ -363,7 +363,7 @@ curl -X POST http://localhost:3000/api/global/optimize-resources \
 {
   "globalMonitoring": {
     "enabled": true,
-    "projectsPath": "/workspace/systems",
+    "projectsPath": "./systems",
     "monitorInterval": 30000,
     "resourceThresholds": {
       "cpu": 80,
@@ -556,7 +556,7 @@ systemd-run --scope -p MemoryLimit=1G -p CPUQuota=50% \
 {
   "security": {
     "allowedPaths": [
-      "/workspace/systems",
+      "./systems",
       "/var/log"
     ],
     "restrictedPaths": [

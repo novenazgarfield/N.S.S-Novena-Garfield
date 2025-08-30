@@ -3,7 +3,7 @@
 ## 📋 实现概述
 
 根据用户需求，Chronicle的检测和修复功能已成功扩展到覆盖：
-1. **`/workspace/systems`下的所有项目**
+1. **`./systems`下的所有项目**
 2. **本机电脑中的实际问题（系统日志等）**
 
 ## 🏗️ 实现架构
@@ -235,7 +235,7 @@ curl -X POST http://localhost:3000/api/global/start \
     "monitored_projects": ["rag-system", "nexus", "changlee", "genome-nebula", "bovine-insight", "kinetic-scope"],
     "system_monitors": ["resource_monitor", "system_log_syslog", "cross_project_analysis"],
     "monitoring_config": {
-      "projectsPath": "/workspace/systems",
+      "projectsPath": "./systems",
       "monitorInterval": 30000,
       "resourceThresholds": {
         "cpu": 80,
@@ -311,7 +311,7 @@ node scripts/start-global-monitor.js --dry-run
 ### 2. 监控验证
 
 启动后，Chronicle会自动：
-1. **扫描项目**: 发现并注册`/workspace/systems`下的所有项目
+1. **扫描项目**: 发现并注册`./systems`下的所有项目
 2. **启动监控**: 开始监控文件变化、日志错误、健康状态
 3. **系统监控**: 监控系统日志、资源使用、进程状态
 4. **关联分析**: 分析跨项目故障模式
@@ -437,7 +437,7 @@ node scripts/start-global-monitor.js --dry-run
 
 ### ✅ 完全满足用户需求
 
-1. **✅ 覆盖所有项目**: Chronicle现在监控`/workspace/systems`下的所有6个项目
+1. **✅ 覆盖所有项目**: Chronicle现在监控`./systems`下的所有6个项目
 2. **✅ 系统级监控**: 监控本机系统日志、资源使用、进程状态
 3. **✅ 智能关联分析**: 能够发现跨项目故障模式
 4. **✅ 自动修复能力**: 项目级和系统级的自动修复
@@ -501,7 +501,7 @@ node scripts/start-global-monitor.js --api-only --port 8080
 
 Chronicle全系统监控的实现完全满足了用户的需求：
 
-1. **🌍 全覆盖监控**: 成功扩展到`/workspace/systems`的所有项目和本机系统
+1. **🌍 全覆盖监控**: 成功扩展到`./systems`的所有项目和本机系统
 2. **🤖 智能化程度高**: 自动发现、智能分析、自动修复
 3. **🔗 关联分析强**: 独特的跨项目故障关联分析能力
 4. **🛠️ 修复能力全**: 从文件级到系统级的全方位自动修复

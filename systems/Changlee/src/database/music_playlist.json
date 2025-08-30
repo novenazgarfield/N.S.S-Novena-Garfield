@@ -2,12 +2,12 @@
   "version": "1.0.0",
   "createdAt": "2025-08-19T04:59:24.702Z",
   "musicFolders": [
-    "/workspace/systems/Changlee/test_music"
+    "./systems/Changlee/test_music"
   ],
   "playlist": [
     {
       "id": "L3dvcmtzcGFjZS9z",
-      "path": "/workspace/systems/Changlee/test_music/Artist1 - Song1.mp3",
+      "path": "./systems/Changlee/test_music/Artist1 - Song1.mp3",
       "fileName": "Artist1 - Song1.mp3",
       "title": "Song1",
       "artist": "Artist1",
@@ -17,7 +17,7 @@
     },
     {
       "id": "L3dvcmtzcGFjZS9z",
-      "path": "/workspace/systems/Changlee/test_music/Artist1 - Song3.flac",
+      "path": "./systems/Changlee/test_music/Artist1 - Song3.flac",
       "fileName": "Artist1 - Song3.flac",
       "title": "Song3",
       "artist": "Artist1",
@@ -27,7 +27,7 @@
     },
     {
       "id": "L3dvcmtzcGFjZS9z",
-      "path": "/workspace/systems/Changlee/test_music/Artist2 - Song2.wav",
+      "path": "./systems/Changlee/test_music/Artist2 - Song2.wav",
       "fileName": "Artist2 - Song2.wav",
       "title": "Song2",
       "artist": "Artist2",
@@ -37,7 +37,7 @@
     },
     {
       "id": "L3dvcmtzcGFjZS9z",
-      "path": "/workspace/systems/Changlee/test_music/Unknown Song.m4a",
+      "path": "./systems/Changlee/test_music/Unknown Song.m4a",
       "fileName": "Unknown Song.m4a",
       "title": "Unknown Song",
       "artist": "未知艺术家",

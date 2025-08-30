@@ -11,8 +11,22 @@ const readline = require('readline');
 
 class RAGCleanup {
   constructor() {
-    this.duplicateRagPath = path.resolve(__dirname, '../../systems/rag-system');
-    this.mainRagPath = path.resolve(__dirname, '../../../rag_system');
+    // 动态发现项目根目录
+    const projectRoot = this.findProjectRoot(__dirname);
+    this.duplicateRagPath = path.join(projectRoot, 'systems', 'rag-system');
+    this.mainRagPath = path.join(projectRoot, 'rag_system');
+  }
+
+  findProjectRoot(startPath) {
+    let currentPath = startPath;
+    while (currentPath !== path.dirname(currentPath)) {
+      if (fs.existsSync(path.join(currentPath, 'DEVELOPMENT_GUIDE.md'))) {
+        return currentPath;
+      }
+      currentPath = path.dirname(currentPath);
+    }
+    // 如果找不到，返回当前路径的上级目录
+    return path.resolve(__dirname, '../..');
   }
 
   async start() {
@@ -29,7 +43,7 @@ class RAGCleanup {
     
     // 检查主RAG系统
     if (fs.existsSync(this.mainRagPath)) {
-      console.log('✅ 主RAG系统: /workspace/rag_system/');
+      console.log('✅ 主RAG系统:', this.mainRagPath);
       console.log('   📁 包含模块:', this.listModules(this.mainRagPath));
       
       // 检查增强版应用
@@ -43,7 +57,7 @@ class RAGCleanup {
     
     // 检查重复RAG系统
     if (fs.existsSync(this.duplicateRagPath)) {
-      console.log('⚠️  重复RAG系统: /workspace/systems/rag-system/');
+      console.log('⚠️  重复RAG系统:', this.duplicateRagPath);
       console.log('   📁 包含模块:', this.listModules(this.duplicateRagPath));
       console.log('   💾 占用空间:', this.getDirectorySize(this.duplicateRagPath));
     } else {

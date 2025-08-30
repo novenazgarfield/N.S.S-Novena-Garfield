@@ -188,7 +188,7 @@ class EventDrivenCollector extends EventEmitter {
    */
   async discoverProjectLogFiles() {
     const projectLogs = [];
-    const projectsPath = '/workspace/systems';
+    const projectsPath = path.resolve(__dirname, '../../../../systems');
 
     try {
       const projects = await fs.readdir(projectsPath, { withFileTypes: true });
