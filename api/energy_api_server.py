@@ -414,4 +414,12 @@ if __name__ == '__main__':
     print("  - POST /api/energy/test             - 测试API密钥")
     print("=" * 50)
     
-    app.run(host='0.0.0.0', port=56419, debug=True)
+    # 🌟 动态端口配置 - 从环境变量获取端口，支持服务发现系统
+    import os
+    port = int(os.environ.get('PORT', 56419))
+    
+    # 更新显示的地址信息
+    print(f"🌐 实际地址: http://0.0.0.0:{port}")
+    print(f"📡 健康检查: http://localhost:{port}/api/energy/health")
+    
+    app.run(host='0.0.0.0', port=port, debug=False)

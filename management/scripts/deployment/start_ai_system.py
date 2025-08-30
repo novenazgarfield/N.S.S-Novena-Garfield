@@ -29,7 +29,7 @@ def main():
     
     # 启动中央能源数据库
     energy_process = start_service(
-        "api_management/simple_energy_server.py",
+        "../../api/energy_api_server.py",
         "中央能源数据库",
         56420
     )
@@ -42,7 +42,7 @@ def main():
     
     # 启动动态RAG系统
     rag_process = start_service(
-        "api_management/simple_dynamic_rag.py", 
+        "../../systems/rag-system/smart_rag_server.py", 
         "动态RAG系统",
         60010
     )

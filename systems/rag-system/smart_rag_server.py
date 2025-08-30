@@ -434,14 +434,20 @@ def index():
     })
 
 if __name__ == '__main__':
+    # 🌟 动态端口配置 - 从环境变量获取端口，支持服务发现系统
+    port = int(os.environ.get('PORT', 8502))
+    
     print("🚀 启动NEXUS RAG系统服务器...")
     print(f"📁 上传目录: {UPLOAD_FOLDER}")
     print(f"🕐 时区: {TIMEZONE}")
-    print("🌐 服务器将在 http://0.0.0.0:8501 启动")
+    print(f"🌐 服务器地址: http://0.0.0.0:{port}")
+    print(f"📡 健康检查: http://localhost:{port}/api/health")
+    print(f"💬 聊天接口: http://localhost:{port}/api/chat")
+    print(f"📤 上传接口: http://localhost:{port}/api/upload")
     
     app.run(
         host='0.0.0.0',
-        port=8502,
+        port=port,
         debug=False,
         threaded=True
     )

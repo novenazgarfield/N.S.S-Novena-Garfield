@@ -480,7 +480,10 @@
                         const controller = new AbortController();
                         const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
                         
-                        response = await fetch(`${RAG_CONFIG.baseURL}${RAG_CONFIG.endpoints.chat}`, {
+                        // 使用动态配置系统发送请求
+                        const apiUrl = RAG_CONFIG.baseURL || (window.dynamicConfig ? window.dynamicConfig.getApiEndpoint('rag_api') : 'http://localhost:5000');
+                        
+                        response = await fetch(`${apiUrl}${RAG_CONFIG.endpoints.chat}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -884,25 +887,10 @@
             toggleFunctionMenu();
         }
 
-        // RAG系统配置 - 动态检测服务器地址
+        // RAG系统配置 - 使用动态配置系统
         const RAG_CONFIG = {
-            baseURL: (() => {
-                // 如果是通过隧道访问，尝试从配置中获取最新地址
-                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                    // 尝试从页面元数据中获取API地址
-                    const apiUrlMeta = document.querySelector('meta[name="api-url"]');
-                    if (apiUrlMeta) {
-                        return apiUrlMeta.content;
-                    }
-                    // 回退到默认地址
-                    return 'https://shall-namespace-msgid-yamaha.trycloudflare.com';
-                }
-                // 本地开发环境
-                return 'http://localhost:5000';
-            })(),
+            baseURL: null, // 将由动态配置系统设置
             fallbackURLs: [
-                'https://scanner-hs-family-momentum.trycloudflare.com', // 新RAG隧道
-                'https://hull-projected-cattle-proc.trycloudflare.com', // 备用RAG隧道
                 'http://localhost:5000',
                 'http://127.0.0.1:5000',
                 `${window.location.protocol}//${window.location.hostname}:5000`
@@ -916,6 +904,20 @@
             },
             timeout: 60000
         };
+        
+        // 动态配置加载完成后更新RAG配置
+        window.addEventListener('configLoaded', (event) => {
+            const config = event.detail;
+            if (config.apiEndpoints && config.apiEndpoints.rag_api) {
+                RAG_CONFIG.baseURL = config.apiEndpoints.rag_api;
+                console.log('✅ RAG配置已更新:', RAG_CONFIG.baseURL);
+                
+                // 如果RAG聊天界面已打开，重新检查连接
+                if (currentPage === 'rag-system') {
+                    checkRAGConnection();
+                }
+            }
+        });
 
         // 状态框显示控制
         let statusTimeout = null;

@@ -1,0 +1,46 @@
+{
+  "services": {
+    "rag_api": {
+      "name": "rag_api",
+      "type": "rag_api",
+      "port": 5001,
+      "local_url": "http://localhost:5001",
+      "status": "registered",
+      "registered_at": "2025-08-30T15:55:12.594788",
+      "pid": null,
+      "tunnel_url": null
+    },
+    "nexus_frontend": {
+      "name": "nexus_frontend",
+      "type": "nexus_frontend",
+      "port": 52300,
+      "local_url": "http://localhost:52300",
+      "status": "registered",
+      "registered_at": "2025-08-30T15:54:36.973391",
+      "pid": null,
+      "tunnel_url": "https://episodes-most-beaches-arg.trycloudflare.com"
+    },
+    "api_gateway": {
+      "name": "api_gateway",
+      "type": "api_gateway",
+      "port": 8000,
+      "local_url": "http://localhost:8000",
+      "status": "registered",
+      "registered_at": "2025-08-30T15:24:01.092060",
+      "pid": null,
+      "tunnel_url": null
+    },
+    "energy_api": {
+      "name": "energy_api",
+      "type": "energy_api",
+      "port": 56400,
+      "local_url": "http://localhost:56400",
+      "status": "registered",
+      "registered_at": "2025-08-30T15:55:17.599480",
+      "pid": null,
+      "tunnel_url": null
+    }
+  },
+  "tunnels": {},
+  "updated_at": "2025-08-30T15:55:17.599491"
+}
