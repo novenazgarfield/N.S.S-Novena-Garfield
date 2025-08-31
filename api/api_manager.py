@@ -111,7 +111,7 @@ class APIManagerStarter:
             'rag': {
                 'host': '0.0.0.0',
                 'port': 56339,
-                'app': 'simple_dynamic_rag.py'
+                'app': '../systems/rag-system/smart_rag_server.py'
             },
             'paths': {
                 'config': str(self.project_root / 'config'),
@@ -288,7 +288,7 @@ class APIManagerStarter:
         rag_config = self.config.get('rag', {})
         host = options.get('host') or rag_config.get('host', '0.0.0.0')
         port = options.get('port') or rag_config.get('port', 56339)
-        app = rag_config.get('app', 'simple_dynamic_rag.py')
+        app = rag_config.get('app', '../systems/rag-system/smart_rag_server.py')
         
         print(f"📍 地址: http://{host}:{port}")
         
@@ -305,7 +305,7 @@ class APIManagerStarter:
         services = [
             ('API管理界面', 'api_web_manager.py', self.config['web']['port']),
             ('Gemini聊天', 'gemini_chat_app.py', self.config['gemini']['port']),
-            ('动态RAG', 'simple_dynamic_rag.py', self.config['rag']['port'])
+            ('动态RAG', '../systems/rag-system/smart_rag_server.py', self.config['rag']['port'])
         ]
         
         for name, app, port in services:

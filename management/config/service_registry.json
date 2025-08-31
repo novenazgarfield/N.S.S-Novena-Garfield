@@ -1,0 +1,56 @@
+{
+  "services": {
+    "rag_api": {
+      "name": "rag_api",
+      "type": "rag_api",
+      "port": 5000,
+      "local_url": "http://localhost:5000",
+      "status": "registered",
+      "registered_at": "2025-08-31T00:28:27.307425",
+      "pid": null,
+      "tunnel_url": "https://warrior-sudan-inform-ko.trycloudflare.com"
+    },
+    "nexus_frontend": {
+      "name": "nexus_frontend",
+      "type": "nexus_frontend",
+      "port": 52300,
+      "local_url": "http://localhost:52300",
+      "status": "registered",
+      "registered_at": "2025-08-31T00:28:35.316131",
+      "pid": null,
+      "tunnel_url": "https://nearby-current-eternal-cedar.trycloudflare.com"
+    },
+    "api_gateway": {
+      "name": "api_gateway",
+      "type": "api_gateway",
+      "port": 8000,
+      "local_url": "http://localhost:8000",
+      "status": "registered",
+      "registered_at": "2025-08-30T15:24:01.092060",
+      "pid": null,
+      "tunnel_url": null
+    },
+    "energy_api": {
+      "name": "energy_api",
+      "type": "energy_api",
+      "port": 56400,
+      "local_url": "http://localhost:56400",
+      "status": "registered",
+      "registered_at": "2025-08-31T00:28:32.312128",
+      "pid": null,
+      "tunnel_url": null
+    },
+    "test_service": {
+      "name": "test_service",
+      "type": "test",
+      "port": 5002,
+      "local_url": "http://localhost:5002",
+      "status": "registered",
+      "registered_at": "2025-08-30T16:06:29.020858",
+      "pid": null,
+      "tunnel_url": null
+    }
+  },
+  "tunnels": {},
+  "updated_at": "2025-08-31T00:28:56.187842"
+}

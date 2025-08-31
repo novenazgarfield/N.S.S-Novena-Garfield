@@ -398,10 +398,14 @@ def test_api_key():
         }), 500
 
 if __name__ == '__main__':
+    # 🌟 动态端口配置 - 从环境变量获取端口，支持服务发现系统
+    import os
+    port = int(os.environ.get('PORT', 56419))
+    
     print("🚀 启动中央能源API服务器...")
     print("=" * 50)
     print("🔋 服务: Central Energy Database API")
-    print("🌐 地址: http://0.0.0.0:56419")
+    print(f"🌐 地址: http://0.0.0.0:{port}")
     print("📡 API端点:")
     print("  - GET  /api/energy/health           - 健康检查")
     print("  - GET  /api/energy/models/available - 获取可用模型")
@@ -413,5 +417,6 @@ if __name__ == '__main__':
     print("  - POST /api/energy/usage/<id>       - 记录使用统计")
     print("  - POST /api/energy/test             - 测试API密钥")
     print("=" * 50)
+    print(f"📡 健康检查: http://localhost:{port}/api/energy/health")
     
-    app.run(host='0.0.0.0', port=56419, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=False)
