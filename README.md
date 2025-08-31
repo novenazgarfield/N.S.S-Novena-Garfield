@@ -229,17 +229,18 @@ python management/scripts/cleanup_and_import.py structure
 - **[Google Gemini](https://ai.google.dev/)** - 多模态AI模型，用于智能对话和分析
 - **[DeepSeek](https://www.deepseek.com/)** - 高性能大语言模型，RAG系统核心引擎
 - **[GLM-4V](https://open.bigmodel.cn/)** - 智谱AI视觉语言模型，用于专家级图像分析和报告生成
-- **[Meta DINOv2](https://github.com/facebookresearch/dinov2)** - 无监督视觉特征提取，解决牛只识别中的数据标注难题
+- **[Meta DINOv2](https://github.com/facebookresearch/dinov2)** - 无监督视觉特征提取，解决计算机视觉中的数据标注难题
 
 ### 🔧 技术框架与工具
 - **[Hugging Face Transformers](https://github.com/huggingface/transformers)** - 预训练模型库和工具链
 - **[Sentence Transformers](https://github.com/UKPLab/sentence-transformers)** - 文本嵌入模型，multilingual-e5用于多语言RAG检索
 - **[Facebook FAISS](https://github.com/facebookresearch/faiss)** - 高效向量相似性搜索，RAG系统的向量数据库
 - **[PyTorch](https://pytorch.org/)** - 深度学习框架，支撑所有AI模型推理
+- **[Three.js](https://threejs.org/)** - 3D图形渲染库，用于分子模拟和3D可视化
 
-### 🐄 专业领域模型
-- **博士级牛只识别系统** - 基于DINOv2 + GLM-4V + 传统计算机视觉算法的融合架构
-- **3D体况评分模型** - 多摄像头立体视觉分析，实现精准的牛只体况评估
+### 🔬 专业技术应用
+- **多模态融合识别** - 基于DINOv2 + GLM-4V + 传统计算机视觉算法的融合架构
+- **3D立体视觉分析** - 多摄像头立体视觉技术，实现精准的空间测量和分析
 
 感谢开源社区和AI研究社区的贡献，让我们能够站在巨人的肩膀上创新。特别感谢Meta、Google、OpenAI、智谱AI、DeepSeek等公司提供的优秀AI模型和工具。
 
