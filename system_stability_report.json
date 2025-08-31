@@ -1,0 +1,1349 @@
+{
+  "analysis_time": "2025-08-31T01:24:33.466641",
+  "analysis_results": {
+    "resources": {
+      "cpu": {
+        "usage_percent": 1.9,
+        "core_count": 64,
+        "status": "正常"
+      },
+      "memory": {
+        "usage_percent": 13.7,
+        "available_gb": 214.92,
+        "total_gb": 249.17,
+        "status": "正常"
+      },
+      "disk": {
+        "usage_percent": 61.13,
+        "free_gb": 582.99,
+        "status": "正常"
+      },
+      "network": {
+        "connections": 49,
+        "status": "正常"
+      }
+    },
+    "processes": {
+      "total_processes": 73,
+      "zombie_processes": [
+        {
+          "pid": 610,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4467.176305,
+          "uptime_human": "1:14:27"
+        },
+        {
+          "pid": 1057,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012608770934180408,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 4293.566582,
+          "uptime_human": "1:11:33"
+        },
+        {
+          "pid": 1059,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4293.426727,
+          "uptime_human": "1:11:33"
+        },
+        {
+          "pid": 1071,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4288.416865,
+          "uptime_human": "1:11:28"
+        },
+        {
+          "pid": 1091,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4285.297292,
+          "uptime_human": "1:11:25"
+        },
+        {
+          "pid": 1128,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4275.41756,
+          "uptime_human": "1:11:15"
+        },
+        {
+          "pid": 1145,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4269.957694,
+          "uptime_human": "1:11:09"
+        },
+        {
+          "pid": 1675,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012590399728351102,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 4054.417847,
+          "uptime_human": "1:07:34"
+        },
+        {
+          "pid": 1677,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4054.267991,
+          "uptime_human": "1:07:34"
+        },
+        {
+          "pid": 1689,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4049.268127,
+          "uptime_human": "1:07:29"
+        },
+        {
+          "pid": 1709,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4046.14854,
+          "uptime_human": "1:07:26"
+        },
+        {
+          "pid": 1751,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4036.258802,
+          "uptime_human": "1:07:16"
+        },
+        {
+          "pid": 1769,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4030.698936,
+          "uptime_human": "1:07:10"
+        },
+        {
+          "pid": 2129,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012604178132723083,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3947.629069,
+          "uptime_human": "1:05:47"
+        },
+        {
+          "pid": 2131,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3947.479206,
+          "uptime_human": "1:05:47"
+        },
+        {
+          "pid": 2143,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3942.479339,
+          "uptime_human": "1:05:42"
+        },
+        {
+          "pid": 2163,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3939.359762,
+          "uptime_human": "1:05:39"
+        },
+        {
+          "pid": 2205,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3929.470025,
+          "uptime_human": "1:05:29"
+        },
+        {
+          "pid": 2223,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3923.490162,
+          "uptime_human": "1:05:23"
+        },
+        {
+          "pid": 2584,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012628673073828825,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3739.980292,
+          "uptime_human": "1:02:19"
+        },
+        {
+          "pid": 2586,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3739.840429,
+          "uptime_human": "1:02:19"
+        },
+        {
+          "pid": 2598,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3734.830561,
+          "uptime_human": "1:02:14"
+        },
+        {
+          "pid": 2618,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3731.710986,
+          "uptime_human": "1:02:11"
+        },
+        {
+          "pid": 2658,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3721.831253,
+          "uptime_human": "1:02:01"
+        },
+        {
+          "pid": 2676,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3716.241388,
+          "uptime_human": "1:01:56"
+        },
+        {
+          "pid": 3318,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012625611206190605,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3537.701521,
+          "uptime_human": "0:58:57"
+        },
+        {
+          "pid": 3320,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3537.561663,
+          "uptime_human": "0:58:57"
+        },
+        {
+          "pid": 3338,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3532.551816,
+          "uptime_human": "0:58:52"
+        },
+        {
+          "pid": 3364,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3529.442243,
+          "uptime_human": "0:58:49"
+        },
+        {
+          "pid": 3412,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3519.552506,
+          "uptime_human": "0:58:39"
+        },
+        {
+          "pid": 3428,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3514.882649,
+          "uptime_human": "0:58:34"
+        },
+        {
+          "pid": 3742,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.01262101840473328,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3424.682912,
+          "uptime_human": "0:57:04"
+        },
+        {
+          "pid": 3745,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3424.533053,
+          "uptime_human": "0:57:04"
+        },
+        {
+          "pid": 3782,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3419.533196,
+          "uptime_human": "0:56:59"
+        },
+        {
+          "pid": 3808,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3416.403617,
+          "uptime_human": "0:56:56"
+        },
+        {
+          "pid": 4119,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012651637081115457,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3365.523876,
+          "uptime_human": "0:56:05"
+        },
+        {
+          "pid": 4121,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3365.374022,
+          "uptime_human": "0:56:05"
+        },
+        {
+          "pid": 4139,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.016021222416974013,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python /workspace/api/energy_api_server.py",
+          "uptime_seconds": 3360.374152,
+          "uptime_human": "0:56:00"
+        },
+        {
+          "pid": 4165,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3357.254578,
+          "uptime_human": "0:55:57"
+        },
+        {
+          "pid": 4212,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3347.364844,
+          "uptime_human": "0:55:47"
+        },
+        {
+          "pid": 4230,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3341.534981,
+          "uptime_human": "0:55:41"
+        },
+        {
+          "pid": 4644,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3252.355552,
+          "uptime_human": "0:54:12"
+        },
+        {
+          "pid": 4938,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3204.416242,
+          "uptime_human": "0:53:24"
+        },
+        {
+          "pid": 5072,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3055.456509,
+          "uptime_human": "0:50:55"
+        },
+        {
+          "pid": 5857,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 959.957828,
+          "uptime_human": "0:15:59"
+        },
+        {
+          "pid": 5868,
+          "name": "esbuild",
+          "status": "stopped",
+          "memory_percent": 0.004493290759084446,
+          "cpu_percent": 0.0,
+          "cmdline": "/workspace/systems/nexus/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.25.9 --ping",
+          "uptime_seconds": 959.77797,
+          "uptime_human": "0:15:59"
+        }
+      ],
+      "high_memory_processes": [],
+      "process_details": {
+        "8": {
+          "pid": 8,
+          "name": "python",
+          "status": "sleeping",
+          "memory_percent": 0.14028558958021947,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python -u -m openhands.runtime.action_execution_s...",
+          "uptime_seconds": 4569.36228,
+          "uptime_human": "1:16:09"
+        },
+        "124": {
+          "pid": 124,
+          "name": "python",
+          "status": "sleeping",
+          "memory_percent": 0.005041365066325411,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python -c from multiprocessing.resource_tracker i...",
+          "uptime_seconds": 4562.472824,
+          "uptime_human": "1:16:02"
+        },
+        "125": {
+          "pid": 125,
+          "name": "python",
+          "status": "sleeping",
+          "memory_percent": 0.1482740022483294,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python -c from multiprocessing.spawn import spawn...",
+          "uptime_seconds": 4562.472984,
+          "uptime_human": "1:16:02"
+        },
+        "191": {
+          "pid": 191,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.03180515009198616,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/poetry/openhands-ai-5O4_aCHf-py3.12/lib/python3.12/site-packages/playwright/driver/node /...",
+          "uptime_seconds": 4557.313122,
+          "uptime_human": "1:15:57"
+        },
+        "203": {
+          "pid": 203,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.03669801457785801,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --disable-field-...",
+          "uptime_seconds": 4556.69328,
+          "uptime_human": "1:15:56"
+        },
+        "222": {
+          "pid": 222,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.027325637737273693,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --type=gpu-proce...",
+          "uptime_seconds": 4556.663742,
+          "uptime_human": "1:15:56"
+        },
+        "223": {
+          "pid": 223,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.025738059366857826,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --type=utility -...",
+          "uptime_seconds": 4556.653924,
+          "uptime_human": "1:15:56"
+        },
+        "258": {
+          "pid": 258,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.03178984075379507,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --disable-field-...",
+          "uptime_seconds": 4556.494081,
+          "uptime_human": "1:15:56"
+        },
+        "278": {
+          "pid": 278,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.021183531255009026,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --type=gpu-proce...",
+          "uptime_seconds": 4556.454493,
+          "uptime_human": "1:15:56"
+        },
+        "279": {
+          "pid": 279,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.02077936472676429,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --type=utility -...",
+          "uptime_seconds": 4556.454633,
+          "uptime_human": "1:15:56"
+        },
+        "313": {
+          "pid": 313,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.036270884042326645,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --type=renderer ...",
+          "uptime_seconds": 4556.384779,
+          "uptime_human": "1:15:56"
+        },
+        "355": {
+          "pid": 355,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.03641019901986555,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/.openvscode-server/node /openhands/.openvscode-server/out/server-main.js --host 0.0.0.0 -...",
+          "uptime_seconds": 4554.675973,
+          "uptime_human": "1:15:54"
+        },
+        "369": {
+          "pid": 369,
+          "name": "python",
+          "status": "sleeping",
+          "memory_percent": 0.12488286442616545,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python -m ipykernel_launcher -f /root/.local/shar...",
+          "uptime_seconds": 4553.106136,
+          "uptime_human": "1:15:53"
+        },
+        "610": {
+          "pid": 610,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4467.176305,
+          "uptime_human": "1:14:27"
+        },
+        "1057": {
+          "pid": 1057,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012608770934180408,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 4293.566582,
+          "uptime_human": "1:11:33"
+        },
+        "1059": {
+          "pid": 1059,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4293.426727,
+          "uptime_human": "1:11:33"
+        },
+        "1071": {
+          "pid": 1071,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4288.416865,
+          "uptime_human": "1:11:28"
+        },
+        "1091": {
+          "pid": 1091,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4285.297292,
+          "uptime_human": "1:11:25"
+        },
+        "1128": {
+          "pid": 1128,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4275.41756,
+          "uptime_human": "1:11:15"
+        },
+        "1145": {
+          "pid": 1145,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4269.957694,
+          "uptime_human": "1:11:09"
+        },
+        "1675": {
+          "pid": 1675,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012590399728351102,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 4054.417847,
+          "uptime_human": "1:07:34"
+        },
+        "1677": {
+          "pid": 1677,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4054.267991,
+          "uptime_human": "1:07:34"
+        },
+        "1689": {
+          "pid": 1689,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4049.268127,
+          "uptime_human": "1:07:29"
+        },
+        "1709": {
+          "pid": 1709,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4046.14854,
+          "uptime_human": "1:07:26"
+        },
+        "1751": {
+          "pid": 1751,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4036.258802,
+          "uptime_human": "1:07:16"
+        },
+        "1769": {
+          "pid": 1769,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 4030.698936,
+          "uptime_human": "1:07:10"
+        },
+        "2129": {
+          "pid": 2129,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012604178132723083,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3947.629069,
+          "uptime_human": "1:05:47"
+        },
+        "2131": {
+          "pid": 2131,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3947.479206,
+          "uptime_human": "1:05:47"
+        },
+        "2143": {
+          "pid": 2143,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3942.479339,
+          "uptime_human": "1:05:42"
+        },
+        "2163": {
+          "pid": 2163,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3939.359762,
+          "uptime_human": "1:05:39"
+        },
+        "2205": {
+          "pid": 2205,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3929.470025,
+          "uptime_human": "1:05:29"
+        },
+        "2223": {
+          "pid": 2223,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3923.490162,
+          "uptime_human": "1:05:23"
+        },
+        "2584": {
+          "pid": 2584,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012628673073828825,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3739.980292,
+          "uptime_human": "1:02:19"
+        },
+        "2586": {
+          "pid": 2586,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3739.840429,
+          "uptime_human": "1:02:19"
+        },
+        "2598": {
+          "pid": 2598,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3734.830561,
+          "uptime_human": "1:02:14"
+        },
+        "2618": {
+          "pid": 2618,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3731.710986,
+          "uptime_human": "1:02:11"
+        },
+        "2658": {
+          "pid": 2658,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3721.831253,
+          "uptime_human": "1:02:01"
+        },
+        "2676": {
+          "pid": 2676,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3716.241388,
+          "uptime_human": "1:01:56"
+        },
+        "3318": {
+          "pid": 3318,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012625611206190605,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3537.701521,
+          "uptime_human": "0:58:57"
+        },
+        "3320": {
+          "pid": 3320,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3537.561663,
+          "uptime_human": "0:58:57"
+        },
+        "3338": {
+          "pid": 3338,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3532.551816,
+          "uptime_human": "0:58:52"
+        },
+        "3364": {
+          "pid": 3364,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3529.442243,
+          "uptime_human": "0:58:49"
+        },
+        "3412": {
+          "pid": 3412,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3519.552506,
+          "uptime_human": "0:58:39"
+        },
+        "3428": {
+          "pid": 3428,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3514.882649,
+          "uptime_human": "0:58:34"
+        },
+        "3742": {
+          "pid": 3742,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.01262101840473328,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3424.682912,
+          "uptime_human": "0:57:04"
+        },
+        "3745": {
+          "pid": 3745,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3424.533053,
+          "uptime_human": "0:57:04"
+        },
+        "3782": {
+          "pid": 3782,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3419.533196,
+          "uptime_human": "0:56:59"
+        },
+        "3808": {
+          "pid": 3808,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3416.403617,
+          "uptime_human": "0:56:56"
+        },
+        "4119": {
+          "pid": 4119,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.012651637081115457,
+          "cpu_percent": 0.0,
+          "cmdline": "python start_nss.py",
+          "uptime_seconds": 3365.523876,
+          "uptime_human": "0:56:05"
+        },
+        "4121": {
+          "pid": 4121,
+          "name": "python",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3365.374022,
+          "uptime_human": "0:56:05"
+        },
+        "4139": {
+          "pid": 4139,
+          "name": "python",
+          "status": "stopped",
+          "memory_percent": 0.016021222416974013,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python /workspace/api/energy_api_server.py",
+          "uptime_seconds": 3360.374152,
+          "uptime_human": "0:56:00"
+        },
+        "4165": {
+          "pid": 4165,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3357.254578,
+          "uptime_human": "0:55:57"
+        },
+        "4212": {
+          "pid": 4212,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3347.364844,
+          "uptime_human": "0:55:47"
+        },
+        "4230": {
+          "pid": 4230,
+          "name": "cloudflared",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3341.534981,
+          "uptime_human": "0:55:41"
+        },
+        "4644": {
+          "pid": 4644,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3252.355552,
+          "uptime_human": "0:54:12"
+        },
+        "4938": {
+          "pid": 4938,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3204.416242,
+          "uptime_human": "0:53:24"
+        },
+        "5072": {
+          "pid": 5072,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 3055.456509,
+          "uptime_human": "0:50:55"
+        },
+        "5568": {
+          "pid": 5568,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.045935669242360755,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/.openvscode-server/node --dns-result-order=ipv4first /openhands/.openvscode-server/out/bo...",
+          "uptime_seconds": 1007.066874,
+          "uptime_human": "0:16:47"
+        },
+        "5587": {
+          "pid": 5587,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.0271541731495335,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/.openvscode-server/node /openhands/.openvscode-server/out/bootstrap-fork --type=fileWatch...",
+          "uptime_seconds": 1005.677016,
+          "uptime_human": "0:16:45"
+        },
+        "5712": {
+          "pid": 5712,
+          "name": "python",
+          "status": "sleeping",
+          "memory_percent": 0.013297691152779387,
+          "cpu_percent": 0.0,
+          "cmdline": "python smart_rag_server.py --port 5000",
+          "uptime_seconds": 990.037275,
+          "uptime_human": "0:16:30"
+        },
+        "5857": {
+          "pid": 5857,
+          "name": "node",
+          "status": "zombie",
+          "memory_percent": 0.0,
+          "cpu_percent": 0.0,
+          "cmdline": "",
+          "uptime_seconds": 959.957828,
+          "uptime_human": "0:15:59"
+        },
+        "5868": {
+          "pid": 5868,
+          "name": "esbuild",
+          "status": "stopped",
+          "memory_percent": 0.004493290759084446,
+          "cpu_percent": 0.0,
+          "cmdline": "/workspace/systems/nexus/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.25.9 --ping",
+          "uptime_seconds": 959.77797,
+          "uptime_human": "0:15:59"
+        },
+        "6089": {
+          "pid": 6089,
+          "name": "sh",
+          "status": "sleeping",
+          "memory_percent": 0.00036130038130968635,
+          "cpu_percent": 0.0,
+          "cmdline": "sh -c vite --host 0.0.0.0 --host 0.0.0.0 --port 52300",
+          "uptime_seconds": 921.47838,
+          "uptime_human": "0:15:21"
+        },
+        "6090": {
+          "pid": 6090,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.04497730467159862,
+          "cpu_percent": 0.0,
+          "cmdline": "node /workspace/systems/nexus/node_modules/.bin/vite --host 0.0.0.0 --host 0.0.0.0 --port 52300",
+          "uptime_seconds": 921.478517,
+          "uptime_human": "0:15:21"
+        },
+        "6101": {
+          "pid": 6101,
+          "name": "esbuild",
+          "status": "sleeping",
+          "memory_percent": 0.004355506715364651,
+          "cpu_percent": 0.0,
+          "cmdline": "/workspace/systems/nexus/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.25.9 --ping",
+          "uptime_seconds": 921.288659,
+          "uptime_human": "0:15:21"
+        },
+        "6171": {
+          "pid": 6171,
+          "name": "headless_shell",
+          "status": "sleeping",
+          "memory_percent": 0.05508146787771697,
+          "cpu_percent": 0.0,
+          "cmdline": "/root/.cache/ms-playwright/chromium_headless_shell-1169/chrome-linux/headless_shell --type=renderer ...",
+          "uptime_seconds": 909.508811,
+          "uptime_human": "0:15:09"
+        },
+        "6408": {
+          "pid": 6408,
+          "name": "cloudflared",
+          "status": "sleeping",
+          "memory_percent": 0.01430810747339122,
+          "cpu_percent": 0.0,
+          "cmdline": "cloudflared tunnel --url http://localhost:52300",
+          "uptime_seconds": 670.63895,
+          "uptime_human": "0:11:10"
+        },
+        "6512": {
+          "pid": 6512,
+          "name": "cloudflared",
+          "status": "sleeping",
+          "memory_percent": 0.014228498914797562,
+          "cpu_percent": 0.0,
+          "cmdline": "cloudflared tunnel --url http://localhost:8502",
+          "uptime_seconds": 652.849082,
+          "uptime_human": "0:10:52"
+        },
+        "6754": {
+          "pid": 6754,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.01980109801635374,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/.openvscode-server/node /openhands/.openvscode-server/extensions/markdown-language-featur...",
+          "uptime_seconds": 532.729217,
+          "uptime_human": "0:08:52"
+        },
+        "6857": {
+          "pid": 6857,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.04467111790777686,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/.openvscode-server/node --dns-result-order=ipv4first /openhands/.openvscode-server/out/bo...",
+          "uptime_seconds": 77.109351,
+          "uptime_human": "0:01:17"
+        },
+        "6868": {
+          "pid": 6868,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.02717254435536281,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/.openvscode-server/node /openhands/.openvscode-server/out/bootstrap-fork --type=fileWatch...",
+          "uptime_seconds": 75.699487,
+          "uptime_human": "0:01:15"
+        },
+        "6889": {
+          "pid": 6889,
+          "name": "node",
+          "status": "sleeping",
+          "memory_percent": 0.01994500579534997,
+          "cpu_percent": 0.0,
+          "cmdline": "/openhands/.openvscode-server/node /openhands/.openvscode-server/extensions/markdown-language-featur...",
+          "uptime_seconds": 72.71962,
+          "uptime_human": "0:01:12"
+        },
+        "7026": {
+          "pid": 7026,
+          "name": "python",
+          "status": "running",
+          "memory_percent": 0.006853990708150278,
+          "cpu_percent": 0.0,
+          "cmdline": "python /workspace/system_stability_analyzer.py --fix",
+          "uptime_seconds": 1.169759,
+          "uptime_human": "0:00:01"
+        }
+      },
+      "stability_score": {
+        "score": 0,
+        "status": "差",
+        "issues": [
+          "46 个僵尸进程",
+          "进程数量过多 (73 个)",
+          "4 个进程最近重启"
+        ]
+      }
+    },
+    "ports": {
+      "total_ports_used": 32,
+      "conflicts": [
+        {
+          "range_name": "frontend_ports",
+          "conflicts": [
+            {
+              "port": 52300,
+              "processes": [
+                {
+                  "status": "LISTEN",
+                  "pid": 6090
+                },
+                {
+                  "status": "ESTABLISHED",
+                  "pid": 6090
+                },
+                {
+                  "status": "ESTABLISHED",
+                  "pid": 6090
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "port_usage_summary": {
+        "rag_ports": [],
+        "frontend_ports": [
+          52300
+        ],
+        "energy_ports": [
+          56400
+        ]
+      }
+    },
+    "logs": {
+      "rag_server.log": {
+        "exists": true,
+        "size_bytes": 5799,
+        "modified_time": "2025-08-31T01:24:22.158280",
+        "error_count": 0,
+        "recent_errors": []
+      },
+      "frontend_server.log": {
+        "exists": false
+      },
+      "nexus_tunnel.log": {
+        "exists": true,
+        "size_bytes": 3103,
+        "modified_time": "2025-08-31T01:13:25.956777",
+        "error_count": 1,
+        "recent_errors": [
+          "2025/08/31 01:13:25 failed to sufficiently increase receive buffer size (was: 208 kiB, wanted: 7168 kiB, got: 416 kiB). See https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes for details."
+        ]
+      },
+      "rag_tunnel.log": {
+        "exists": true,
+        "size_bytes": 3104,
+        "modified_time": "2025-08-31T01:13:43.507086",
+        "error_count": 1,
+        "recent_errors": [
+          "2025/08/31 01:13:43 failed to sufficiently increase receive buffer size (was: 208 kiB, wanted: 7168 kiB, got: 416 kiB). See https://github.com/quic-go/quic-go/wiki/UDP-Buffer-Sizes for details."
+        ]
+      }
+    },
+    "dependencies": {
+      "python_packages": {
+        "status": "可用",
+        "count": 374
+      },
+      "node_packages": {},
+      "system_tools": {
+        "node": {
+          "status": "可用",
+          "version": "v22.16.0"
+        },
+        "npm": {
+          "status": "可用",
+          "version": "10.9.2"
+        },
+        "cloudflared": {
+          "status": "可用",
+          "version": "cloudflared version 2025.8.1 (built 2025-08-21-1535 UTC)"
+        }
+      }
+    }
+  },
+  "recommendations": [
+    "🔧 发现僵尸进程，建议：",
+    "  - 使用 kill -9 强制终止僵尸进程",
+    "  - 检查父进程是否正确处理子进程退出",
+    "  - 使用进程管理工具如supervisor",
+    "🔧 进程稳定性较差，建议：",
+    "  - 使用nohup或screen运行长期进程",
+    "  - 添加进程监控和自动重启机制",
+    "  - 检查进程日志找出崩溃原因",
+    "🔧 发现端口冲突，建议：",
+    "  - 使用动态端口分配",
+    "  - 在启动前检查端口可用性",
+    "  - 终止占用端口的无用进程",
+    "",
+    "🛡️ 通用稳定性建议：",
+    "  - 使用进程管理器（如systemd、supervisor）",
+    "  - 实现健康检查和自动重启",
+    "  - 设置资源限制防止资源耗尽",
+    "  - 定期监控系统状态",
+    "  - 使用容器化部署提高隔离性",
+    "  - 实现优雅关闭和错误恢复机制"
+  ],
+  "summary": {
+    "overall_status": "差",
+    "critical_issues": 1,
+    "warnings": 0,
+    "recommendations_count": 0
+  }
+}
