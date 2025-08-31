@@ -67,7 +67,7 @@ class EnhancedRAGEngine:
 
 #### 完整启动脚本
 ```python
-# /workspace/start_nexus_with_tunnels.py
+# management/launchers/start_nexus_with_tunnels.py
 class NEXUSLauncher:
     - 动态端口分配
     - 自动隧道创建
@@ -152,13 +152,13 @@ curl https://theaters-toolbar-dependent-seq.trycloudflare.com
 ### 🚀 一键启动 (推荐)
 ```bash
 # 完整启动 (包含隧道)
-python /workspace/start_nexus_with_tunnels.py
+python management/launchers/start_nexus_with_tunnels.py
 
 # 仅本地启动 (不创建隧道)
-python /workspace/start_nexus_with_tunnels.py --no-tunnels
+python management/launchers/start_nexus_with_tunnels.py --no-tunnels
 
 # 启动但不监控
-python /workspace/start_nexus_with_tunnels.py --no-monitor
+python management/launchers/start_nexus_with_tunnels.py --no-monitor
 ```
 
 ### 🔧 手动启动
@@ -343,7 +343,7 @@ tail -f /tmp/enhanced_rag_server.log
 tail -f /tmp/nexus_frontend_new.log
 
 # 重启服务
-python /workspace/start_nexus_with_tunnels.py
+python management/launchers/start_nexus_with_tunnels.py
 
 # 清理和修复
 python /workspace/system_stability_analyzer.py --fix
@@ -450,7 +450,7 @@ python /workspace/system_stability_analyzer.py --fix
 ### 🔧 本地部署
 ```bash
 # 一键启动
-python /workspace/start_nexus_with_tunnels.py
+python management/launchers/start_nexus_with_tunnels.py
 
 # 系统监控
 python /workspace/system_stability_analyzer.py --monitor

@@ -76,13 +76,13 @@
 ### 主启动器
 ```bash
 # 启动完整系统 (包含隧道)
-python /workspace/nexus_launcher.py
+python management/launchers/nexus_launcher.py
 
 # 启动系统但不创建隧道
-python /workspace/nexus_launcher.py --no-tunnels
+python management/launchers/nexus_launcher.py --no-tunnels
 
 # 仅清理进程
-python /workspace/nexus_launcher.py --cleanup-only
+python management/launchers/nexus_launcher.py --cleanup-only
 ```
 
 ### 系统控制
@@ -96,7 +96,7 @@ python /workspace/nexus_launcher.py --cleanup-only
 
 ### 主要配置文件
 - **API配置**: `/workspace/systems/nexus/public/api_config.json`
-- **启动器**: `/workspace/nexus_launcher.py`
+- **启动器**: `management/launchers/nexus_launcher.py`
 - **中央情报大脑**: `/workspace/systems/rag-system/enhanced_smart_rag_server.py`
 - **NEXUS前端**: `/workspace/systems/nexus/`
 
