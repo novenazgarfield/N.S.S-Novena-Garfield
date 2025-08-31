@@ -1,19 +1,19 @@
 {
   "api_endpoints": {
-    "rag_api": "https://renewal-continuously-prophet-material.trycloudflare.com",
-    "health_check": "https://renewal-continuously-prophet-material.trycloudflare.com/api/health",
-    "chat": "https://renewal-continuously-prophet-material.trycloudflare.com/api/chat",
-    "upload": "https://renewal-continuously-prophet-material.trycloudflare.com/api/upload",
-    "documents": "https://renewal-continuously-prophet-material.trycloudflare.com/api/documents",
-    "chat_history": "https://renewal-continuously-prophet-material.trycloudflare.com/api/chat/history"
+    "rag_api": "https://governing-level-womens-latitude.trycloudflare.com",
+    "health_check": "https://governing-level-womens-latitude.trycloudflare.com/api/health",
+    "chat": "https://governing-level-womens-latitude.trycloudflare.com/api/chat",
+    "upload": "https://governing-level-womens-latitude.trycloudflare.com/api/upload",
+    "documents": "https://governing-level-womens-latitude.trycloudflare.com/api/documents",
+    "chat_history": "https://governing-level-womens-latitude.trycloudflare.com/api/chat/history"
   },
   "local_endpoints": {
     "intelligence_brain": "http://localhost:8500",
-    "nexus_frontend": "http://localhost:52301"
+    "nexus_frontend": "http://localhost:52300"
   },
   "tunnel_endpoints": {
-    "intelligence_brain": "https://renewal-continuously-prophet-material.trycloudflare.com",
-    "nexus_frontend": "https://encounter-demands-idea-ranch.trycloudflare.com"
+    "intelligence_brain": "https://governing-level-womens-latitude.trycloudflare.com",
+    "nexus_frontend": "https://blacks-bible-disco-replaced.trycloudflare.com"
   },
   "system_info": {
     "version": "2.0.0-Simple",
@@ -30,16 +30,16 @@
           "🛡️ Black Box Recorder"
         ],
         "port": 8500,
-        "tunnel": "https://renewal-continuously-prophet-material.trycloudflare.com"
+        "tunnel": "https://governing-level-womens-latitude.trycloudflare.com"
       },
       "nexus_frontend": {
         "name": "🌐 NEXUS前端界面",
         "theme": "黑色主题",
-        "port": 52301,
-        "tunnel": "https://encounter-demands-idea-ranch.trycloudflare.com"
+        "port": 52300,
+        "tunnel": "https://blacks-bible-disco-replaced.trycloudflare.com"
       }
     }
   },
-  "updated_at": 1756607780.2985244,
+  "updated_at": 1756609087.0729873,
   "status": "active"
 }

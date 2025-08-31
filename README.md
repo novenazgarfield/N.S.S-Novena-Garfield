@@ -1,6 +1,5 @@
 # 🧠 N.S.S-Novena-Garfield Genesis Project
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.12+-green.svg)](https://python.org)
 [![AI Powered](https://img.shields.io/badge/AI-Powered-orange.svg)](README.md)
 [![Genesis](https://img.shields.io/badge/Genesis-v2.0.0--Chapter6-purple.svg)](README.md)
@@ -202,15 +201,15 @@ python management/scripts/cleanup_and_import.py structure
 - [工作区整理报告](management/docs/WORKSPACE_ORGANIZATION_COMPLETE.md)
 - [优化进度跟踪](management/docs/SYSTEMS_OPTIMIZATION_PROGRESS.md)
 
-## 🤝 贡献
+## 🤝 内部开发
 
-欢迎提交Issue和Pull Request！
+本项目为私有开发项目。
 
 ### 开发流程
-1. Fork项目
-2. 创建功能分支
-3. 提交更改
-4. 创建Pull Request
+1. 创建功能分支
+2. 提交更改
+3. 内部代码审查
+4. 合并到主分支
 
 ### 代码规范
 - 遵循统一的入口点模式
@@ -218,9 +217,41 @@ python management/scripts/cleanup_and_import.py structure
 - 添加必要的文档和注释
 - 保持向后兼容性
 
-## 📄 许可证
+## 🙏 致谢与参考
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+本项目在开发过程中参考了以下优秀项目的思路和架构设计：
+
+### 🎯 架构设计参考
+- **[Pantheon CLI](https://github.com/steorra/pantheon-cli)** - 感谢其在自我修复和透明观察架构方面的启发，为我们的Pantheon灵魂系统提供了设计思路
+
+### 🤖 AI模型与框架
+- **[OpenAI GPT](https://openai.com/)** - 大语言模型API服务
+- **[Google Gemini](https://ai.google.dev/)** - 多模态AI模型，用于智能对话和分析
+- **[DeepSeek](https://www.deepseek.com/)** - 高性能大语言模型，RAG系统核心引擎
+- **[GLM-4V](https://open.bigmodel.cn/)** - 智谱AI视觉语言模型，用于专家级图像分析和报告生成
+- **[Meta DINOv2](https://github.com/facebookresearch/dinov2)** - 无监督视觉特征提取，解决牛只识别中的数据标注难题
+
+### 🔧 技术框架与工具
+- **[Hugging Face Transformers](https://github.com/huggingface/transformers)** - 预训练模型库和工具链
+- **[Sentence Transformers](https://github.com/UKPLab/sentence-transformers)** - 文本嵌入模型，multilingual-e5用于多语言RAG检索
+- **[Facebook FAISS](https://github.com/facebookresearch/faiss)** - 高效向量相似性搜索，RAG系统的向量数据库
+- **[PyTorch](https://pytorch.org/)** - 深度学习框架，支撑所有AI模型推理
+
+### 🐄 专业领域模型
+- **博士级牛只识别系统** - 基于DINOv2 + GLM-4V + 传统计算机视觉算法的融合架构
+- **3D体况评分模型** - 多摄像头立体视觉分析，实现精准的牛只体况评估
+
+感谢开源社区和AI研究社区的贡献，让我们能够站在巨人的肩膀上创新。特别感谢Meta、Google、OpenAI、智谱AI、DeepSeek等公司提供的优秀AI模型和工具。
+
+## 📄 版权声明
+
+**本项目为公开但非开源项目**，版权归 Novena Garfield 所有。
+
+- ✅ **可以查看**: 代码公开可见，欢迎学习和交流
+- ❌ **禁止使用**: 未经授权，禁止复制、分发、修改或商业使用
+- 📧 **商业合作**: 如需使用本项目代码，请联系作者获得授权
+
+本项目采用 **All Rights Reserved** 版权模式。
 
 ## 🏆 Genesis项目成就
 
@@ -257,16 +288,15 @@ python management/scripts/cleanup_and_import.py structure
 - [🔧 部署指南](management/docs/DEPLOYMENT_SUMMARY.md)
 - [📊 系统优化报告](management/docs/FINAL_OPTIMIZATION_COMPLETE.md)
 
-## 🤝 贡献指南
+## 🤝 内部开发指南
 
-欢迎为Genesis项目贡献代码！
+Genesis项目内部开发规范。
 
 ### 开发流程
-1. Fork项目到您的GitHub
-2. 创建功能分支 (`git checkout -b feature/amazing-feature`)
-3. 提交更改 (`git commit -m 'Add amazing feature'`)
-4. 推送到分支 (`git push origin feature/amazing-feature`)
-5. 创建Pull Request
+1. 创建功能分支 (`git checkout -b feature/amazing-feature`)
+2. 提交更改 (`git commit -m 'Add amazing feature'`)
+3. 内部代码审查
+4. 合并到主分支
 
 ### 代码规范
 - 遵循现有的架构模式
@@ -274,10 +304,6 @@ python management/scripts/cleanup_and_import.py structure
 - 实现自我修复装饰器
 - 保持代码透明化
 - 添加详细的文档说明
-
-## 📄 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
 ---
 
