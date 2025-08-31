@@ -1,13 +1,45 @@
 {
   "api_endpoints": {
-    "rag_api": "http://localhost:5001",
-    "health_check": "http://localhost:5001/api/health",
-    "chat": "http://localhost:5001/api/chat",
-    "upload": "http://localhost:5001/api/upload",
-    "energy_api": "http://localhost:56400",
-    "energy_health": "http://localhost:56400/api/energy/health",
-    "energy_models": "http://localhost:56400/api/energy/models/available",
-    "energy_config": "http://localhost:56400/api/energy/config"
+    "rag_api": "https://renewal-continuously-prophet-material.trycloudflare.com",
+    "health_check": "https://renewal-continuously-prophet-material.trycloudflare.com/api/health",
+    "chat": "https://renewal-continuously-prophet-material.trycloudflare.com/api/chat",
+    "upload": "https://renewal-continuously-prophet-material.trycloudflare.com/api/upload",
+    "documents": "https://renewal-continuously-prophet-material.trycloudflare.com/api/documents",
+    "chat_history": "https://renewal-continuously-prophet-material.trycloudflare.com/api/chat/history"
   },
-  "updated_at": 1756571533.4466026
+  "local_endpoints": {
+    "intelligence_brain": "http://localhost:8500",
+    "nexus_frontend": "http://localhost:52301"
+  },
+  "tunnel_endpoints": {
+    "intelligence_brain": "https://renewal-continuously-prophet-material.trycloudflare.com",
+    "nexus_frontend": "https://encounter-demands-idea-ranch.trycloudflare.com"
+  },
+  "system_info": {
+    "version": "2.0.0-Simple",
+    "project": "N.S.S-Novena-Garfield",
+    "components": {
+      "intelligence_brain": {
+        "name": "🧠 中央情报大脑",
+        "modules": [
+          "🔺 Trinity Smart Chunking",
+          "🌌 Memory Nebula",
+          "🛡️ Shields of Order",
+          "🎯 Fire Control System",
+          "🌟 Pantheon Soul",
+          "🛡️ Black Box Recorder"
+        ],
+        "port": 8500,
+        "tunnel": "https://renewal-continuously-prophet-material.trycloudflare.com"
+      },
+      "nexus_frontend": {
+        "name": "🌐 NEXUS前端界面",
+        "theme": "黑色主题",
+        "port": 52301,
+        "tunnel": "https://encounter-demands-idea-ranch.trycloudflare.com"
+      }
+    }
+  },
+  "updated_at": 1756607780.2985244,
+  "status": "active"
 }

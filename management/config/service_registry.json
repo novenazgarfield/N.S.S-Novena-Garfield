@@ -3,12 +3,12 @@
     "rag_api": {
       "name": "rag_api",
       "type": "rag_api",
-      "port": 5001,
-      "local_url": "http://localhost:5001",
+      "port": 5000,
+      "local_url": "http://localhost:5000",
       "status": "registered",
-      "registered_at": "2025-08-30T16:32:05.437404",
+      "registered_at": "2025-08-31T00:28:27.307425",
       "pid": null,
-      "tunnel_url": null
+      "tunnel_url": "https://warrior-sudan-inform-ko.trycloudflare.com"
     },
     "nexus_frontend": {
       "name": "nexus_frontend",
@@ -16,9 +16,9 @@
       "port": 52300,
       "local_url": "http://localhost:52300",
       "status": "registered",
-      "registered_at": "2025-08-30T16:32:13.446215",
+      "registered_at": "2025-08-31T00:28:35.316131",
       "pid": null,
-      "tunnel_url": null
+      "tunnel_url": "https://nearby-current-eternal-cedar.trycloudflare.com"
     },
     "api_gateway": {
       "name": "api_gateway",
@@ -36,7 +36,7 @@
       "port": 56400,
       "local_url": "http://localhost:56400",
       "status": "registered",
-      "registered_at": "2025-08-30T16:32:10.442190",
+      "registered_at": "2025-08-31T00:28:32.312128",
       "pid": null,
       "tunnel_url": null
     },
@@ -52,5 +52,5 @@
     }
   },
   "tunnels": {},
-  "updated_at": "2025-08-30T16:32:13.446224"
+  "updated_at": "2025-08-31T00:28:56.187842"
 }

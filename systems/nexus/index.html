@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="api-url" content="http://localhost:8502">
+
     <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -4348,7 +4348,10 @@
                             
                             if (data.success) {
                                 successCount++;
-                                addMessage(`✅ ${file.name} 上传成功！(${data.document.chunks_count}个文本块)`, 'assistant');
+                                const chunksInfo = data.document_info && data.document_info.statistics ? 
+                        `(${data.document_info.statistics.sections_count}个章节, ${data.document_info.statistics.word_count}个词)` : 
+                        '(处理完成)';
+                    addMessage(`✅ ${file.name} 上传成功！${chunksInfo}`, 'assistant');
                             } else {
                                 errorCount++;
                                 addMessage(`❌ ${file.name} 处理失败: ${data.error}`, 'assistant');
@@ -4429,9 +4432,6 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        task_name: 'nexus_chat'
-                    }),
                     signal: controller.signal
                 });
                 
@@ -4483,7 +4483,8 @@
                         
                         data.documents.forEach((doc, index) => {
                             message += `**${index + 1}. ${doc.filename}**\n`;
-                            message += `   📄 分块数量: ${doc.chunks_count}\n`;
+                            message += `   📄 章节数量: ${doc.statistics ? doc.statistics.sections_count : 'N/A'}\n`;
+                    message += `   📝 词汇数量: ${doc.statistics ? doc.statistics.word_count : 'N/A'}\n`;
                             message += `   📅 上传时间: ${new Date(doc.upload_time).toLocaleString('zh-CN')}\n`;
                             message += `   🆔 文档ID: ${doc.id}\n\n`;
                         });
@@ -4509,54 +4510,59 @@
         // 显示系统状态
         async function showSystemStatus() {
             try {
-                const [systemResponse, chronicleResponse] = await Promise.all([
+                // 获取系统状态和健康检查数据
+                const [systemResponse, healthResponse] = await Promise.all([
                     fetch(`${RAG_CONFIG.baseURL}/api/system/status`),
-                    fetch(`${RAG_CONFIG.baseURL}/api/chronicle/status`)
+                    fetch(`${RAG_CONFIG.baseURL}/api/health`)
                 ]);
 
-                const systemData = await systemResponse.json();
-                const chronicleData = await chronicleResponse.json();
-
-                if (systemResponse.ok && chronicleResponse.ok) {
+                if (systemResponse.ok && healthResponse.ok) {
+                    const systemData = await systemResponse.json();
+                    const healthData = await healthResponse.json();
+                    
                     let message = '📊 **NEXUS RAG 系统状态**\n\n';
                     
                     // 系统基本信息
-                    message += `🌟 **${systemData.system_name}**\n`;
-                    message += `📦 版本: ${systemData.version}\n`;
-                    message += `📚 文档数量: ${systemData.runtime_stats.documents_loaded}\n`;
-                    message += `💬 对话次数: ${systemData.runtime_stats.chat_interactions}\n`;
-                    message += `🤖 Gemini状态: ${systemData.runtime_stats.gemini_integration.available ? '✅ 可用' : '❌ 不可用'}\n`;
+                    message += `🌟 **${healthData.ai_system}**\n`;
+                    message += `📦 版本: ${healthData.version}\n`;
+                    message += `📚 文档数量: ${systemData.data.documents_count}\n`;
+                    message += `💬 聊天历史: ${systemData.data.chat_history_count} 条\n`;
+                    message += `🔗 系统健康: ${systemData.data.system_health === 'healthy' ? '✅ 健康' : '❌ 异常'}\n`;
+                    message += `⚡ 活跃功能: ${systemData.data.features_active} 个\n`;
+                    message += `🕐 系统时间: ${new Date(systemData.timestamp).toLocaleString('zh-CN')}\n`;
+                    message += `⏰ 运行状态: ${systemData.data.uptime}\n\n`;
                     
-                    if (systemData.runtime_stats.gemini_integration.current_key) {
-                        message += `🔑 当前密钥: ${systemData.runtime_stats.gemini_integration.current_key}\n`;
-                    }
-                    
-                    message += `🕐 系统时间: ${new Date(systemData.runtime_stats.uptime).toLocaleString('zh-CN')}\n\n`;
-                    
-                    // Chronicle系统状态
-                    message += `🏥 **${chronicleData.chronicle_system}**\n`;
-                    message += `📦 版本: ${chronicleData.version}\n`;
-                    message += `🔗 状态: ${chronicleData.status === 'active' ? '✅ 活跃' : '❌ 离线'}\n`;
-                    message += `🔗 集成: ${chronicleData.rag_integration}\n\n`;
-                    
-                    // 七大核心系统
-                    message += '🛡️ **七大核心系统**\n';
-                    Object.entries(systemData.core_systems).forEach(([key, value]) => {
-                        message += `   ${value} ✅\n`;
+                    // 系统功能
+                    message += '🚀 **系统功能**\n';
+                    healthData.data.features.forEach(feature => {
+                        message += `   ✅ ${feature}\n`;
                     });
                     
-                    message += '\n🚀 **系统能力**\n';
-                    systemData.capabilities.forEach(capability => {
-                        message += `   ${capability}\n`;
+                    // API端点
+                    message += '\n🔗 **可用API端点**\n';
+                    Object.entries(systemData.data.api_endpoints).forEach(([key, endpoint]) => {
+                        message += `   📡 ${key}: ${endpoint}\n`;
                     });
+                    
+                    message += '\n🎯 **连接信息**\n';
+                    message += `   🌐 前端地址: ${window.location.origin}\n`;
+                    message += `   🧠 API地址: ${RAG_CONFIG.baseURL}\n`;
+                    message += `   📊 状态: ${systemData.status === 'active' ? '✅ 活跃' : '❌ 离线'}\n`;
                     
                     addMessage(message, 'assistant');
                 } else {
-                    addMessage('❌ 获取系统状态失败', 'assistant');
+                    let errorMsg = '❌ 获取系统状态失败\n\n';
+                    if (!systemResponse.ok) {
+                        errorMsg += `系统状态API错误: ${systemResponse.status} ${systemResponse.statusText}\n`;
+                    }
+                    if (!healthResponse.ok) {
+                        errorMsg += `健康检查API错误: ${healthResponse.status} ${healthResponse.statusText}\n`;
+                    }
+                    addMessage(errorMsg, 'assistant');
                 }
             } catch (error) {
                 console.error('获取系统状态失败:', error);
-                addMessage('❌ 获取系统状态失败，请确保NEXUS RAG服务器正在运行。', 'assistant');
+                addMessage(`❌ 获取系统状态失败: ${error.message}\n\n请确保NEXUS RAG服务器正在运行。`, 'assistant');
             }
             
             toggleFunctionMenu();
@@ -4607,34 +4613,16 @@
             toggleFunctionMenu();
         }
 
-        // RAG系统配置 - 动态检测服务器地址
-        const RAG_CONFIG = {
-            baseURL: (() => {
-                // 🌟 相对论引擎 - 动态API地址发现
-                // 如果是通过隧道访问，尝试从配置中获取最新地址
-                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                    // 尝试从页面元数据中获取API地址
-                    const apiUrlMeta = document.querySelector('meta[name="api-url"]');
-                    if (apiUrlMeta) {
-                        return apiUrlMeta.content;
-                    }
-                    // 回退到NEXUS RAG服务器地址
-                    return 'http://localhost:8502';
-                }
-                // 本地开发环境 - 使用NEXUS RAG服务器
-                return 'http://localhost:8502';
-            })(),
-            fallbackURLs: [
-                'http://localhost:8502', // NEXUS RAG服务器本地
-                'https://speaker-guatemala-circular-sampling.trycloudflare.com', // NEXUS RAG服务器隧道
-                'https://voltage-sense-olive-photographic.trycloudflare.com' // 备用地址
-            ],
+        // RAG系统配置 - 完全动态配置
+        let RAG_CONFIG = {
+            baseURL: null, // 将从api_config.json动态加载
+            fallbackURLs: [], // 将从api_config.json动态加载
             endpoints: {
                 health: '/api/health',
                 chat: '/api/chat',
                 history: '/api/history',
                 upload: '/api/upload',
-                clear: '/api/clear',
+                clear: '/api/chat/clear',
                 documents: '/api/documents',
                 systemStatus: '/api/system/status',
                 chronicleStatus: '/api/chronicle/status',
@@ -4642,6 +4630,35 @@
             },
             timeout: 60000
         };
+
+        // 动态加载API配置
+        async function loadApiConfig() {
+            try {
+                const response = await fetch('/api_config.json?t=' + Date.now());
+                if (response.ok) {
+                    const config = await response.json();
+                    if (config.api_endpoints && config.api_endpoints.rag_api) {
+                        RAG_CONFIG.baseURL = config.api_endpoints.rag_api;
+                        RAG_CONFIG.fallbackURLs = [
+                            config.api_endpoints.rag_api,
+                            config.api_endpoints.rag_api.replace('localhost', '127.0.0.1')
+                        ];
+                        console.log('✅ 动态配置加载成功:', RAG_CONFIG.baseURL);
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.warn('⚠️ 无法加载动态配置，使用默认配置:', error);
+            }
+            
+            // 回退到默认配置
+            RAG_CONFIG.baseURL = 'http://localhost:5000';
+            RAG_CONFIG.fallbackURLs = [
+                'http://localhost:5000',
+                'http://127.0.0.1:5000'
+            ];
+            return false;
+        }
 
         // 状态框显示控制
         let statusTimeout = null;
@@ -4725,12 +4742,13 @@
         async function tryConnectToURL(baseURL) {
             const controller = new AbortController();
             const timeoutId = setTimeout(() => controller.abort(), RAG_CONFIG.timeout);
-            const fullURL = `${baseURL}${RAG_CONFIG.endpoints.health}`;
             
-            console.log(`🌐 尝试连接: ${fullURL}`);
+            console.log(`🌐 尝试连接: ${baseURL}`);
             
             try {
-                const response = await fetch(fullURL, {
+                // 首先测试健康检查端点
+                const healthURL = `${baseURL}${RAG_CONFIG.endpoints.health}`;
+                const healthResponse = await fetch(healthURL, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -4745,16 +4763,46 @@
                     signal: controller.signal
                 });
                 
-                clearTimeout(timeoutId);
-                console.log(`📡 响应状态: ${response.status} ${response.statusText}`);
+                console.log(`📡 健康检查响应: ${healthResponse.status}`);
                 
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log(`✅ 响应数据:`, data);
-                    return { success: true, data, baseURL };
+                if (healthResponse.ok) {
+                    // 如果健康检查通过，获取系统状态
+                    const statusURL = `${baseURL}/api/system/status`;
+                    const statusResponse = await fetch(statusURL, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Cache-Control': 'no-cache'
+                        },
+                        mode: 'cors',
+                        cache: 'no-cache',
+                        signal: controller.signal
+                    });
+                    
+                    clearTimeout(timeoutId);
+                    
+                    if (statusResponse.ok) {
+                        const statusData = await statusResponse.json();
+                        console.log(`✅ 系统状态数据:`, statusData);
+                        
+                        // 返回正确的数据结构
+                        return { 
+                            success: true, 
+                            data: {
+                                chat_history_count: statusData.data.chat_history_count,
+                                documents_count: statusData.data.documents_count,
+                                system_health: statusData.data.system_health
+                            }, 
+                            baseURL 
+                        };
+                    } else {
+                        console.log(`❌ 系统状态获取失败: ${statusResponse.status}`);
+                        return { success: false, error: `系统状态获取失败: ${statusResponse.status}`, baseURL };
+                    }
                 } else {
-                    console.log(`❌ HTTP错误: ${response.status} ${response.statusText}`);
-                    return { success: false, error: `HTTP ${response.status}: ${response.statusText}`, baseURL };
+                    clearTimeout(timeoutId);
+                    console.log(`❌ 健康检查失败: ${healthResponse.status}`);
+                    return { success: false, error: `健康检查失败: ${healthResponse.status}`, baseURL };
                 }
             } catch (error) {
                 clearTimeout(timeoutId);
@@ -5245,8 +5293,11 @@
                 }
             }, 500); // 延迟500ms确保DOM完全加载
             
-            // 测试RAG系统连接
-            setTimeout(() => {
+            // 加载动态配置并测试RAG系统连接
+            setTimeout(async () => {
+                console.log('🔄 正在加载动态API配置...');
+                await loadApiConfig();
+                console.log('🔗 开始测试RAG系统连接...');
                 testRAGConnection();
             }, 1000);
             
