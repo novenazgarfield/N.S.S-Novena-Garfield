@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API连接测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: #ffffff;
+            padding: 20px;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            background: #2d2d2d;
+        }
+        .success { border-left: 4px solid #4ade80; }
+        .error { border-left: 4px solid #ef4444; }
+        .info { border-left: 4px solid #4a9eff; }
+        button {
+            background: #4a9eff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #3b82f6;
+        }
+        pre {
+            background: #0f0f0f;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 NEXUS API连接测试</h1>
+    
+    <div class="test-result info">
+        <h3>测试控制</h3>
+        <button onclick="testConfigLoad()">测试配置加载</button>
+        <button onclick="testAPIHealth()">测试API健康检查</button>
+        <button onclick="testAPIStatus()">测试系统状态</button>
+        <button onclick="testAllAPIs()">测试所有API</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script>
+        let config = null;
+        
+        function addResult(type, title, content) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.innerHTML = `
+                <h3>${title}</h3>
+                <pre>${typeof content === 'object' ? JSON.stringify(content, null, 2) : content}</pre>
+            `;
+            results.appendChild(div);
+        }
+        
+        async function testConfigLoad() {
+            try {
+                addResult('info', '🔄 测试配置加载', '正在加载配置文件...');
+                
+                const response = await fetch('/api_config.json?t=' + Date.now());
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                config = await response.json();
+                addResult('success', '✅ 配置加载成功', config);
+                
+                return config;
+            } catch (error) {
+                addResult('error', '❌ 配置加载失败', error.message);
+                return null;
+            }
+        }
+        
+        async function testAPIHealth() {
+            if (!config) {
+                await testConfigLoad();
+            }
+            
+            if (!config) {
+                addResult('error', '❌ API健康检查失败', '配置未加载');
+                return;
+            }
+            
+            try {
+                addResult('info', '🔄 测试API健康检查', `请求: ${config.api_endpoints.health_check}`);
+                
+                const response = await fetch(config.api_endpoints.health_check);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                addResult('success', '✅ API健康检查成功', data);
+                
+                return data;
+            } catch (error) {
+                addResult('error', '❌ API健康检查失败', error.message);
+                return null;
+            }
+        }
+        
+        async function testAPIStatus() {
+            if (!config) {
+                await testConfigLoad();
+            }
+            
+            if (!config) {
+                addResult('error', '❌ 系统状态检查失败', '配置未加载');
+                return;
+            }
+            
+            try {
+                const statusURL = `${config.api_endpoints.rag_api}/api/system/status`;
+                addResult('info', '🔄 测试系统状态', `请求: ${statusURL}`);
+                
+                const response = await fetch(statusURL);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                addResult('success', '✅ 系统状态检查成功', data);
+                
+                return data;
+            } catch (error) {
+                addResult('error', '❌ 系统状态检查失败', error.message);
+                return null;
+            }
+        }
+        
+        async function testAllAPIs() {
+            document.getElementById('results').innerHTML = '';
+            
+            addResult('info', '🚀 开始全面API测试', '正在执行所有测试...');
+            
+            // 1. 测试配置加载
+            const configResult = await testConfigLoad();
+            
+            // 2. 测试API健康检查
+            const healthResult = await testAPIHealth();
+            
+            // 3. 测试系统状态
+            const statusResult = await testAPIStatus();
+            
+            // 4. 测试文档列表
+            if (config) {
+                try {
+                    const docsURL = `${config.api_endpoints.rag_api}/api/documents`;
+                    addResult('info', '🔄 测试文档列表', `请求: ${docsURL}`);
+                    
+                    const response = await fetch(docsURL);
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    addResult('success', '✅ 文档列表获取成功', data);
+                } catch (error) {
+                    addResult('error', '❌ 文档列表获取失败', error.message);
+                }
+            }
+            
+            // 总结
+            const summary = {
+                配置加载: configResult ? '✅ 成功' : '❌ 失败',
+                API健康检查: healthResult ? '✅ 成功' : '❌ 失败',
+                系统状态: statusResult ? '✅ 成功' : '❌ 失败',
+                时间戳: new Date().toLocaleString()
+            };
+            
+            addResult('info', '📊 测试总结', summary);
+        }
+        
+        // 页面加载时自动运行测试
+        window.addEventListener('load', () => {
+            setTimeout(testAllAPIs, 1000);
+        });
+    </script>
+</body>
+</html>
