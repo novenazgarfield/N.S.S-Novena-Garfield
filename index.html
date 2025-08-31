@@ -176,18 +176,18 @@
 
         // 3秒后跳转到NEXUS系统
         setTimeout(() => {
-            window.location.href = '/systems/nexus/';
+            window.location.href = './systems/nexus/';
         }, 3000);
 
         // 如果用户点击任何地方，立即跳转
         document.addEventListener('click', () => {
-            window.location.href = '/systems/nexus/';
+            window.location.href = './systems/nexus/';
         });
 
         // 键盘事件也可以跳转
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
-                window.location.href = '/systems/nexus/';
+                window.location.href = './systems/nexus/';
             }
         });
     </script>
