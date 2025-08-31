@@ -69,13 +69,45 @@ class EnhancedDocumentProcessor:
             if not line:
                 continue
                 
-            # 提取标题
+            # 提取标题 - 支持多种格式
+            is_header = False
+            header_level = 1
+            header_text = line
+            
+            # Markdown格式标题
             if line.startswith('#'):
+                is_header = True
+                header_level = len(line) - len(line.lstrip('#'))
+                header_text = line.lstrip('#').strip()
+            
+            # 数字编号标题 (1、2、3、或1.1、1.2等)
+            elif re.match(r'^[0-9]+[\.、]\s*[^0-9]', line) or re.match(r'^[0-9]+\.[0-9]+[\.、]\s*', line):
+                is_header = True
+                header_level = 2 if '.' in line.split()[0] else 1
+                header_text = line
+            
+            # 中文序号标题 (一、二、三、或（一）、（二）等)
+            elif re.match(r'^[一二三四五六七八九十]+[、．]\s*', line) or re.match(r'^[（(][一二三四五六七八九十]+[）)]\s*', line):
+                is_header = True
+                header_level = 2
+                header_text = line
+            
+            # 英文序号标题 (A、B、C、或(A)、(B)等)
+            elif re.match(r'^[A-Z][\.、]\s*', line) or re.match(r'^[（(][A-Z][）)]\s*', line):
+                is_header = True
+                header_level = 3
+                header_text = line
+            
+            # 短行且包含关键词的可能是标题
+            elif len(line) < 50 and any(keyword in line for keyword in ['配制', '纯化', '表达', '步骤', '方法', '实验', '试剂', '缓冲液']):
+                is_header = True
+                header_level = 2
+                header_text = line
+            
+            if is_header:
                 if current_section and current_content:
                     structure['sections'][current_section] = '\n'.join(current_content)
                 
-                header_level = len(line) - len(line.lstrip('#'))
-                header_text = line.lstrip('#').strip()
                 structure['headers'].append({
                     'level': header_level,
                     'text': header_text,
@@ -543,12 +575,31 @@ def upload_file():
                 # 处理.docx文件
                 try:
                     doc = Document(filepath)
-                    paragraphs = []
+                    all_content = []
+                    
+                    # 提取段落内容
+                    paragraph_count = 0
                     for paragraph in doc.paragraphs:
                         if paragraph.text.strip():
-                            paragraphs.append(paragraph.text.strip())
-                    content = '\n'.join(paragraphs)
-                    logger.info(f"成功解析.docx文件: {filename}, 段落数: {len(paragraphs)}")
+                            all_content.append(paragraph.text.strip())
+                            paragraph_count += 1
+                    
+                    # 提取表格内容
+                    table_count = len(doc.tables)
+                    for table in doc.tables:
+                        # 添加表格标识
+                        all_content.append("\n[表格内容]")
+                        for row in table.rows:
+                            row_cells = []
+                            for cell in row.cells:
+                                if cell.text.strip():
+                                    row_cells.append(cell.text.strip())
+                            if row_cells:
+                                all_content.append(" | ".join(row_cells))
+                        all_content.append("[表格结束]\n")
+                    
+                    content = '\n'.join(all_content)
+                    logger.info(f"成功解析.docx文件: {filename}, 段落数: {paragraph_count}, 表格数: {table_count}, 总字符数: {len(content)}")
                 except Exception as e:
                     logger.error(f"解析.docx文件失败: {filename}, 错误: {str(e)}")
                     return jsonify({
