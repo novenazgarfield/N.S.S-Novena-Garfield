@@ -6,7 +6,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="api-url" content="http://localhost:8502">
+
     <title>NEXUS Research Workstation - N.S.S Novena Garfield</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
@@ -4607,28 +4607,10 @@
             toggleFunctionMenu();
         }
 
-        // RAG系统配置 - 动态检测服务器地址
-        const RAG_CONFIG = {
-            baseURL: (() => {
-                // 🌟 相对论引擎 - 动态API地址发现
-                // 如果是通过隧道访问，尝试从配置中获取最新地址
-                if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-                    // 尝试从页面元数据中获取API地址
-                    const apiUrlMeta = document.querySelector('meta[name="api-url"]');
-                    if (apiUrlMeta) {
-                        return apiUrlMeta.content;
-                    }
-                    // 回退到NEXUS RAG服务器地址
-                    return 'http://localhost:8502';
-                }
-                // 本地开发环境 - 使用NEXUS RAG服务器
-                return 'http://localhost:8502';
-            })(),
-            fallbackURLs: [
-                'http://localhost:8502', // NEXUS RAG服务器本地
-                'https://speaker-guatemala-circular-sampling.trycloudflare.com', // NEXUS RAG服务器隧道
-                'https://voltage-sense-olive-photographic.trycloudflare.com' // 备用地址
-            ],
+        // RAG系统配置 - 完全动态配置
+        let RAG_CONFIG = {
+            baseURL: null, // 将从api_config.json动态加载
+            fallbackURLs: [], // 将从api_config.json动态加载
             endpoints: {
                 health: '/api/health',
                 chat: '/api/chat',
@@ -4642,6 +4624,35 @@
             },
             timeout: 60000
         };
+
+        // 动态加载API配置
+        async function loadApiConfig() {
+            try {
+                const response = await fetch('/api_config.json?t=' + Date.now());
+                if (response.ok) {
+                    const config = await response.json();
+                    if (config.api_endpoints && config.api_endpoints.rag_api) {
+                        RAG_CONFIG.baseURL = config.api_endpoints.rag_api;
+                        RAG_CONFIG.fallbackURLs = [
+                            config.api_endpoints.rag_api,
+                            config.api_endpoints.rag_api.replace('localhost', '127.0.0.1')
+                        ];
+                        console.log('✅ 动态配置加载成功:', RAG_CONFIG.baseURL);
+                        return true;
+                    }
+                }
+            } catch (error) {
+                console.warn('⚠️ 无法加载动态配置，使用默认配置:', error);
+            }
+            
+            // 回退到默认配置
+            RAG_CONFIG.baseURL = 'http://localhost:5000';
+            RAG_CONFIG.fallbackURLs = [
+                'http://localhost:5000',
+                'http://127.0.0.1:5000'
+            ];
+            return false;
+        }
 
         // 状态框显示控制
         let statusTimeout = null;
@@ -5245,8 +5256,11 @@
                 }
             }, 500); // 延迟500ms确保DOM完全加载
             
-            // 测试RAG系统连接
-            setTimeout(() => {
+            // 加载动态配置并测试RAG系统连接
+            setTimeout(async () => {
+                console.log('🔄 正在加载动态API配置...');
+                await loadApiConfig();
+                console.log('🔗 开始测试RAG系统连接...');
                 testRAGConnection();
             }, 1000);
             
