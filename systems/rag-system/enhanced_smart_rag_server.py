@@ -478,6 +478,8 @@ class EnhancedRAGEngine:
         
         # 添加统计信息
         if search_results:
+            # 通过全局变量获取文档总数
+            global documents
             total_docs = len(documents)
             matched_docs = len(search_results)
             response_parts.append(f"\n📊 搜索统计：在 {total_docs} 个文档中找到 {matched_docs} 个相关文档")
@@ -675,15 +677,22 @@ def chat():
         data = request.get_json()
         message = data.get('message', '')
         conversation_id = data.get('conversation_id', 'default')
+        use_rag = data.get('use_rag', True)  # 默认启用RAG
         
         if not message:
             return jsonify({"success": False, "message": "消息不能为空"}), 400
         
         current_time = get_current_time()
         
-        # 使用增强版RAG引擎搜索和生成回答
-        search_results = rag_engine.search_documents(message)
-        response = rag_engine.generate_intelligent_response(message, search_results)
+        # 根据use_rag参数决定是否使用RAG
+        if use_rag:
+            # 使用增强版RAG引擎搜索和生成回答
+            search_results = rag_engine.search_documents(message)
+            response = rag_engine.generate_intelligent_response(message, search_results)
+        else:
+            # 不使用RAG，返回默认回复
+            search_results = []
+            response = "您好！我是NEXUS AI助手，很高兴为您服务！请上传文档后，我就可以帮您分析和回答相关问题。"
         
         # 记录聊天历史
         chat_record = {
@@ -705,15 +714,53 @@ def chat():
             "chat_id": chat_record["id"],
             "response": response,
             "timestamp": current_time.isoformat(),
+            "search_results_count": len(search_results),  # 添加这个字段以保持兼容性
             "search_info": {
                 "documents_searched": len(documents),
                 "results_found": len(search_results)
-            }
+            },
+            "sources": [{"filename": result['document']['structure']['filename'], "content": result['relevant_content'][:200]} for result in search_results]  # 添加引用信息
         })
         
     except Exception as e:
         logger.error(f"聊天处理错误: {e}")
         return jsonify({"success": False, "message": f"处理失败: {str(e)}"}), 500
+
+@app.route('/api/search', methods=['GET'])
+def search_documents_api():
+    """文档搜索API"""
+    try:
+        query = request.args.get('query', '')
+        max_results = int(request.args.get('max_results', 5))
+        
+        if not query:
+            return jsonify({"success": False, "message": "查询参数不能为空"}), 400
+        
+        # 使用RAG引擎搜索
+        search_results = rag_engine.search_documents(query, max_results)
+        
+        # 格式化搜索结果
+        formatted_results = []
+        for result in search_results:
+            doc = result['document']
+            structure = doc.get('structure', {})
+            formatted_results.append({
+                'filename': structure.get('filename', ''),
+                'score': result['score'],
+                'content': result['relevant_content'][:200] + '...' if len(result['relevant_content']) > 200 else result['relevant_content'],
+                'full_content': result['relevant_content']
+            })
+        
+        return jsonify({
+            "success": True,
+            "query": query,
+            "results": formatted_results,
+            "total_count": len(formatted_results)
+        })
+        
+    except Exception as e:
+        logger.error(f"搜索错误: {e}")
+        return jsonify({"success": False, "message": f"搜索失败: {str(e)}"}), 500
 
 @app.route('/api/documents', methods=['GET'])
 def get_documents():
