@@ -1,45 +1,70 @@
 {
   "api_endpoints": {
-    "rag_api": "https://governing-level-womens-latitude.trycloudflare.com",
-    "health_check": "https://governing-level-womens-latitude.trycloudflare.com/api/health",
-    "chat": "https://governing-level-womens-latitude.trycloudflare.com/api/chat",
-    "upload": "https://governing-level-womens-latitude.trycloudflare.com/api/upload",
-    "documents": "https://governing-level-womens-latitude.trycloudflare.com/api/documents",
-    "chat_history": "https://governing-level-womens-latitude.trycloudflare.com/api/chat/history"
+    "rag_api": "http://localhost:8500",
+    "health_check": "http://localhost:8500/api/health",
+    "chat": "http://localhost:8500/api/chat",
+    "upload": "http://localhost:8500/api/upload",
+    "documents": "http://localhost:8500/api/documents",
+    "chat_history": "http://localhost:8500/api/chat/history",
+    "rag_api_local": "http://localhost:8500"
   },
   "local_endpoints": {
     "intelligence_brain": "http://localhost:8500",
-    "nexus_frontend": "http://localhost:52300"
+    "nexus_frontend": "http://localhost:58709"
   },
-  "tunnel_endpoints": {
-    "intelligence_brain": "https://governing-level-womens-latitude.trycloudflare.com",
-    "nexus_frontend": "https://blacks-bible-disco-replaced.trycloudflare.com"
-  },
+  "tunnel_endpoints": {},
   "system_info": {
-    "version": "2.0.0-Simple",
+    "version": "2.0.0-Ultimate",
+    "launcher": "ultimate_nexus_launcher.py",
     "project": "N.S.S-Novena-Garfield",
     "components": {
       "intelligence_brain": {
         "name": "🧠 中央情报大脑",
-        "modules": [
-          "🔺 Trinity Smart Chunking",
-          "🌌 Memory Nebula",
-          "🛡️ Shields of Order",
-          "🎯 Fire Control System",
-          "🌟 Pantheon Soul",
-          "🛡️ Black Box Recorder"
+        "core_modules": [
+          "🔺 Trinity Smart Chunking - 三位一体智能分块",
+          "🌌 Memory Nebula - 记忆星图 (知识图谱)",
+          "🛡️ Shields of Order - 秩序之盾 (二级精炼)",
+          "🎯 Fire Control System - 火控系统 (AI注意力控制)",
+          "🌟 Pantheon Soul - Pantheon灵魂 (自我进化)",
+          "🛡️ Black Box Recorder - 黑匣子记录器 (故障记忆)"
         ],
         "port": 8500,
-        "tunnel": "https://governing-level-womens-latitude.trycloudflare.com"
+        "tunnel": null,
+        "status": "active"
       },
       "nexus_frontend": {
         "name": "🌐 NEXUS前端界面",
         "theme": "黑色主题",
-        "port": 52300,
-        "tunnel": "https://blacks-bible-disco-replaced.trycloudflare.com"
+        "port": 58709,
+        "tunnel": null,
+        "integrated_features": [
+          "中央情报大脑完整访问",
+          "智能文档处理系统",
+          "多模块统一管理",
+          "实时系统监控",
+          "Chronicle时间管理"
+        ],
+        "status": "active"
       }
     }
   },
-  "updated_at": 1756609087.0729873,
-  "status": "active"
+  "access_info": {
+    "local_access": {
+      "nexus_frontend": "http://localhost:58709",
+      "intelligence_brain": "http://localhost:8500"
+    },
+    "public_access": null
+  },
+  "updated_at": 1756718249.7387743,
+  "status": "active",
+  "tunnel_status": "local_only",
+  "last_health_check": "2025-09-01T09:17:29.738774",
+  "stability_features": [
+    "🛡️ 僵尸进程预防机制",
+    "🔄 自动重启和恢复",
+    "📊 进程状态监控",
+    "🧹 智能清理功能",
+    "⚡ 信号处理优化",
+    "🌐 隧道连接管理"
+  ]
 }

@@ -32,7 +32,7 @@ class UltimateNEXUSLauncher:
     """终极版NEXUS启动器"""
     
     def __init__(self):
-        self.project_root = Path(__file__).parent
+        self.project_root = Path(__file__).parent.parent.parent  # /workspace
         self.processes = {}
         self.tunnels = {}
         self.config_file = self.project_root / "systems/nexus/public/api_config.json"

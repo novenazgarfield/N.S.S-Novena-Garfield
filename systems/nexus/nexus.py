@@ -114,7 +114,7 @@ class NexusStarter:
             },
             'electron': {
                 'main': 'public/electron.js',
-                'wait_url': f'http://localhost:{os.environ.get("VITE_PORT", os.environ.get("PORT", "52300"))}'
+                'wait_url': f'http://${HOST:-localhost}:{os.environ.get("VITE_PORT", os.environ.get("PORT", "52300"))}'
             }
         }
         
@@ -687,7 +687,7 @@ class NexusStarter:
 
 示例:
   python nexus.py dev
-  python nexus.py dev --host localhost --port 3000
+  python nexus.py dev --host ${HOST:-localhost} --port 3000
   python nexus.py prod --skip-build
   python nexus.py frontend --build
   python nexus.py backend
