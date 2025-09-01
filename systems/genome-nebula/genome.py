@@ -270,7 +270,7 @@ class GenomeStarter:
         databases = self.config.get('database', {})
         print("💾 数据库配置:")
         for db_type, db_config in databases.items():
-            print(f"   {db_type}: {db_config.get('host', 'localhost')}:{db_config.get('port', 'N/A')}")
+            print(f"   {db_type}: {db_config.get('host', os.environ.get('DB_HOST', 'localhost'))}:{db_config.get('port', 'N/A')}")
         print("")
         
         # Web配置

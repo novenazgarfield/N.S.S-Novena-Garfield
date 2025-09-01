@@ -7,8 +7,14 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 52333,
-    allowedHosts: true
+    port: 50069,
+    strictPort: false,
+    cors: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control'
+    }
   },
   build: {
     outDir: 'dist',
@@ -16,17 +22,7 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        dashboard: resolve(__dirname, 'nexus-dashboard-restored.html'),
-        modular: resolve(__dirname, 'nexus-dashboard-modular.html'),
-        optimized: resolve(__dirname, 'nexus-dashboard-optimized.html')
-      },
-      output: {
-        manualChunks: {
-          'themes': ['./assets/js/themes.js'],
-          'navigation': ['./assets/js/navigation.js'],
-          'rag': ['./assets/js/rag.js']
-        }
+        main: resolve(__dirname, 'index.html')
       }
     },
     cssCodeSplit: true,
