@@ -20,8 +20,11 @@ sys.path.append(str(Path(__file__).parent))
 
 from flask import Flask, request, jsonify, Response
 from flask_cors import CORS
+from werkzeug.utils import secure_filename
 import cv2
 import numpy as np
+import uuid
+import mimetypes
 
 # 导入数据库和智能决策模块
 try:
@@ -56,6 +59,31 @@ except:
 
 app = Flask(__name__)
 CORS(app)  # 允许跨域请求
+
+# 文件上传配置
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB
+app.config['UPLOAD_FOLDER'] = 'uploads'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff', 'mp4', 'avi', 'mov', 'mkv', 'txt', 'csv', 'json', 'xml', 'pdf', 'doc', 'docx'}
+
+# 确保上传目录存在
+os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'images'), exist_ok=True)
+os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'videos'), exist_ok=True)
+os.makedirs(os.path.join(app.config['UPLOAD_FOLDER'], 'documents'), exist_ok=True)
+
+def allowed_file(filename):
+    """检查文件扩展名是否允许"""
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def get_file_category(filename):
+    """根据文件扩展名确定文件类别"""
+    ext = filename.rsplit('.', 1)[1].lower()
+    if ext in {'png', 'jpg', 'jpeg', 'gif', 'bmp', 'tiff'}:
+        return 'images'
+    elif ext in {'mp4', 'avi', 'mov', 'mkv'}:
+        return 'videos'
+    else:
+        return 'documents'
 
 # 全局变量
 cattle_detector = None
@@ -185,6 +213,212 @@ class MockDataGenerator:
 mock_generator = MockDataGenerator()
 
 # API路由定义
+
+@app.route('/api/upload', methods=['POST'])
+def upload_files():
+    """文件上传接口"""
+    try:
+        if 'files' not in request.files:
+            return jsonify({"success": False, "error": "没有选择文件"}), 400
+        
+        files = request.files.getlist('files')
+        if not files or all(file.filename == '' for file in files):
+            return jsonify({"success": False, "error": "没有选择文件"}), 400
+        
+        uploaded_files = []
+        
+        for file in files:
+            if file and file.filename and allowed_file(file.filename):
+                # 生成安全的文件名
+                filename = secure_filename(file.filename)
+                unique_filename = f"{uuid.uuid4().hex}_{filename}"
+                
+                # 确定文件类别和保存路径
+                category = get_file_category(filename)
+                file_path = os.path.join(app.config['UPLOAD_FOLDER'], category, unique_filename)
+                
+                # 保存文件
+                file.save(file_path)
+                
+                # 记录文件信息
+                file_info = {
+                    "original_name": filename,
+                    "saved_name": unique_filename,
+                    "category": category,
+                    "path": file_path,
+                    "size": os.path.getsize(file_path),
+                    "upload_time": datetime.now().isoformat()
+                }
+                
+                uploaded_files.append(file_info)
+                
+                # 如果是图片或视频，启动分析处理
+                if category in ['images', 'videos']:
+                    asyncio.create_task(process_uploaded_media(file_path, file_info))
+        
+        return jsonify({
+            "success": True,
+            "message": f"成功上传 {len(uploaded_files)} 个文件",
+            "files": uploaded_files
+        })
+        
+    except Exception as e:
+        logger.error(f"文件上传失败: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+@app.route('/api/upload/analyze', methods=['POST'])
+def analyze_uploaded_files():
+    """分析上传的文件"""
+    try:
+        data = request.get_json()
+        file_paths = data.get('file_paths', [])
+        
+        if not file_paths:
+            return jsonify({"success": False, "error": "没有指定要分析的文件"}), 400
+        
+        analysis_results = []
+        
+        for file_path in file_paths:
+            if not os.path.exists(file_path):
+                continue
+                
+            # 根据文件类型进行分析
+            if file_path.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.tiff')):
+                result = analyze_image(file_path)
+            elif file_path.lower().endswith(('.mp4', '.avi', '.mov', '.mkv')):
+                result = analyze_video(file_path)
+            else:
+                result = {"error": "不支持的文件类型"}
+            
+            analysis_results.append({
+                "file_path": file_path,
+                "result": result
+            })
+        
+        return jsonify({
+            "success": True,
+            "analysis_results": analysis_results
+        })
+        
+    except Exception as e:
+        logger.error(f"文件分析失败: {e}")
+        return jsonify({"success": False, "error": str(e)}), 500
+
+async def process_uploaded_media(file_path: str, file_info: dict):
+    """异步处理上传的媒体文件"""
+    try:
+        logger.info(f"开始处理上传文件: {file_info['original_name']}")
+        
+        if file_info['category'] == 'images':
+            # 处理图片
+            result = analyze_image(file_path)
+        elif file_info['category'] == 'videos':
+            # 处理视频
+            result = analyze_video(file_path)
+        else:
+            return
+        
+        # 保存分析结果到数据库
+        if DATABASE_AVAILABLE and result.get('detections'):
+            for detection in result['detections']:
+                detection_dao = DetectionDAO()
+                detection_dao.create_detection(
+                    cattle_id=detection.get('cattle_id', 'UNKNOWN'),
+                    camera_id='upload',
+                    confidence=detection.get('confidence', 0.0),
+                    bcs_score=detection.get('bcs_score'),
+                    ear_tag=detection.get('ear_tag'),
+                    image_path=file_path
+                )
+        
+        logger.info(f"文件处理完成: {file_info['original_name']}")
+        
+    except Exception as e:
+        logger.error(f"处理上传文件失败: {e}")
+
+def analyze_image(image_path: str) -> dict:
+    """分析单张图片"""
+    try:
+        # 读取图片
+        image = cv2.imread(image_path)
+        if image is None:
+            return {"error": "无法读取图片"}
+        
+        # 模拟牛只检测和BCS评分
+        detections = []
+        
+        # 模拟检测到1-3头牛
+        num_cattle = np.random.randint(1, 4)
+        
+        for i in range(num_cattle):
+            detection = {
+                "cattle_id": f"COW-{np.random.randint(1, 51):04d}",
+                "confidence": np.random.uniform(0.7, 0.98),
+                "bcs_score": np.random.uniform(2.0, 4.5),
+                "ear_tag": f"TAG-{np.random.randint(1000, 9999)}",
+                "bbox": [
+                    np.random.randint(0, image.shape[1]//2),
+                    np.random.randint(0, image.shape[0]//2),
+                    np.random.randint(100, 300),
+                    np.random.randint(100, 300)
+                ]
+            }
+            detections.append(detection)
+        
+        return {
+            "success": True,
+            "image_path": image_path,
+            "image_size": image.shape,
+            "detections": detections,
+            "analysis_time": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"图片分析失败: {e}")
+        return {"error": str(e)}
+
+def analyze_video(video_path: str) -> dict:
+    """分析视频文件"""
+    try:
+        # 打开视频
+        cap = cv2.VideoCapture(video_path)
+        if not cap.isOpened():
+            return {"error": "无法打开视频"}
+        
+        # 获取视频信息
+        fps = cap.get(cv2.CAP_PROP_FPS)
+        frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+        duration = frame_count / fps if fps > 0 else 0
+        
+        # 模拟视频分析结果
+        detections = []
+        
+        # 每秒分析一帧
+        for second in range(min(int(duration), 30)):  # 最多分析30秒
+            detection = {
+                "timestamp": second,
+                "cattle_id": f"COW-{np.random.randint(1, 51):04d}",
+                "confidence": np.random.uniform(0.7, 0.98),
+                "bcs_score": np.random.uniform(2.0, 4.5),
+                "ear_tag": f"TAG-{np.random.randint(1000, 9999)}"
+            }
+            detections.append(detection)
+        
+        cap.release()
+        
+        return {
+            "success": True,
+            "video_path": video_path,
+            "duration": duration,
+            "fps": fps,
+            "frame_count": frame_count,
+            "detections": detections,
+            "analysis_time": datetime.now().isoformat()
+        }
+        
+    except Exception as e:
+        logger.error(f"视频分析失败: {e}")
+        return {"error": str(e)}
 
 @app.route('/api/status', methods=['GET'])
 def get_system_status():
@@ -835,39 +1069,7 @@ def get_dashboard_data():
         logger.error(f"获取仪表盘数据失败: {e}")
         return jsonify({"success": False, "error": str(e)}), 500
 
-@app.route('/api/feeding-advice/<cattle_id>', methods=['GET'])
-def get_feeding_advice(cattle_id: str):
-    """获取饲养建议"""
-    try:
-        if not DATABASE_AVAILABLE or not decision_engine:
-            return jsonify({
-                "success": False,
-                "error": "智能决策功能不可用"
-            }), 503
-        
-        advice = decision_engine.generate_feeding_advice(cattle_id)
-        
-        if advice:
-            return jsonify({
-                "success": True,
-                "data": {
-                    "cattle_id": advice.cattle_id,
-                    "current_bcs": advice.current_bcs,
-                    "target_bcs": advice.target_bcs,
-                    "feed_adjustment": advice.feed_adjustment,
-                    "feed_change_percentage": advice.feed_change_percentage,
-                    "recommendations": advice.specific_recommendations
-                }
-            })
-        else:
-            return jsonify({
-                "success": False,
-                "error": "无法生成该牛只的饲养建议"
-            }), 404
-            
-    except Exception as e:
-        logger.error(f"生成饲养建议失败: {e}")
-        return jsonify({"success": False, "error": str(e)}), 500
+# 饲养建议功能已移除，专注于检测和分析功能
 
 if __name__ == '__main__':
     initialize_system()

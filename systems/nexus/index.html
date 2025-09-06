@@ -1494,6 +1494,258 @@
             padding: 20px;
         }
 
+        /* 文件上传样式 */
+        .upload-section {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .upload-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upload-header h3 {
+            color: var(--accent-blue);
+            margin: 0 0 8px 0;
+            font-size: 20px;
+        }
+
+        .upload-header p {
+            color: var(--text-secondary);
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .upload-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+
+        .upload-tab {
+            padding: 10px 20px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+
+        .upload-tab.active {
+            background: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+        }
+
+        .upload-tab:hover:not(.active) {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .upload-panel {
+            display: none;
+        }
+
+        .upload-panel.active {
+            display: block;
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            background: var(--bg-primary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-zone:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-tertiary);
+        }
+
+        .upload-zone.dragover {
+            border-color: var(--accent-green);
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .upload-text p {
+            margin: 5px 0;
+            color: var(--text-secondary);
+        }
+
+        .upload-text p:first-child {
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .upload-queue {
+            margin-top: 20px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .upload-queue h4 {
+            margin: 0 0 15px 0;
+            color: var(--accent-orange);
+            font-size: 16px;
+        }
+
+        .queue-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .queue-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .queue-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .file-size {
+            color: var(--text-secondary);
+            font-size: 12px;
+        }
+
+        .file-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .file-status.pending {
+            background: rgba(251, 191, 36, 0.2);
+            color: var(--accent-orange);
+        }
+
+        .file-status.uploading {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--accent-blue);
+        }
+
+        .file-status.success {
+            background: rgba(74, 222, 128, 0.2);
+            color: var(--accent-green);
+        }
+
+        .file-status.error {
+            background: rgba(248, 113, 113, 0.2);
+            color: var(--accent-red);
+        }
+
+        .upload-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .upload-results {
+            margin-top: 20px;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .upload-results h4 {
+            margin: 0 0 15px 0;
+            color: var(--accent-green);
+            font-size: 16px;
+        }
+
+        .result-item {
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .result-filename {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .result-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            background: rgba(74, 222, 128, 0.2);
+            color: var(--accent-green);
+        }
+
+        .detection-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .detection-card {
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .detection-card h5 {
+            margin: 0 0 8px 0;
+            color: var(--accent-blue);
+            font-size: 14px;
+        }
+
+        .detection-details {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
         /* 牛只档案样式 */
         .profiles-header {
             display: flex;
@@ -4011,6 +4263,73 @@
                                 <span class="status-dot online"></span>
                                 <span>检测引擎</span>
                             </div>
+                        </div>
+                    </div>
+
+                    <!-- 文件上传区域 -->
+                    <div class="upload-section">
+                        <div class="upload-header">
+                            <h3>📁 离线分析上传</h3>
+                            <p>上传录像、图片或牛只信息文档进行离线分析</p>
+                        </div>
+                        
+                        <div class="upload-tabs">
+                            <button class="upload-tab active" onclick="switchUploadTab('media')">📹 媒体文件</button>
+                            <button class="upload-tab" onclick="switchUploadTab('documents')">📄 文档资料</button>
+                        </div>
+                        
+                        <div class="upload-content">
+                            <!-- 媒体文件上传 -->
+                            <div id="media-upload" class="upload-panel active">
+                                <div class="upload-zone" id="media-drop-zone">
+                                    <div class="upload-icon">📹</div>
+                                    <div class="upload-text">
+                                        <p><strong>拖拽文件到此处或点击选择</strong></p>
+                                        <p>支持格式：MP4, AVI, MOV, JPG, PNG, JPEG</p>
+                                        <p>最大文件大小：100MB</p>
+                                    </div>
+                                    <input type="file" id="media-file-input" multiple accept=".mp4,.avi,.mov,.mkv,.jpg,.jpeg,.png,.gif,.bmp,.tiff" style="display: none;">
+                                    <button class="btn-primary" onclick="document.getElementById('media-file-input').click()">选择文件</button>
+                                </div>
+                                
+                                <div class="upload-queue" id="media-upload-queue" style="display: none;">
+                                    <h4>上传队列</h4>
+                                    <div class="queue-list" id="media-queue-list"></div>
+                                    <div class="upload-actions">
+                                        <button class="btn-primary" onclick="startUpload('media')">开始上传</button>
+                                        <button class="btn-secondary" onclick="clearQueue('media')">清空队列</button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 文档上传 -->
+                            <div id="documents-upload" class="upload-panel">
+                                <div class="upload-zone" id="docs-drop-zone">
+                                    <div class="upload-icon">📄</div>
+                                    <div class="upload-text">
+                                        <p><strong>拖拽文档到此处或点击选择</strong></p>
+                                        <p>支持格式：TXT, CSV, JSON, XML, PDF, DOC, DOCX</p>
+                                        <p>用于导入牛只信息、健康记录等数据</p>
+                                    </div>
+                                    <input type="file" id="docs-file-input" multiple accept=".txt,.csv,.json,.xml,.pdf,.doc,.docx" style="display: none;">
+                                    <button class="btn-primary" onclick="document.getElementById('docs-file-input').click()">选择文档</button>
+                                </div>
+                                
+                                <div class="upload-queue" id="docs-upload-queue" style="display: none;">
+                                    <h4>文档队列</h4>
+                                    <div class="queue-list" id="docs-queue-list"></div>
+                                    <div class="upload-actions">
+                                        <button class="btn-primary" onclick="startUpload('documents')">开始上传</button>
+                                        <button class="btn-secondary" onclick="clearQueue('documents')">清空队列</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 上传结果显示 -->
+                        <div class="upload-results" id="upload-results" style="display: none;">
+                            <h4>📊 分析结果</h4>
+                            <div class="results-list" id="results-list"></div>
                         </div>
                     </div>
 
@@ -8170,12 +8489,237 @@
     <!-- BovineInsight JavaScript 功能 -->
     <script>
         // BovineInsight 全局变量
-        let bovineApiUrl = 'http://localhost:5002/api';
+        let bovineApiUrl = 'http://localhost:5001/api';
         let bovineSystemInitialized = false;
         let detectionLogPaused = false;
         let currentBovineTab = 'monitoring';
         let detectionUpdateInterval = null;
         let systemStatusInterval = null;
+        
+        // 文件上传全局变量
+        let uploadQueues = {
+            media: [],
+            documents: []
+        };
+        let currentUploadTab = 'media';
+
+        // 文件上传功能
+        function switchUploadTab(tabName) {
+            currentUploadTab = tabName;
+            
+            // 更新标签页样式
+            document.querySelectorAll('.upload-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`.upload-tab[onclick="switchUploadTab('${tabName}')"]`).classList.add('active');
+            
+            // 更新面板显示
+            document.querySelectorAll('.upload-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-upload`).classList.add('active');
+        }
+
+        // 初始化文件上传功能
+        function initializeFileUpload() {
+            // 媒体文件上传
+            const mediaInput = document.getElementById('media-file-input');
+            const mediaDropZone = document.getElementById('media-drop-zone');
+            
+            // 文档上传
+            const docsInput = document.getElementById('docs-file-input');
+            const docsDropZone = document.getElementById('docs-drop-zone');
+            
+            // 文件选择事件
+            mediaInput.addEventListener('change', (e) => handleFileSelect(e, 'media'));
+            docsInput.addEventListener('change', (e) => handleFileSelect(e, 'documents'));
+            
+            // 拖拽事件
+            setupDragAndDrop(mediaDropZone, 'media');
+            setupDragAndDrop(docsDropZone, 'documents');
+        }
+
+        function setupDragAndDrop(dropZone, category) {
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+            
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            });
+            
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                
+                const files = Array.from(e.dataTransfer.files);
+                addFilesToQueue(files, category);
+            });
+        }
+
+        function handleFileSelect(event, category) {
+            const files = Array.from(event.target.files);
+            addFilesToQueue(files, category);
+        }
+
+        function addFilesToQueue(files, category) {
+            const validFiles = files.filter(file => {
+                if (category === 'media') {
+                    return /\.(mp4|avi|mov|mkv|jpg|jpeg|png|gif|bmp|tiff)$/i.test(file.name);
+                } else {
+                    return /\.(txt|csv|json|xml|pdf|doc|docx)$/i.test(file.name);
+                }
+            });
+            
+            if (validFiles.length === 0) {
+                showNotification('没有有效的文件', 'warning');
+                return;
+            }
+            
+            validFiles.forEach(file => {
+                const fileItem = {
+                    id: Date.now() + Math.random(),
+                    file: file,
+                    name: file.name,
+                    size: file.size,
+                    status: 'pending'
+                };
+                
+                uploadQueues[category].push(fileItem);
+            });
+            
+            updateUploadQueue(category);
+            showNotification(`已添加 ${validFiles.length} 个文件到队列`, 'success');
+        }
+
+        function updateUploadQueue(category) {
+            const queueElement = document.getElementById(`${category}-upload-queue`);
+            const listElement = document.getElementById(`${category}-queue-list`);
+            
+            if (uploadQueues[category].length === 0) {
+                queueElement.style.display = 'none';
+                return;
+            }
+            
+            queueElement.style.display = 'block';
+            listElement.innerHTML = '';
+            
+            uploadQueues[category].forEach(item => {
+                const queueItem = document.createElement('div');
+                queueItem.className = 'queue-item';
+                queueItem.innerHTML = `
+                    <div class="file-info">
+                        <div class="file-name">${item.name}</div>
+                        <div class="file-size">${formatFileSize(item.size)}</div>
+                    </div>
+                    <div class="file-status ${item.status}">${getStatusText(item.status)}</div>
+                `;
+                listElement.appendChild(queueItem);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                'pending': '等待中',
+                'uploading': '上传中',
+                'success': '成功',
+                'error': '失败'
+            };
+            return statusMap[status] || status;
+        }
+
+        async function startUpload(category) {
+            const pendingFiles = uploadQueues[category].filter(item => item.status === 'pending');
+            
+            if (pendingFiles.length === 0) {
+                showNotification('没有待上传的文件', 'warning');
+                return;
+            }
+            
+            const formData = new FormData();
+            pendingFiles.forEach(item => {
+                formData.append('files', item.file);
+                item.status = 'uploading';
+            });
+            
+            updateUploadQueue(category);
+            
+            try {
+                const response = await fetch(`${bovineApiUrl}/upload`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // 更新文件状态
+                    pendingFiles.forEach(item => {
+                        item.status = 'success';
+                    });
+                    
+                    updateUploadQueue(category);
+                    showUploadResults(result.files);
+                    showNotification(`成功上传 ${result.files.length} 个文件`, 'success');
+                } else {
+                    throw new Error(result.error || '上传失败');
+                }
+                
+            } catch (error) {
+                console.error('上传失败:', error);
+                
+                // 更新文件状态为失败
+                pendingFiles.forEach(item => {
+                    item.status = 'error';
+                });
+                
+                updateUploadQueue(category);
+                showNotification(`上传失败: ${error.message}`, 'error');
+            }
+        }
+
+        function clearQueue(category) {
+            uploadQueues[category] = [];
+            updateUploadQueue(category);
+            showNotification('队列已清空', 'info');
+        }
+
+        function showUploadResults(files) {
+            const resultsElement = document.getElementById('upload-results');
+            const listElement = document.getElementById('results-list');
+            
+            resultsElement.style.display = 'block';
+            listElement.innerHTML = '';
+            
+            files.forEach(file => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'result-item';
+                resultItem.innerHTML = `
+                    <div class="result-header">
+                        <div class="result-filename">${file.original_name}</div>
+                        <div class="result-status">已上传</div>
+                    </div>
+                    <div class="result-details">
+                        <p><strong>类别:</strong> ${file.category}</p>
+                        <p><strong>大小:</strong> ${formatFileSize(file.size)}</p>
+                        <p><strong>上传时间:</strong> ${new Date(file.upload_time).toLocaleString()}</p>
+                        ${file.category === 'images' || file.category === 'videos' ? 
+                            '<p><strong>状态:</strong> 正在分析中...</p>' : ''}
+                    </div>
+                `;
+                listElement.appendChild(resultItem);
+            });
+        }
 
         // 初始化BovineInsight系统
         async function initializeBovineInsight() {
@@ -8204,6 +8748,9 @@
             // 加载初始数据
             loadCattleList();
             loadHealthDashboard();
+            
+            // 初始化文件上传功能
+            initializeFileUpload();
             
             bovineSystemInitialized = true;
         }
