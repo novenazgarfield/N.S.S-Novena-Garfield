@@ -59,18 +59,18 @@ bovine-insight/
 ### 第三步：融合身份识别模块 🔄
 - [x] 耳标识别流水线
 - [x] 花色重识别模型
-- [ ] 双重识别融合逻辑
+- [x] 双重识别融合逻辑 (框架完成，算法待完善)
 
 ### 第四步：体况评分模块 🔄
 - [x] 关键点检测模型
 - [x] 特征工程
-- [ ] BCS评分回归模型
+- [x] BCS评分回归模型 (框架完成，模型待训练)
 
-### 第五步：系统集成 📋
-- [ ] 牛只数据档案数据库
+### 第五步：系统集成 🔄
+- [x] 牛只数据档案数据库 (基础框架)
 - [ ] 智能决策逻辑
 - [ ] 结果可视化界面
-- [ ] 数据记录和日志
+- [ ] 数据记录和日志系统
 
 ## 🔧 安装和使用
 
@@ -132,11 +132,6 @@ python src/main.py
 
 ## 📈 性能指标
 
-### 识别准确率
-- 耳标识别: >95%
-- 花色识别: >90%
-- 综合识别: >98%
-
 ### 处理速度
 - 实时处理: 30fps
 - 延迟: <100ms
@@ -186,16 +181,11 @@ for result in results:
 4. 推送到分支 (`git push origin feature/AmazingFeature`)
 5. 打开 Pull Request
 
-## 📄 许可证
-
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
-
 ## 📞 联系方式
 
-- 项目维护者: [Your Name]
-- 邮箱: [your.email@example.com]
-- 项目链接: [https://github.com/yourusername/bovine-insight](https://github.com/yourusername/bovine-insight)
-
+- 项目维护者: NovenaGarfield
+- 邮箱: novenagarfield@gmail.com
+- 项目链接: https://github.com/novenazgarfield/N.S.S-Novena-Garfield/tree/main/systems/bovine-insight
 ---
 
 🐄 **BovineInsight** - 让智能技术服务现代畜牧业！
